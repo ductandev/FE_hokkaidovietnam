@@ -2,7 +2,7 @@ FROM node:18
 
 WORKDIR /usr/src/app
 
-COPY package*.json .
+COPY package*.json /usr/src/app/
 
 # cài node module trên server
 # RUN yarn install --legacy-peer-deps : lệnh này dùng để cho máy nào chạy ko dc, nó sẽ tìm đúng các thư viện thích hợp để cài cho máy của bạn
@@ -18,15 +18,18 @@ RUN yarn prisma generate
 COPY . .
 
 # quy định cứng cho port này bởi docker
-EXPOSE 8080        
-
-# Thay đổi người dùng mặc định của container thành root
-USER root
-
+EXPOSE 8082             
 CMD ["yarn","start"]
 # CMD ["node","start"]
 
 
-# docker exec -it cons-be bash && git pull && docker restart cons-be
+
+
+
+
+# docker build . -t img-html              || img-html: tên image tự đặt trong docker
+
+# docker run -d -p 3030:80 --name cons-html img-html
+
+
 # docker exec -it "tên_Container" bash => CICD => git pull
-#run: curl http://ductandev.io.vn/update-code
