@@ -5,7 +5,6 @@ import { unstable_HistoryRouter as HistoryRouter, Routes, Route, Navigate, } fro
 import { createBrowserHistory } from "history";
 import './index.css';
 
-
 import HomeTemplate from './Templates/HomeTemplate';
 import Home from './Pages/Home/Home';
 import Detail from './Pages/Detail/Detail';
@@ -20,37 +19,38 @@ import Media from './Pages/Media/Media';
 import Payments from './Pages/Payments/Payments';
 import Products from './Pages/Products/Products';
 
-
-
 // Setup redux
+import { Provider } from 'react-redux'
+import { store } from './Redux/configStore';
 
 export const history: any = createBrowserHistory();
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 root.render(
-    <HistoryRouter history={history}>
-        <Routes>
-            <Route path='' element={<HomeTemplate />}>
-                <Route index element={<Home />}></Route>
-                <Route path='brand' element={<Brand />}></Route>
-                <Route path='cart' element={<Cart />}></Route>
-                <Route path='contact' element={<Contact />}></Route>
-                <Route path="detail">
-                    <Route path=':id' element={<Detail />}></Route>
+    <Provider store={store}>
+        <HistoryRouter history={history}>
+            <Routes>
+                <Route path='' element={<HomeTemplate />}>
+                    <Route index element={<Home />}></Route>
+                    <Route path='brand' element={<Brand />}></Route>
+                    <Route path='cart' element={<Cart />}></Route>
+                    <Route path='contact' element={<Contact />}></Route>
+                    <Route path="detail">
+                        <Route path=':id' element={<Detail />}></Route>
+                    </Route>
+                    <Route path='login' element={<Login />}></Route>
+                    <Route path='media' element={<Media />}></Route>
+                    <Route path='payments' element={<Payments />}></Route>
+                    <Route path='products' element={<Products />}></Route>
+                    <Route path='profile' element={<Profile />}></Route>
+                    <Route path='register' element={<Register />}></Route>
+                    <Route path='search' element={<Search />}></Route>
+
+                    <Route path="*" element={<Navigate to="/" />}></Route>
                 </Route>
-                <Route path='login' element={<Login />}></Route>
-                <Route path='media' element={<Media />}></Route>
-                <Route path='payments' element={<Payments />}></Route>
-                <Route path='products' element={<Products />}></Route>
-                <Route path='profile' element={<Profile />}></Route>
-                <Route path='register' element={<Register />}></Route>
-                <Route path='search' element={<Search />}></Route>
-
-                <Route path="*" element={<Navigate to="/" />}></Route>
-            </Route>
-        </Routes>
-    </HistoryRouter>
-
+            </Routes>
+        </HistoryRouter>
+    </Provider>
 );
 
 

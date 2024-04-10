@@ -23,6 +23,8 @@ body {
   overflow-x: hidden;
   background: #f5f7fa;
   min-height: 100vh;
-  font-family: "nunito", sans-serif;
+  /* font-family: "nunito", sans-serif; */
+  /* font-family: "Roboto Slab", serif; */
+  font-family: "Roboto", sans-serif;
   scroll-behavior: smooth;
 }
