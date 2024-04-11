@@ -1,14 +1,8 @@
-'use client'
-import React from 'react'
 import Logo from './Logo'
 import Menu from './Menu'
 import NavIcon from './NavIcon'
-import logo from '../../../assets/image/logo.png'
 
-
-type Props = {}
-
-export default function Navbar({ }: Props) {
+export default function Navbar() {
   return (
     <div className='fixed w-full bg-white z-10 shadow-sm'>
       <div className='border-b-[1px]'>

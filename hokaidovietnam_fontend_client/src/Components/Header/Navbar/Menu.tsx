@@ -1,11 +1,9 @@
 'use client'
-import React, { useEffect } from 'react'
+import React from 'react'
 import { AiOutlineMenu } from 'react-icons/ai'
 
 
-type Props = {}
-
-export default function Menu({ }: Props) {
+export default function Menu() {
 
     return (
         <div>

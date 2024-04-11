@@ -1,8 +1,8 @@
 import React from 'react'
 
-type Props = {}
 
-export default function Payments({ }: Props) {
+
+export default function Payments() {
     return (
         <div>Payments</div>
     )

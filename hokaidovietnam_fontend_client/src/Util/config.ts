@@ -1,5 +1,4 @@
 import axios from "axios";
-import { history } from "../index";
 
 //setup hằng số
 export const DOMAIN = "https://airbnbnew.cybersoft.edu.vn";
@@ -78,12 +77,12 @@ http.interceptors.response.use(
 
     if (err.response?.status === 401) {
       alert("Đăng nhập để vào trang này !");
-      history.push("/login");
+
       return Promise.reject(err);
     }
     if (err.response?.status === 403) {
       alert("Không đủ quyền truy cập vào trang này !");
-      history.push("/admin/login");
+
       return Promise.reject(err);
     }
     return Promise.reject(err);
@@ -98,5 +97,4 @@ http.interceptors.response.use(
     500: Error in server (Lỗi xảy ra tại server - có thể do dữ liệu frontend gửi lên xử lý bị lỗi backend không catch trường hợp này thì ra 500 hoặc là backend code bị lỗi) => Xác định lỗi => mở post man request thử với data đúng thì có được hay không nếu vẫn lỗi thì báo backend fix
     401: UnAuthorize (Lỗi khi không có quyền truy cập vào api này (phải token hợp lệ ...))
     403: Forbiden ( Lỗi chưa đủ quyền truy cập vào api )
-
 */

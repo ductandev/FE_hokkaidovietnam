@@ -6,9 +6,9 @@ import { FaRegUser } from "react-icons/fa";
 
 
 
-type Props = {}
 
-export default function NavIcon({ }: Props) {
+
+export default function NavIcon() {
     return (
         <div className="">
             <div className='flex flex-row items-center justify-between text-[25px] sm:text-[30px] gap-3'>
