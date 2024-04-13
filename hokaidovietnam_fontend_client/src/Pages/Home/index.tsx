@@ -6,8 +6,16 @@ import img from '../../assets/image/slider01.png'
 
 export default function Home() {
     return (
-        <div className="container mx-auto m-0">
-            <img className='w-full' src={img} alt="..." />
+        <div className="">
+            <img style={{
+                width: "100%"
+            }} src={img} alt="..." />
+            <img style={{
+                width: "100%"
+            }} src={img} alt="..." />
+            <img style={{
+                width: "100%"
+            }} src={img} alt="..." />
         </div>
     )
 }

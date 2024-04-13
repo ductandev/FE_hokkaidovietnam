@@ -1,9 +1,16 @@
-import React from 'react'
+import Banner from 'src/Components/Banner'
+import ImageGallery from 'src/Components/ImageGallery'
 
 
 
 export default function Detail() {
     return (
-        <div>Detail</div>
+        <main>
+            <Banner title="Thông tin sản phẩm" />
+
+            <div>
+                <ImageGallery />
+            </div>
+        </main>
     )
 }
