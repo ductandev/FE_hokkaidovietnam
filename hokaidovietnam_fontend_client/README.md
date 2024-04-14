@@ -4,7 +4,7 @@ Cấu hình webpack add-on bởi [Craco](https://craco.js.org/).\
 Thư viện UI được sử dụng [Shadui](https://ui.shadcn.com/)
 
 # !2. CLI
-Ở root thử mục
+Ở root thư mục
 
 ### `npm start`
 
