@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom"
 
-import logo from "src/assets/image/logo.png";
+import logo from "assets/image/logo.png";
 
 import "./styles.scss"
 

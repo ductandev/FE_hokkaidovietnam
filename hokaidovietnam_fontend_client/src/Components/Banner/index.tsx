@@ -1,5 +1,5 @@
 import { ReactNode } from 'react'
-import Background from 'src/assets/image/banner.png';
+import Background from 'assets/image/banner.png';
 
 interface IProps {
     title: string | ReactNode

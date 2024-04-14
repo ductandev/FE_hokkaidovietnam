@@ -1,7 +1,6 @@
-import Banner from 'src/Components/Banner'
-import ImageGallery from 'src/Components/ImageGallery'
-
-
+import Banner from '@/Components/Banner'
+import ImageGallery2 from "@/Components/ImageGallery"
+import { Button } from '@/Components/ui/button'
 
 export default function Detail() {
     return (
@@ -9,7 +8,9 @@ export default function Detail() {
             <Banner title="Thông tin sản phẩm" />
 
             <div>
-                <ImageGallery />
+                <ImageGallery2 />
+
+                <Button>abc</Button>
             </div>
         </main>
     )
