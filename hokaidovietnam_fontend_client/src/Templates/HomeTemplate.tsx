@@ -10,9 +10,9 @@ const HomeTemplate: React.FC = (): JSX.Element => {
 
             <Outlet />
 
-            <footer className='bg-black text-white text-center p-3'>
+            {/* <footer className='bg-black text-white text-center p-3'>
                 Footer
-            </footer>
+            </footer> */}
         </>
     )
 }

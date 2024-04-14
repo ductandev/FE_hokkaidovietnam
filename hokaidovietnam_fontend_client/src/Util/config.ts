@@ -47,7 +47,7 @@ httpNonAuth.interceptors.request.use(
     config.headers.tokenCybersoft = `${TOKEN_CYBERSOFT}`;
     return config;
   },
-  (err) => {
+  (err: any) => {
     return Promise.reject(err);
   }
 );
@@ -60,7 +60,7 @@ http.interceptors.request.use(
     config.headers.tokenCybersoft = `${TOKEN_CYBERSOFT}`;
     return config;
   },
-  (err) => {
+  (err: any) => {
     return Promise.reject(err);
   }
 );
@@ -68,10 +68,10 @@ http.interceptors.request.use(
 
 //Cấu hình cho response (kết quả trả về từ api)
 http.interceptors.response.use(
-  (res) => {
+  (res: any) => {
     return res;
   },
-  (err) => {
+  (err: any) => {
     console.log(err);
     console.log(err.response?.status);
 

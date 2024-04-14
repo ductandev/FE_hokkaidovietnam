@@ -11,6 +11,7 @@ import { store } from './Redux/configStore';
 import router from './routers/router';
 
 import 'react-toastify/dist/ReactToastify.css';
+import "react-image-gallery/styles/scss/image-gallery.scss";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
