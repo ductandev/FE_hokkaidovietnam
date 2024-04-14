@@ -1,0 +1,12 @@
+.product-detail {
+    width: 100%;
+    display: flex;
+
+    &-imagegallery {
+        width: 50%;
+    }
+
+    &-providertext {
+        width: 50%;
+    }
+}

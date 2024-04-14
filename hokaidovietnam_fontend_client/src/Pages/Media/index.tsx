@@ -1,8 +1,8 @@
 import React from 'react'
 
-type Props = {}
 
-export default function Media({ }: Props) {
+
+export default function Media() {
     return (
         <div>Media</div>
     )

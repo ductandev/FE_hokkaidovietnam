@@ -1,8 +1,8 @@
 import React from 'react'
 
-type Props = {}
 
-export default function Profile({ }: Props) {
+
+export default function Profile() {
     return (
         <div>Profile</div>
     )

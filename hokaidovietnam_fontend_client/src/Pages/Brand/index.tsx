@@ -1,8 +1,6 @@
 import React from 'react'
 
-type Props = {}
-
-export default function Brand({ }: Props) {
+export default function Brand() {
     return (
         <div>Brand</div>
     )
