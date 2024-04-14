@@ -52,7 +52,7 @@ export default function Header() {
         };
     }, []);
 
-    return <header className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"} ${isScrolled ? "header__transparent__scrolling" : ''}`}>
+    return <header className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"} ${isScrolled ? "header__transparent__scrolling" : 'header__whitebox__scrolling'}`}>
         <div className="header-menu">
             <ul className="header-menu-container">
                 {memorizeMenu.map((menu, idx) => {

@@ -29,9 +29,11 @@ $logo-height: 100px;
         background-color: #ffffff;
         color: #333333;
         position: sticky;
+        box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.15);
 
         &__scrolling {
-            box-shadow: 0px 25px 20px -20px rgba(0, 0, 0, 0.45);
+            box-shadow: unset;
+
         }
     }
 

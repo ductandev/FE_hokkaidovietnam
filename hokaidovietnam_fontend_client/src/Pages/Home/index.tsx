@@ -16,6 +16,7 @@ export default function Home() {
             <img style={{
                 width: "100%"
             }} src={img} alt="..." />
+
         </div>
     )
 }

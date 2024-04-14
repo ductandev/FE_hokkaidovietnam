@@ -1,0 +1,31 @@
+.categoryTabs {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 14px;
+    border-bottom: 1px solid #777171;
+
+    &-menu {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        &Item {
+            margin-right: 24px;
+            color: #777171;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+
+            &__active {
+                color: #000000;
+            }
+        }
+    }
+
+    &-summary {
+        color: #777171;
+        font-size: 16px;
+        font-weight: 500;
+    }
+}
