@@ -10,13 +10,12 @@ export interface DividerProps {
 }
 
 export function Divider(props: DividerProps) {
-    const { borderColor = "#777171", borderWidth = 1, className = "" } = props;
+    const { borderColor = "#717171", borderWidth = 1, className = "" } = props;
 
     return <hr
         className={className}
         style={{
             borderBlockStart: `${borderWidth}px solid ${borderColor}`,
-            border: 0,
             margin: 0,
         }}
     />
