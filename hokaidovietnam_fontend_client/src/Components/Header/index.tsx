@@ -1,9 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom"
+import useWindowDimensions from "@/hooks/useWindowDimension";
 
+import { CircleUserRound, ShoppingCart, Search, Menu, X } from "lucide-react";
 import logo from "assets/image/logo.png";
 
-import "./styles.scss"
+import "./styles.scss";
 
 const MENU_REDIRECT = [
     {
@@ -30,9 +32,11 @@ const MENU_REDIRECT = [
 
 export default function Header() {
     const location = useLocation();
+    const { width } = useWindowDimensions();
     const [isScrolled, setIsScrolled] = useState(false);
-    const isUseTransition = location.pathname === '/';
+    const [isOpenMenu, setIsOpenMenu] = useState(false);
 
+    const isUseTransition = location.pathname === '/';
     const memorizeMenu = useMemo(() => { return MENU_REDIRECT }, []);
 
     useEffect(() => {
@@ -52,6 +56,12 @@ export default function Header() {
         };
     }, []);
 
+    useEffect(() => {
+        if (width > 1200) {
+            setIsOpenMenu(false)
+        }
+    }, [width]);
+
     return <header className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"} ${isScrolled ? "header__transparent__scrolling" : 'header__whitebox__scrolling'}`}>
         <div className="header-menu">
             <ul className="header-menu-container">
@@ -59,14 +69,41 @@ export default function Header() {
                     return <Link className="header-menu-link" to={menu.path} key={idx}>{menu.name}</Link>
                 })}
             </ul>
+
+            {!isOpenMenu && <Menu className="cursor-pointer header-menu-icons" onClick={() => {
+                setIsOpenMenu(true)
+            }} />}
+
+            {isOpenMenu && <X className="cursor-pointer header-menu-icons" onClick={() => {
+                setIsOpenMenu(false)
+            }} />}
         </div>
 
         <div className="header-logo">
-            <img src={logo} alt="Logo" />
+            <Link className="header-menu-link" to={"/"} > <img src={logo} alt="Logo" /></Link>
         </div>
 
         <div className="header-actions">
-            <button>Login</button>
+            <div className="flex flex-row">
+                <Search className="mr-10 cursor-pointer header-actions-search" />
+
+                <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
+                <ShoppingCart className="cursor-pointer" />
+            </div>
         </div>
+
+        <nav className="header-navMenu"
+            style={{
+                width: isOpenMenu ? "100%" : "0px",
+            }}
+        >
+            {isOpenMenu && <>
+                <ul className="header-navMenu-container">
+                    {memorizeMenu.map((menu, idx) => {
+                        return <Link className="header-navMenu-link" to={menu.path} key={idx}>{menu.name}</Link>
+                    })}
+                </ul>
+            </>}
+        </nav>
     </header>
 }
