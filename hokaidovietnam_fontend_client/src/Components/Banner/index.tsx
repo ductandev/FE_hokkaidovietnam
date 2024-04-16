@@ -2,16 +2,17 @@ import { ReactNode } from 'react'
 import Background from 'assets/image/banner.png';
 
 interface IProps {
-    title: string | ReactNode
+    title: string | ReactNode;
+    background?: string
 }
 function Banner(props: IProps) {
-    const { title } = props;
+    const { title, background = Background } = props;
 
     return (
         <div style={{
             height: "208px",
             width: "100vw",
-            backgroundImage: `url(${Background})`,
+            backgroundImage: `url(${background})`,
             display: 'flex',
             justifyContent: "center",
             alignItems: "center",

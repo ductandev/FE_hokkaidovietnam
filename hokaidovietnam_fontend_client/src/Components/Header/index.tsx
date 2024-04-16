@@ -15,7 +15,7 @@ const MENU_REDIRECT = [
         name: "cửa hàng"
     },
     {
-        path: "/",
+        path: "/brand",
         name: "thương hiệu"
     },
     {

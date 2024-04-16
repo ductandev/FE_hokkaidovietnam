@@ -12,6 +12,7 @@ import {
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
+import Brand from "@/Pages/Brand";
 
 const router = createBrowserRouter([
   {
@@ -29,6 +30,10 @@ const router = createBrowserRouter([
       {
         path: "/product/:id",
         element: <ProductDetailPage />,
+      },
+      {
+        path: "/brand",
+        element: <Brand />,
       },
     ]
   },
