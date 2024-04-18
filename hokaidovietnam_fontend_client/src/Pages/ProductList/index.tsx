@@ -4,7 +4,6 @@ import Banner from '@/Components/Banner'
 import { CategoryTabs, TOption } from '@/Components/CategoryTab'
 import { ProductCard } from "@/Components/ProductCard";
 import { HPagination } from "@/Components/Pagination";
-import { Divider } from "@/Components/Divider";
 
 const TAB_LIST: Array<TOption> = [
     {
@@ -99,10 +98,6 @@ export default function Products() {
 
             <div className="w-full mx-auto pt-10 pb-10">
                 <HPagination total={30} pageSize={8} current={3} />
-            </div>
-
-            <div className="container">
-                <Divider className="pb-10" />
             </div>
         </main>
     )

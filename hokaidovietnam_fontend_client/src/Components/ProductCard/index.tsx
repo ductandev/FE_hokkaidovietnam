@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-import { formatCurrency } from "@/helper/helper";
+import { formatCurrency } from "@/Helper/helper";
 
 import "./styles.scss";
 

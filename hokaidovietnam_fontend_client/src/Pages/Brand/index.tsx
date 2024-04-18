@@ -286,7 +286,6 @@ export default function Brand() {
           {renderBrandItems()}
 
         </div>
-        <hr className="hidden w-full mt-28 md:block" style={{ color: "#777171", border: "1px solid" }} />
       </div>
     </>
   );
