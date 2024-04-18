@@ -16,7 +16,6 @@ export function Divider(props: DividerProps) {
         className={className}
         style={{
             borderBlockStart: `${borderWidth}px solid ${borderColor}`,
-            margin: 0,
         }}
     />
 }

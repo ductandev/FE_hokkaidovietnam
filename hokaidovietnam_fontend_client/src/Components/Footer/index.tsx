@@ -1,6 +1,7 @@
 import Background from '@/assets/image/banner.png';
 import logo from "@/assets/image/logo.png";
 import { Link } from 'react-router-dom';
+import { Divider } from "@/Components/Divider";
 
 function Footer() {
     const linkMapping: any = {
@@ -11,7 +12,7 @@ function Footer() {
             },
             {
                 label: "Danh mục",
-                link: "/"
+                link: "/products"
             },
             {
                 label: "Sản phẩm",
@@ -67,37 +68,45 @@ function Footer() {
     };
 
     return (
-        <div
-            style={{
-                backgroundImage: `url(${Background})`,
-                backgroundSize: 'cover'
-            }}
-            className='w-screen'
-        >
-            <div className='grid grid-cols-4 container py-14'>
-                <div className='lg:col-span-2 col-span-4 mb-10 lg:mb-0'>
-                    <img src={logo} alt="logo_hokaido" className="header-logo" />
+        <>
+            <div className='container  mb-10'>
+                <Divider />
 
-                    {headText("Địa chỉ liên hệ", " lg:mb-7 mb-3 normal-case")}
+            </div>
 
-                    <p className='lg:mb-7 mb-3 lg:text-base text-sm'><span>Chi nhánh Hà Nội:</span> <span className='text-secondary'>Tầng 26, Toà Tây, 54 Liễu Giai, Ba Đình, Hà Nội</span></p>
+            <div
+                style={{
+                    backgroundImage: `url(${Background})`,
+                    backgroundSize: 'cover'
+                }}
+                className='w-screen'
+            >
+                <div className='grid grid-cols-4 container py-14'>
+                    <div className='lg:col-span-2 col-span-4 mb-10 lg:mb-0'>
+                        <img src={logo} alt="logo_hokaido" className="header-logo" />
 
-                    <p className='lg:text-base text-sm'><span>Chi nhánh TP HCM:</span> <span className='text-secondary'>20 đường số 2, Tân Phú, Quận 7</span></p>
-                </div>
+                        {headText("Địa chỉ liên hệ", " lg:mb-7 mb-3 normal-case")}
 
-                <div className='lg:col-span-1 col-span-2'>
-                    {headText("Giới thiệu", ' lg:mb-10 mb-3 ')}
+                        <p className='lg:mb-7 mb-3 lg:text-base text-sm'><span>Chi nhánh Hà Nội:</span> <span className='text-secondary'>Tầng 26, Toà Tây, 54 Liễu Giai, Ba Đình, Hà Nội</span></p>
 
-                    {linkText("introduce")}
-                </div>
+                        <p className='lg:text-base text-sm'><span>Chi nhánh TP HCM:</span> <span className='text-secondary'>20 đường số 2, Tân Phú, Quận 7</span></p>
+                    </div>
 
-                <div className='lg:col-span-1 col-span-2'>
-                    {headText("Hỗ trợ khách hàng", ' lg:mb-10 mb-3 ')}
+                    <div className='lg:col-span-1 col-span-2'>
+                        {headText("Giới thiệu", ' lg:mb-10 mb-3 ')}
 
-                    {linkText("support", "capitalize")}
+                        {linkText("introduce")}
+                    </div>
+
+                    <div className='lg:col-span-1 col-span-2'>
+                        {headText("Hỗ trợ khách hàng", ' lg:mb-10 mb-3 ')}
+
+                        {linkText("support", "capitalize")}
+                    </div>
                 </div>
             </div>
-        </div>
+        </>
+
     )
 }
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom"
-import useWindowDimensions from "@/hooks/useWindowDimension";
+import useWindowDimensions from "@/Hooks/useWindowDimension";
 
 import { CircleUserRound, ShoppingCart, Search, Menu, X } from "lucide-react";
 import logo from "assets/image/logo.png";
@@ -13,7 +13,7 @@ const MENU_REDIRECT = [
         name: "trang chủ"
     },
     {
-        path: "/",
+        path: "/products",
         name: "cửa hàng"
     },
     {
