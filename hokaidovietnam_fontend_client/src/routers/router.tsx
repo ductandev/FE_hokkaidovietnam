@@ -3,16 +3,15 @@ import {
   ProductDetailPage,
   HomePage,
   ProductListPage,
-  // BrandPage,
+  BrandPage,
+  ContactPage,
   // CartPage,
-  // ContactPage,
   // LoginPage,
   // ProfilePage,
   // RegisterPage,
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
-import Brand from "@/Pages/Brand";
 
 const router = createBrowserRouter([
   {
@@ -33,7 +32,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/brand",
-        element: <Brand />,
+        element: <BrandPage />,
+      },
+      {
+        path: "/contact",
+        element: <ContactPage />,
       },
     ]
   },

@@ -179,7 +179,7 @@ export default function Brand() {
             mt-2.5
             md:mt-7
 
-            mb-2.b
+            mb-2
             md:mb-10
             
             text-xs   
