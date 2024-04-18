@@ -22,9 +22,8 @@ body {
   grid-template-rows: 1fr 10rem auto;
   grid-template-areas: "main" "." "footer";
   overflow-x: hidden;
-  background: #f5f7fa;
+  background: white;
   min-height: 100vh;
-  /* font-family: "nunito", sans-serif; */
   /* font-family: "Roboto Slab", serif; */
   font-family: "Roboto", sans-serif;
   scroll-behavior: smooth;
@@ -106,5 +105,51 @@ body {
   body {
     @apply bg-background text-foreground;
     font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* ===================================== */
+/* -------------RESPONSIVE-------------- */
+@media only screen and (max-width: 639px) {
+  .container {
+    padding-right: 2rem;
+    padding-left: 2rem;
+    max-width: 600px !important;
+  }
+  .bannerBrandRespon {
+    height: 80px !important;
+  }
+  .tagH1BrannerRespon {
+    font-size: 18px;
+  }
+}
+@media only screen and (max-width: 500px) {
+  .container {
+    padding-right: 0rem;
+    padding-left: 0rem;
+    max-width: 380px !important;
+  }
+  .tagH1BrannerRespon {
+    font-size: 16px;
+  }
+  .tagImgBrandRespon {
+    width: 200px;
+    height: 200px;
+    object-fit: cover;
+  }
+  .itemLeftRespon {
+    width: 200px;
+    height: 200px;
+  }
+  .itemRightRespon {
+    width: 180px;
+    height: 200px;
+  }
+}
+@media only screen and (max-width: 415px) {
+}
+@media only screen and (max-width: 376px) {
+  .container {
+    max-width: 358px !important;
   }
 }

@@ -17,7 +17,7 @@ const MENU_REDIRECT = [
         name: "cửa hàng"
     },
     {
-        path: "/",
+        path: "/brand",
         name: "thương hiệu"
     },
     {
@@ -62,7 +62,7 @@ export default function Header() {
         }
     }, [width]);
 
-    return <header className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"} ${isScrolled ? "header__transparent__scrolling" : 'header__whitebox__scrolling'}`}>
+    return <header className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"} ${isScrolled ? "header__transparent__scrolling" : 'header__whitebox__scrolling'} z-50`}>
         <div className="header-menu">
             <ul className="header-menu-container">
                 {memorizeMenu.map((menu, idx) => {
