@@ -70,7 +70,7 @@ function Footer() {
 
     return (
         <>
-            <div className='container  mb-10'>
+            <div className='container mb-10'>
                 <Divider />
 
             </div>
@@ -82,6 +82,7 @@ function Footer() {
                 }}
                 className='w-screen relative'
             >
+                <GrungeSVG position='top' />
                 <div className='grid grid-cols-4 container py-14'>
                     <div className='lg:col-span-2 col-span-4 mb-10 lg:mb-0'>
                         <img src={logo} alt="logo_hokaido" className="header-logo" />

@@ -25,12 +25,13 @@ function Banner(props: IProps) {
       >
         <h1
           className={`
+          font-medium
           text-base 
           sm:text-4xl 
           tagH1BrannerRespon`}
         > {title} </h1>
 
-        <GrungeSVG />
+        <GrungeSVG position="bottom" />
       </div>
     </>
   );
