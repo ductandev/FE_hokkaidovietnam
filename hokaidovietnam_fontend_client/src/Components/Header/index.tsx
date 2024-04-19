@@ -21,11 +21,11 @@ const MENU_REDIRECT = [
         name: "thương hiệu"
     },
     {
-        path: "/",
+        path: "/media",
         name: "truyền thông"
     },
     {
-        path: "/",
+        path: "/contact",
         name: "liên hệ"
     }
 ];

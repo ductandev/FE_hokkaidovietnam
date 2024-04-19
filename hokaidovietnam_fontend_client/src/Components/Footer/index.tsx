@@ -2,6 +2,7 @@ import Background from '@/assets/image/banner.png';
 import logo from "@/assets/image/logo.png";
 import { Link } from 'react-router-dom';
 import { Divider } from "@/Components/Divider";
+import GrungeSVG from '../GrungeSVG/GrungeSVG';
 
 function Footer() {
     const linkMapping: any = {
@@ -69,7 +70,7 @@ function Footer() {
 
     return (
         <>
-            <div className='container  mb-10'>
+            <div className='container mb-10'>
                 <Divider />
 
             </div>
@@ -79,8 +80,9 @@ function Footer() {
                     backgroundImage: `url(${Background})`,
                     backgroundSize: 'cover'
                 }}
-                className='w-screen'
+                className='w-screen relative'
             >
+                <GrungeSVG position='top' />
                 <div className='grid grid-cols-4 container py-14'>
                     <div className='lg:col-span-2 col-span-4 mb-10 lg:mb-0'>
                         <img src={logo} alt="logo_hokaido" className="header-logo" />

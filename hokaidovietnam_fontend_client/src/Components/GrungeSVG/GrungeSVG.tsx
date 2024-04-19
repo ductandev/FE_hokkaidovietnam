@@ -1,15 +1,26 @@
 import React from "react";
 
-export default function GrungeSVG() {
+interface IProps {
+  position: string;
+}
+const grungeTop = `top-0 transform rotate-180`
+const grungeBottom = `bottom-0 translate-y-[1px]`
+
+// function GrungeSVG({position, transform = "", rotate =""}) {
+function GrungeSVG(props: IProps) {
+  const { position } = props;
+
+  // Chọn giá trị của position dựa trên điều kiện
+  const positionClass = position === "top" ? grungeTop : grungeBottom;
+
   return (
     <svg
       className={`
-      w-screen 
+      w-full 
       h-[18px]
       absolute 
-      bottom-0 
-      left-0 
-      translate-y-[1px]`}
+      left-0
+      ${positionClass}`}
       style={{ color: "#ffffff" }}
     >
       <path
@@ -119,7 +130,9 @@ export default function GrungeSVG() {
           c-3.376,0.416-5.377-1.065-8.604-1.023C8.159,7.039,8.653,8.573,6.79,9.601C5.166,7.608,2.987,6.427,0,5.819v19.102h1920.023v-6.753
           C1918.88,17.974,1917.767,17.698,1916.162,17.566z"
         fill="currentcolor"
-      />
+      ></path>
     </svg>
   );
 }
+
+export default GrungeSVG;
