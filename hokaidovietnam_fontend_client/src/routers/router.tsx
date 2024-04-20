@@ -12,6 +12,7 @@ import {
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
+import Media from "@/Pages/Media";
 
 const router = createBrowserRouter([
   {
@@ -20,11 +21,11 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        element: <HomePage />
+        element: <HomePage />,
       },
       {
         path: "/products",
-        element: <ProductListPage />
+        element: <ProductListPage />,
       },
       {
         path: "/product/:id",
@@ -38,9 +39,12 @@ const router = createBrowserRouter([
         path: "/contact",
         element: <ContactPage />,
       },
-    ]
+      {
+        path: "/media",
+        element: <Media />,
+      },
+    ],
   },
-
 ]);
 
 export default router;
