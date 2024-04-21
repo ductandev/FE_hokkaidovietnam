@@ -1,7 +1,6 @@
 import { Products, Product } from '@/Types/Product.type'
 import http from "@/lib/utils"
 
-
 const Models = {
     list: 'products-pagination',
     item: 'product'

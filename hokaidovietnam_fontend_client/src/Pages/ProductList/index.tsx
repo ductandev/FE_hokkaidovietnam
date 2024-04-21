@@ -115,7 +115,7 @@ export default function Products() {
 
     const deferredProductList = useDeferredValue(productList?.data?.content || []);
     const deferredProductType = useDeferredValue(productType?.data?.content || []);
-
+    console.log({ productList })
     return (
         <main >
             <Banner title="Cửa hàng" />
@@ -129,13 +129,20 @@ export default function Products() {
 
             <div className='container mb-16 mt-24'>
                 {!isLoadingProductType && <CategoryTabs
-                    options={deferredProductType}
+                    options={[
+                        {
+                            loai_san_pham_id: 0,
+                            ten_loai_san_pham: "Tất cả",
+                            isDelete: false
+                        },
+                        ...deferredProductType
+                    ]}
                     onHandleToggleTab={(typeId: number) => {
                         setTypeId(typeId)
                         setPage(1)
                     }}
                     isShowSummary={true}
-                    summaryIndex={30}
+                    summaryIndex={productList?.data.total}
                     defaultTab={0}
                 />}
             </div>
@@ -158,7 +165,7 @@ export default function Products() {
 
                 <div className="w-full mx-auto pt-10 pb-10">
                     <HPagination
-                        total={30}
+                        total={productList?.data.total}
                         pageSize={8}
                         current={page}
                         onChangePage={(page: number) => {
