@@ -2,18 +2,25 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 
 import { formatCurrency } from "@/Helper/helper";
+import { Product } from "@/Types/Product.type";
 
 import "./styles.scss";
 
-export type TProductCard = {
-    _id: number | string
-    ten_san_pham: string | any
-    product_price: number
+export type PropTypes = {
     onShowDetail: Function
 }
 
-export const ProductCard: React.FC<TProductCard> = (props: TProductCard) => {
-    const { ten_san_pham, product_price, _id, onShowDetail } = props;
+export type MergedType = PropTypes & Product;
+
+
+export const ProductCard: React.FC<MergedType> = (props: MergedType) => {
+    const {
+        gia_ban,
+        san_pham_id,
+        ten_san_pham,
+        onShowDetail
+    } = props;
+
     const navigate = useNavigate();
 
     const handleClickDetail = (_id: number | string) => {
@@ -33,10 +40,10 @@ export const ProductCard: React.FC<TProductCard> = (props: TProductCard) => {
         <div className="text-center">
             <h3 className="text-base my-4 font-light"
                 onClick={() => {
-                    handleClickDetail(_id)
+                    handleClickDetail(san_pham_id)
                 }}
             >{ten_san_pham}</h3>
-            <p className="mb-7">{formatCurrency(product_price)}</p>
+            <p className="mb-7">{formatCurrency(gia_ban)}</p>
         </div>
     </div>
 }

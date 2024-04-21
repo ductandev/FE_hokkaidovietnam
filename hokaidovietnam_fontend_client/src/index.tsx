@@ -1,5 +1,10 @@
 import ReactDOM from 'react-dom/client';
 
+import {
+    QueryClient,
+    QueryClientProvider,
+} from 'react-query';
+
 import './index.css';
 
 // Setup redux store
@@ -15,10 +20,15 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
 
+// Create a client
+const queryClient = new QueryClient()
+
 root.render(
     <Provider store={store}>
-        <ToastContainer />
+        <QueryClientProvider client={queryClient}>
+            <ToastContainer />
 
-        <RouterProvider router={router} />
+            <RouterProvider router={router} />
+        </QueryClientProvider>
     </Provider>
 );

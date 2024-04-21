@@ -1,88 +1,66 @@
-import { Fragment, useState } from "react"
+// ! React Library
+import { Fragment, useDeferredValue, useState } from "react"
+import { useQuery } from "react-query";
 
+// ! Component
 import Banner from '@/Components/Banner'
-import { CategoryTabs, TOption } from '@/Components/CategoryTab'
+import { CategoryTabs } from '@/Components/CategoryTab'
 import { ProductCard } from "@/Components/ProductCard";
 import { HPagination } from "@/Components/Pagination";
-import Modal from "@/Components/Modal/Modal";
-import { formatCurrency } from "@/Helper/helper";
 import { Divider } from "@/Components/Divider";
-
-
-import Slider1 from "@/assets/image/detail/slide-1.png"
-import Slider2 from "@/assets/image/detail/slide-2.png"
-import Slider3 from "@/assets/image/detail/slide-3.png"
-import Slider4 from "@/assets/image/detail/slide-4.png"
 import { ImageGallery } from "@/Components/ImageGallery";
+import Modal from "@/Components/Modal/Modal";
+import BlankPage from "@/Components/BlankPage/BlankPage";
 
-const TAB_LIST: Array<TOption> = [
-    {
-        label: "Tất cả sản phẩm",
-        value: 0
-    },
-    {
-        label: "Sữa Hokkaido",
-        value: 1
-    },
-    {
-        label: "Sữa Dairy",
-        value: 2
-    },
-    {
-        label: "Kem Hokkaido",
-        value: 3
-    },
-    {
-        label: "Kem Hokkaido",
-        value: 4
-    }
-];
+// ! Assests
+import Slider1 from "@/assets/image/detail/slide-1.png";
+import Slider2 from "@/assets/image/detail/slide-2.png";
+import Slider3 from "@/assets/image/detail/slide-3.png";
+import Slider4 from "@/assets/image/detail/slide-4.png";
 
-const PRODUCTS: Array<any> = [
-    {
-        id: "_pid1",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid2",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid3",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid4",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid5",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid6",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid7",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-    {
-        id: "_pid8",
-        ten_san_pham: "Sữa tươi nguyên chất 200ml",
-        product_price: "50000"
-    },
-];
+// ! Helpers
+import { formatCurrency } from "@/Helper/helper";
+
+// ! Apis and Types
+import { getProducts } from "@/Apis/Product.api";
+import { getProductTypes } from "@/Apis/ProductType.api";
+
+import { Product } from "@/Types/Product.type";
+
+const PAGE_SIZE = 8;
 
 export default function Products() {
     const [isVisible, setIsVisible] = useState<boolean>(false);
+    const [typeId, setTypeId] = useState<number>(0);
+    const [page, setPage] = useState(1);
+
+    const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
+        queryKey: ['products', page, typeId],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000)
+            return getProducts(page, PAGE_SIZE, typeId, controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
+
+    const { isLoading: isLoadingProductType, data: productType }: any = useQuery({
+        queryKey: ['productType'],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000)
+            return getProductTypes(controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
 
     const handleToggleModal = (visible: boolean) => {
         setIsVisible(visible)
@@ -95,8 +73,7 @@ export default function Products() {
         Slider4
     ]
 
-
-    const renderXMLFooter = () => {
+    const renderXMLBody = () => {
         return <div className="grid grid-cols-2 mt-12">
             <div>
                 <ImageGallery
@@ -136,6 +113,9 @@ export default function Products() {
         </div>
     }
 
+    const deferredProductList = useDeferredValue(productList?.data?.content || []);
+    const deferredProductType = useDeferredValue(productType?.data?.content || []);
+
     return (
         <main >
             <Banner title="Cửa hàng" />
@@ -144,34 +124,51 @@ export default function Products() {
                 visible={isVisible}
                 onChangeVisible={handleToggleModal}
                 renderHeader={null}
-                renderBody={renderXMLFooter()}
+                renderBody={renderXMLBody()}
             />
 
             <div className='container mb-16 mt-24'>
-                <CategoryTabs
-                    options={TAB_LIST}
-                    onHandleToggleTab={() => { }}
+                {!isLoadingProductType && <CategoryTabs
+                    options={deferredProductType}
+                    onHandleToggleTab={(typeId: number) => {
+                        setTypeId(typeId)
+                        setPage(1)
+                    }}
                     isShowSummary={true}
                     summaryIndex={30}
                     defaultTab={0}
-                />
+                />}
             </div>
 
-            <div className="container grid grid-cols-4 gap-5">
-                {PRODUCTS.map((product, idx) => {
-                    return <Fragment key={`${product.id}_${idx}`}>
-                        <ProductCard {...product} onShowDetail={() => {
-                            handleToggleModal(true)
-                        }} />
-                    </Fragment>
-                })}
+
+            {isLoadingProductList ? <>Đang tải</> : <>
+                {deferredProductList.length ? <div className="container grid grid-cols-4 gap-5">
+                    {deferredProductList.map((product: Product, idx: any) => {
+                        return <Fragment key={`${product.san_pham_id}_${idx}`}>
+                            <ProductCard
+                                {...product}
+                                onShowDetail={() => {
+                                    handleToggleModal(true)
+                                }}
+                            />
+                        </Fragment>
+                    })}
+                </div> : <BlankPage text="Không có sản phẩm nào" subText="Vui lòng chọn danh mục khác" isHaveColor />}
 
 
-            </div>
+                <div className="w-full mx-auto pt-10 pb-10">
+                    <HPagination
+                        total={30}
+                        pageSize={8}
+                        current={page}
+                        onChangePage={(page: number) => {
+                            setPage(page)
+                        }}
+                    />
+                </div>
 
-            <div className="w-full mx-auto pt-10 pb-10">
-                <HPagination total={30} pageSize={8} current={3} />
-            </div>
+
+            </>}
         </main>
     )
 }
