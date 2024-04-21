@@ -20,6 +20,7 @@ import logotiktok from "../../assets/img_home/logo-tiktok.png";
 import logoinsta from "../../assets/img_home/logo-insta.png";
 import logoyt from "../../assets/img_home/logo-yt.png";
 import tree from "../../assets/img_home/tree.png";
+import GrungeSVG from "@/Components/GrungeSVG/GrungeSVG";
 
 export default function Home() {
   const slides: string[] = [
@@ -150,23 +151,28 @@ export default function Home() {
       {/* quy trình sản xuất */}
       <div className="grid grid-cols-1 md:grid-cols-2">
         <div className="relative">
+          <GrungeSVG position="top" />
           <img
             className="w-full h-[380px] md:h-[500px]"
             src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
             alt=""
           />
+          <GrungeSVG position="bottom" />
           <div className="absolute inset-0 flex items-center justify-center">
             <button className="text-white hover:scale-110" id="playButton">
               <FaPlayCircle size={80} />
             </button>
           </div>
         </div>
+
         <div className="relative flex justify-center">
+          <GrungeSVG position="top" />
           <img
             className="absolute inset-0 w-full h-full object-cover"
             src={bg1}
             alt=""
           />
+          <GrungeSVG position="bottom" />
           <div className="text-black p-6 text-center">
             <h1 className="text-4xl font-medium mt-3 mb-1">
               Tham quan quy trình sản xuất và nông trại chăn nuôi
@@ -297,11 +303,13 @@ export default function Home() {
       </div>
       {/* lắng nghe */}
       <div className="mt-8 relative">
+        <GrungeSVG position="top" />
         <img
           src={bg1}
           alt=""
           className="w-full h-[360px] md:h-[320px] object-cover object-center"
         />
+        <GrungeSVG position="bottom" />
         <div className="absolute inset-0 grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="flex justify-center items-center">
             <div className="text-center md:text-left max-w-[320px]">
