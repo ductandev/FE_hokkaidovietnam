@@ -117,7 +117,7 @@ export default function Cart() {
                         </div>
                     </div>
 
-                    <div className="col-span-2 sm:col-span-4 flex flex-row justify-end items-center gap-4 text-[#777171]">
+                    <div className={`col-span-2 sm:col-span-4 flex flex-row justify-end items-center gap-4 text-[#777171]`}>
                         <p className="hidden sm:block text-xs lg:text-base">Tổng tiền:
                             <span className="ps-5 text-xs lg:text-base font-semibold text-black">{price}.000đ</span>
                         </p>
@@ -155,6 +155,7 @@ export default function Cart() {
                     <p className="text-base md:text-xl font text-[#777171] me-5 md:me-[145px]">Thành tiền:</p>
                     <p className="text-base md:text-[32px] font-semibold ">200.000đ</p>
                 </div>
+
                 <div>
                     <button
                         className={`
