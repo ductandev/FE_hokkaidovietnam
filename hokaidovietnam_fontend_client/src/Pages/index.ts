@@ -8,6 +8,7 @@ import LoginPage from "./Login"
 import ProfilePage from "./Profile";
 import RegisterPage from "./Register";
 import SearchPage from "./Search";
+import PaymentPage from "./Payments"
 
 export {
     BrandPage,
@@ -19,5 +20,6 @@ export {
     LoginPage,
     ProfilePage,
     RegisterPage,
-    SearchPage
+    SearchPage,
+    PaymentPage
 }
