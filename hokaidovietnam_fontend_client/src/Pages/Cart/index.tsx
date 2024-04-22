@@ -181,7 +181,7 @@ export default function Cart() {
 
                     <div className="text-center">
                         <a
-                            href=""
+                            href="/cart"
                             className={`
                             inline-block
                             md:hidden 
