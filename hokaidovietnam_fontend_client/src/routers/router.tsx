@@ -5,7 +5,7 @@ import {
   ProductListPage,
   BrandPage,
   ContactPage,
-  // CartPage,
+  CartPage,
   // LoginPage,
   // ProfilePage,
   // RegisterPage,
@@ -37,6 +37,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
     ]
   },
