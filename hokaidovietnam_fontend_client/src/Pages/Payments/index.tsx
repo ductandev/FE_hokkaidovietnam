@@ -1,5 +1,5 @@
 import { PiUserCircleFill } from "react-icons/pi";
-import { FaRegTrashAlt } from "react-icons/fa";
+import { FaAngleLeft } from "react-icons/fa6";
 
 import { useFormik } from "formik";
 import * as yup from 'yup'
@@ -30,7 +30,7 @@ const arrData = [
         id: 1,
         image: "sp4.png",
         title: "Sữa tươi nguyên chất 200ml",
-        price: 500,
+        price: 1000,
         quantity: 2,
     },
     {
@@ -98,94 +98,13 @@ export default function Payments() {
             let { id, image, title, price, quantity } = item;
 
             return (
-                <div
-                    className={`
-                    grid 
-                    grid-cols-10
-                    h-[100px]
-                    lg:h-[150px] 
-                    lg:px-11
-                    border-b-[#989494] 
-                    md:border-b-[1.5px]`}
-                    key={id}>
-
-                    <div className="col-span-6 sm:col-span-4 flex flex-row items-center ">
-                        <img className="w-[75px] lg:w-[115px] lg:me-11" src={require(`assets/image/${image}`)} alt={image} />
-                        <div className="pt-[6px]">
-                            <p className="text-xs lg:text-base text-[#777171] mb-[15px] md:mb-5">{title}</p>
-                            <p className="text-xs lg:text-base font-semibold">{price}.000đ</p>
-                        </div>
+                <div className="flex flex-row justify-between leading-6 gap-10 mb-[22px]" key={id}>
+                    <img className="w-[80px]" src={require(`assets/image/${image}`)} alt={image} />
+                    <div className="w-full">
+                        <p className="text-xl font-light">{title}</p>
+                        <p className="font-light text-[#777171]">Số lượng {quantity}</p>
                     </div>
-
-
-                    <div className="col-span-2 flex flex-row justify-center items-center  text-[#929292]">
-                        <div className="flex flex-row justify-center items-center md:border border-gray-300">
-                            <button
-                                className={`
-                                border
-                                md:border-none
-                                rounded-full
-                                md:rounded-none
-                                w-[15px]
-                                h-[15px]
-                                leading-[15px]
-                                md:w-[30px] 
-                                md:h-[30px]
-                                lg:w-[42px] 
-                                lg:h-[42px]
-                                text-xs
-                                md:text-xl`}
-                            >–</button>
-                            <input
-                                className={`
-                                mx-[5px]
-                                md:mx-0
-                                border
-                                md:border-none
-                                rounded-full
-                                md:rounded-none
-                                w-[15px]
-                                h-[15px]
-                                md:w-[30px] 
-                                md:h-[30px]
-                                lg:w-[42px] 
-                                lg:h-[42px]
-                                text-center
-                                text-[10px]
-                                text-black
-                                md:text-[#929292]
-                                md:text-base
-                                lg:text-xl`}
-                                type="text"
-                                value={quantity} />
-                            <button
-                                className={`
-                                border
-                                md:border-none
-                                rounded-full
-                                md:rounded-none
-                                w-[15px]
-                                h-[15px]
-                                leading-[15px]
-                                md:w-[30px] 
-                                md:h-[30px]
-                                lg:w-[42px] 
-                                lg:h-[42px]
-                                text-xs
-                                md:text-xl`}
-                            >+</button>
-                        </div>
-                    </div>
-
-                    <div className={`col-span-2 sm:col-span-4 flex flex-row justify-end items-center gap-4 text-[#777171]`}>
-                        <p className="hidden sm:block text-xs lg:text-base">Tổng tiền:
-                            <span className="ps-5 text-xs lg:text-base font-semibold text-black">{price}.000đ</span>
-                        </p>
-                        <p className="lg:ms-[100px] text-xl flex flex-row items-center">
-                            <FaRegTrashAlt className="inline me-2" />
-                            <span className="hidden md:block text-sm lg:text-xl">Xóa</span>
-                        </p>
-                    </div>
+                    <span className="text-xl text-[#777171] font-light">{price}.000đ</span>
                 </div>
             )
         })
@@ -346,33 +265,63 @@ export default function Payments() {
                         pb-[52px]
                     `}>
 
-                        <div className="flex justify-start mb-[78px]">
-                            <h1 className={`
+                        <h1 className={`
                             text-xl
                             sm:text-2xl
                             font-bold
                             sm:font-medium
-                        `}>Đơn hàng <span className="hidden sm:inline">(4 sản phẩm)</span></h1>
-                        </div>
+                            mb-[68px]
+                        `}>Đơn hàng (4 sản phẩm)</h1>
 
                         {renderData()}
 
+                        <div className="flex flex-row justify-between gap-5 py-8 border-y-[0.5px] border-[#777171]">
+                            <input
+                                id="voucher"
+                                name='voucher'
+                                placeholder="Nhập mã giảm giá"
+                                onInput={paymentFrm.handleChange}
+                                onBlur={paymentFrm.handleChange}
+                                style={{ border: "0.5px solid #777171" }}
+                                className="w-[80%] indent-3 sm:indent-5 text-[10px] sm:text-base font-light leading-6 text-[#777171]"
+                            />
+                            <button
+                                className={`w-[20%] px-[15px] py-[10px] bg-[#1E1E1E] text-white text-xs sm:text-base`}
+                            >
+                                Áp dụng
+                            </button>
+                        </div>
 
+                        <div className="py-5 border-b-[1px] border-[#777171] text-[#777171] text-xl font-light leading-6">
+                            <div className="flex justify-between mb-5">
+                                <p>Tạm tính</p>
+                                <p>200.000đ</p>
+                            </div>
+                            <div className="flex justify-between">
+                                <p>Phí vận chuyển</p>
+                                <p>30.000đ</p>
+                            </div>
+                        </div>
 
-
-
-
-
-                        <br />
-                        <br />
-                        <br />
-                        <button
-                            className={`px-[22px] py-[7px] sm:py-[10px] bg-[#1E1E1E] text-white mb-8 lg:mb-0 text-xs sm:text-base`}
-                            disabled={!paymentFrm.isValid}
-                            type='submit'
-                        >
-                            Đặt hàng
-                        </button>
+                        <div>
+                            <div className="flex justify-between text-xl mt-3 mb-9">
+                                <p>Tổng cộng</p>
+                                <p>230.000đ</p>
+                            </div>
+                            <div className="flex justify-between text-xl">
+                                <div className="flex items-center text-[#777171]">
+                                    <FaAngleLeft className="inline me-1" />
+                                    <p>Quay về giỏ hàng</p>
+                                </div>
+                                <button
+                                    className={`px-[22px] py-[7px] sm:py-[10px] bg-[#1E1E1E] text-white mb-8 lg:mb-0 text-xs sm:text-base`}
+                                    disabled={!paymentFrm.isValid}
+                                    type='submit'
+                                >
+                                    ĐẶT HÀNG
+                                </button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </form>
