@@ -149,48 +149,48 @@ export default function Home() {
         </div>
       </div>
       {/* quy trình sản xuất */}
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        <div className="relative">
-          <GrungeSVG position="top" />
-          <img
-            className="w-full h-[380px] md:h-[500px]"
-            src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
-            alt=""
-          />
-          <GrungeSVG position="bottom" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button className="text-white hover:scale-110" id="playButton">
-              <FaPlayCircle size={80} />
-            </button>
+      <div className="relative">
+        <GrungeSVG position="top" />
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="relative">
+            <img
+              className="w-full h-[380px] md:h-[500px]"
+              src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
+              alt=""
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button className="text-white hover:scale-110" id="playButton">
+                <FaPlayCircle size={80} />
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div className="relative flex justify-center">
-          <GrungeSVG position="top" />
-          <img
-            className="absolute inset-0 w-full h-full object-cover"
-            src={bg1}
-            alt=""
-          />
-          <GrungeSVG position="bottom" />
-          <div className="text-black p-6 text-center">
-            <h1 className="text-4xl font-medium mt-3 mb-1">
-              Tham quan quy trình sản xuất và nông trại chăn nuôi
-            </h1>
-            <img src={tree} alt="" className="w-1/5 mx-auto mb-1" />
-            <p className="text-xl text-gray-600 mb-5">
-              Dòng sữa tươi thuần khiết 100% được sản xuất tại Hokkaido - vùng
-              đất khí hậu mát mẻ, không khí sạch cùng những thảo nguyên xanh tạo
-              ra không gian chăn nuôi tự nhiên vô cùng lý tưởng cho bò sữa. Được
-              trang bị thiết bị hiện đại và công nghệ cao đến từ Châu Âu như
-              Pháp, Đức, Đan Mạch. Chúng tôi luôn mang đến những sản phẩm sữa
-              Hokkaido thơm ngon, an toàn và đảm bảo.
-            </p>
-            <button className="bg-opacity-80 md:mt-4 bg-green-900 text-white w-[147px] h-[40px] transform hover:scale-105">
-              Xem thêm
-            </button>
+          <div className="relative flex justify-center">
+            <img
+              className="absolute inset-0 w-full h-full object-cover"
+              src={bg1}
+              alt=""
+            />
+            <div className="text-black p-6 text-center">
+              <h1 className="text-4xl font-medium mt-3 mb-1">
+                Tham quan quy trình sản xuất và nông trại chăn nuôi
+              </h1>
+              <img src={tree} alt="" className="w-1/5 mx-auto mb-1" />
+              <p className="text-xl text-gray-600 mb-5">
+                Dòng sữa tươi thuần khiết 100% được sản xuất tại Hokkaido - vùng
+                đất khí hậu mát mẻ, không khí sạch cùng những thảo nguyên xanh tạo
+                ra không gian chăn nuôi tự nhiên vô cùng lý tưởng cho bò sữa. Được
+                trang bị thiết bị hiện đại và công nghệ cao đến từ Châu Âu như
+                Pháp, Đức, Đan Mạch. Chúng tôi luôn mang đến những sản phẩm sữa
+                Hokkaido thơm ngon, an toàn và đảm bảo.
+              </p>
+              <button className="bg-opacity-80 md:mt-4 bg-green-900 text-white w-[147px] h-[40px] transform hover:scale-105">
+                Xem thêm
+              </button>
+            </div>
           </div>
         </div>
+        <GrungeSVG position="bottom" />
       </div>
       {/* Thành tựu */}
       <div className="mt-12 h-80 overflow-hidden">
