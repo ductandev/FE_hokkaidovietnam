@@ -21,6 +21,9 @@ import logofb from "../../assets/img_home/logo-fb.png";
 import logotiktok from "../../assets/img_home/logo-tiktok.png";
 import logoinsta from "../../assets/img_home/logo-insta.png";
 import logoyt from "../../assets/img_home/logo-yt.png";
+import logozalo from "../../assets/img_home/logo-zalo.png";
+import logophone from "../../assets/img_home/logo-phone.png";
+import logomes from "../../assets/img_home/logo-mes.png";
 import tree from "../../assets/img_home/tree.png";
 import GrungeSVG from "@/Components/GrungeSVG/GrungeSVG";
 import OurFarm from "@/Components/OurFarm/OurFarm";
@@ -96,8 +99,11 @@ export default function Home() {
   const closeFarmCrewModal = () => {
     setShowFarmCrewModal(false);
   };
+  const handleClick = () => {
+    window.location.href = "https://zalo.me/0904229229";
+  };
   return (
-    <div>
+    <div className="relative">
       {/* carosel */}
       <Carousel>
         {slides.map((s, index) => (
@@ -208,7 +214,7 @@ export default function Home() {
               src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
               alt=""
             />
-            <div className="absolute inset-0 flex items-center justify-center">
+            <div className="absolute inset-0 object-cover flex items-center justify-center">
               <button className="text-white hover:scale-110" id="playButton">
                 <FaPlayCircle size={80} />
               </button>
@@ -543,6 +549,31 @@ export default function Home() {
                 Xem thêm
               </button>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <div className="fixed bottom-4 right-4 z-50">
+        <div className="flex flex-col gap-4">
+          {/* Nút 1 */}
+          <div className="flex justify-end">
+            <button onClick={handleClick} className="animate-bounce">
+              <img
+                src={logozalo}
+                alt=""
+                className="w-[63px] h-[50px] lg:w-[83px] lg:h-[70px]"
+              />
+            </button>
+          </div>
+          {/* Nút 2 */}
+          <div className="flex justify-end">
+            <a href="tel:0904229229" className="animate-bounce mr-[5px]">
+              <img
+                src={logophone}
+                alt=""
+                className="w-[50px] h-[50px] lg:w-[63px] lg:h-[63px]"
+              />
+            </a>
           </div>
         </div>
       </div>

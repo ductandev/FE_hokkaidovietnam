@@ -8,9 +8,13 @@ import NewPaginate from "./NewPaginate";
 export default function New() {
   return (
     <div className="grid grid-cols-1 mx-[25px] md:mx-[130px] mt-8">
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mx-5 md:mx-0">
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-5 mx-5 md:mx-0">
         <div className="flex flex-col items-start md:items-center">
-          <img className="w-full h-[200px] md:h-[350px]" src={img1} alt="" />
+          <img
+            className="w-full h-[200px] object-cover md:h-[350px]"
+            src={img1}
+            alt=""
+          />
           <h1 className="text-sm md:text-lg font-medium text-left md:text-center mt-4">
             8 bí quyết ăn uống khiến người Nhật Bản gầy nhất thế giới
           </h1>
@@ -25,9 +29,9 @@ export default function New() {
         </div>
         <div className="gap-2 grid md:grid-cols-1">
           <div className="gap-2 grid md:grid-cols-1">
-            <div className="flex flex-col md:flex-row md:space-x-4 md:h-[140px]">
+            <div className="flex flex-col md:flex-row md:space-x-4 md:h-[140px] mb-3">
               <img
-                className="min-w-[180px] h-[200px] md:min-w-[220px] md:h-[150px]"
+                className="min-w-[180px] h-[200px]object-cover md:min-w-[220px] md:h-[150px]"
                 src={img2}
                 alt=""
               />
@@ -49,9 +53,9 @@ export default function New() {
                 </button>
               </div>
             </div>
-            <div className="flex flex-col md:flex-row md:space-x-4 md:h-[140px]">
+            <div className="flex flex-col md:flex-row md:space-x-4 md:h-[140px] mb-3">
               <img
-                className="min-w-[180px] h-[200px] md:min-w-[220px] md:h-[150px]"
+                className="min-w-[180px] h-[200px] object-cover md:min-w-[220px] md:h-[150px]"
                 src={img3}
                 alt=""
               />
@@ -75,7 +79,7 @@ export default function New() {
             </div>
             <div className="flex flex-col md:flex-row md:space-x-4 md:h-[140px]">
               <img
-                className="min-w-[180px] h-[200px] md:min-w-[220px] md:h-[150px]"
+                className="min-w-[180px] h-[200px] object-cover md:min-w-[220px] md:h-[150px]"
                 src={img4}
                 alt=""
               />
