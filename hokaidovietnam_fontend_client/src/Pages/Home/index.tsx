@@ -366,9 +366,9 @@ export default function Home() {
         <div className="container grid grid-cols-2 lg:grid-cols-4 gap-5">
           {RenderProductCards()}
         </div>
-        <button className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform">
+        <a href="/products" className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform">
           Xem thêm
-        </button>
+        </a>
       </div>
       {/* lắng nghe */}
       <div className="mt-8 relative">
