@@ -21,7 +21,7 @@ function GrungeSVG(props: IProps) {
       absolute 
       left-0
       ${positionClass}`}
-      style={{ color: "#ffffff" }}
+      style={{ color: "#ffffff", zIndex: "2" }}
     >
       <path
         d="M1916.162,17.566c-2.827-0.237-5.251,0.155-7.729,0.646c-3.125,0.619-6.052,1.516-9.756,1.104
