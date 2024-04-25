@@ -25,6 +25,7 @@ export default function NewPaginate() {
   useEffect(() => {
     // Simulated API call to fetch products
     fetchData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage]);
 
   // Simulated function to fetch data

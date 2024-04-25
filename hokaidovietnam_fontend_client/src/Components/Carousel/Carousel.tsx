@@ -1,4 +1,4 @@
-import React, { useEffect, useState, ReactNode } from "react";
+import React, { useEffect, useState, ReactNode, useCallback } from "react";
 import { FaAngleRight, FaAngleLeft } from "react-icons/fa6";
 
 interface CarouselProps {
@@ -13,15 +13,23 @@ export const Carousel: React.FC<CarouselProps> = ({
   autoSlideInterval = 3000,
 }) => {
   const [curr, setCurr] = useState<number>(0);
-  const prev = () =>
-    setCurr((curr) => (curr === 0 ? slides.length - 1 : curr - 1));
-  const next = () =>
-    setCurr((curr) => (curr === slides.length - 1 ? 0 : curr + 1));
+
+  const prev = useCallback(() =>
+    setCurr((curr) => (curr === 0 ? slides.length - 1 : curr - 1)),
+    [slides.length]
+  );
+
+  const next = useCallback(() =>
+    setCurr((curr) => (curr === slides.length - 1 ? 0 : curr + 1)),
+    [slides.length]
+  );
+
   useEffect(() => {
     if (!autoSlide) return;
     const slideInterval = setInterval(next, autoSlideInterval);
     return () => clearInterval(slideInterval);
   }, [autoSlide, autoSlideInterval, next]);
+
   return (
     <div className="overflow-hidden relative h-[500px] md:h-[800px] md:content-center">
       <div
@@ -43,9 +51,8 @@ export const Carousel: React.FC<CarouselProps> = ({
           {slides.map((_, i) => (
             <div
               key={i}
-              className={`transition-all w-1 h-1 md:w-3 md:h-3 bg-white rounded-full ${
-                curr === i ? "p-1 md:p-2" : "bg-opacity-50"
-              }`}
+              className={`transition-all w-1 h-1 md:w-3 md:h-3 bg-white rounded-full ${curr === i ? "p-1 md:p-2" : "bg-opacity-50"
+                }`}
             ></div>
           ))}
         </div>
