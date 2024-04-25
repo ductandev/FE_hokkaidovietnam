@@ -1,6 +1,8 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
+
 import { Carousel } from "../../Components/Carousel/Carousel";
 import { FaPlayCircle } from "react-icons/fa";
+import { Link } from "react-router-dom";
 import img1 from "../../assets/img_home/1.jpg";
 import img2 from "../../assets/img_home/2.jpg";
 import img3 from "../../assets/img_home/3.jpg";
@@ -21,6 +23,10 @@ import logoinsta from "../../assets/img_home/logo-insta.png";
 import logoyt from "../../assets/img_home/logo-yt.png";
 import tree from "../../assets/img_home/tree.png";
 import GrungeSVG from "@/Components/GrungeSVG/GrungeSVG";
+import OurFarm from "@/Components/OurFarm/OurFarm";
+import FarmCrew from "@/Components/FarmCrew/FarmCrew";
+import OrganicMilk from "@/Components/OrganicMilk/OrganicMilk";
+import FieldLife from "@/Components/FieldLife/FieldLife";
 
 export default function Home() {
   const slides: string[] = [
@@ -54,6 +60,42 @@ export default function Home() {
       }
     };
   }, []);
+  const [showOurFarmModal, setShowOurFarmModal] = useState(false);
+  const [showFieldLifeModal, setShowFieldLifeModal] = useState(false);
+  const [showOrganicMilkModal, setShowOrganicMilkModal] = useState(false);
+  const [showFarmCrewModal, setShowFarmCrewModal] = useState(false);
+
+  const openOurFarmModal = () => {
+    setShowOurFarmModal(true);
+  };
+
+  const closeOurFarmModal = () => {
+    setShowOurFarmModal(false);
+  };
+
+  const openFieldLifeModal = () => {
+    setShowFieldLifeModal(true);
+  };
+
+  const closeFieldLifeModal = () => {
+    setShowFieldLifeModal(false);
+  };
+
+  const openOrganicMilkModal = () => {
+    setShowOrganicMilkModal(true);
+  };
+
+  const closeOrganicMilkModal = () => {
+    setShowOrganicMilkModal(false);
+  };
+
+  const openFarmCrewModal = () => {
+    setShowFarmCrewModal(true);
+  };
+
+  const closeFarmCrewModal = () => {
+    setShowFarmCrewModal(false);
+  };
   return (
     <div>
       {/* carosel */}
@@ -61,7 +103,7 @@ export default function Home() {
         {slides.map((s, index) => (
           <img
             key={index}
-            className="w-full object-cover object-top min-h-[500px] md:min-h-full"
+            className="w-full object-cover object-center min-h-[500px] md:min-h-full"
             src={s}
             alt=""
           />
@@ -77,9 +119,11 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
-              Xem ngay
-            </button>
+            <Link to="/products">
+              <button className="text-white text-2xl md:text-3xl md:font-bold">
+                Xem ngay
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -91,9 +135,11 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
-              Xem ngay
-            </button>
+            <Link to="/products">
+              <button className="text-white text-2xl md:text-3xl md:font-bold">
+                Xem ngay
+              </button>
+            </Link>
           </div>
         </div>
 
@@ -105,12 +151,15 @@ export default function Home() {
             className="absolute inset-0 w-full h-full object-cover object-center"
           />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
-              Xem ngay
-            </button>
+            <Link to="/products">
+              <button className="text-white text-2xl md:text-3xl md:font-bold">
+                Xem ngay
+              </button>
+            </Link>
           </div>
         </div>
       </div>
+
       {/* Trang thiết bị */}
       <div className="grid grid-cols-1 md:grid-cols-3 mx-auto max-w-7xl mb-[70px] ">
         <div className="w-[250px] mx-auto">
@@ -148,50 +197,54 @@ export default function Home() {
           </span>
         </div>
       </div>
-      {/* quy trình sản xuất */}
-      <div className="grid grid-cols-1 md:grid-cols-2">
-        <div className="relative">
-          <GrungeSVG position="top" />
-          <img
-            className="w-full h-[380px] md:h-[500px]"
-            src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
-            alt=""
-          />
-          <GrungeSVG position="bottom" />
-          <div className="absolute inset-0 flex items-center justify-center">
-            <button className="text-white hover:scale-110" id="playButton">
-              <FaPlayCircle size={80} />
-            </button>
-          </div>
-        </div>
 
-        <div className="relative flex justify-center">
-          <GrungeSVG position="top" />
-          <img
-            className="absolute inset-0 w-full h-full object-cover"
-            src={bg1}
-            alt=""
-          />
-          <GrungeSVG position="bottom" />
-          <div className="text-black p-6 text-center">
-            <h1 className="text-4xl font-medium mt-3 mb-1">
-              Tham quan quy trình sản xuất và nông trại chăn nuôi
-            </h1>
-            <img src={tree} alt="" className="w-1/5 mx-auto mb-1" />
-            <p className="text-xl text-gray-600 mb-5">
-              Dòng sữa tươi thuần khiết 100% được sản xuất tại Hokkaido - vùng
-              đất khí hậu mát mẻ, không khí sạch cùng những thảo nguyên xanh tạo
-              ra không gian chăn nuôi tự nhiên vô cùng lý tưởng cho bò sữa. Được
-              trang bị thiết bị hiện đại và công nghệ cao đến từ Châu Âu như
-              Pháp, Đức, Đan Mạch. Chúng tôi luôn mang đến những sản phẩm sữa
-              Hokkaido thơm ngon, an toàn và đảm bảo.
-            </p>
-            <button className="bg-opacity-80 md:mt-4 bg-green-900 text-white w-[147px] h-[40px] transform hover:scale-105">
-              Xem thêm
-            </button>
+      {/* quy trình sản xuất */}
+      <div className="relative">
+        <GrungeSVG position="top" />
+        <div className="grid grid-cols-1 md:grid-cols-2">
+          <div className="relative">
+            <img
+              className="w-full h-[380px] md:h-[500px]"
+              src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
+              alt=""
+            />
+            <div className="absolute inset-0 flex items-center justify-center">
+              <button className="text-white hover:scale-110" id="playButton">
+                <FaPlayCircle size={80} />
+              </button>
+            </div>
+          </div>
+
+          <div className="relative flex justify-center">
+            <img
+              className="absolute inset-0 w-full h-full object-cover"
+              src={bg1}
+              alt=""
+            />
+            <div className="text-black p-6 text-center">
+              <h1 className="text-4xl font-medium mt-3 mb-1">
+                Tham quan quy trình sản xuất và nông trại chăn nuôi
+              </h1>
+              <img src={tree} alt="" className="w-1/5 mx-auto mb-1" />
+              <p className="text-xl text-gray-600 mb-5">
+                Dòng sữa tươi thuần khiết 100% được sản xuất tại Hokkaido - vùng
+                đất khí hậu mát mẻ, không khí sạch cùng những thảo nguyên xanh
+                tạo ra không gian chăn nuôi tự nhiên vô cùng lý tưởng cho bò
+                sữa. Được trang bị thiết bị hiện đại và công nghệ cao đến từ
+                Châu Âu như Pháp, Đức, Đan Mạch. Chúng tôi luôn mang đến những
+                sản phẩm sữa Hokkaido thơm ngon, an toàn và đảm bảo.
+              </p>
+              <Link to="/brand">
+                <button className="bg-opacity-80 md:mt-4 bg-green-900 text-white w-[147px] h-[40px] transform hover:scale-105">
+                  Xem thêm
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
+        <GrungeSVG position="bottom" />
       </div>
+
       {/* Thành tựu */}
       <div className="mt-12 h-80 overflow-hidden">
         <div className="relative h-full">
@@ -202,7 +255,7 @@ export default function Home() {
             style={{ objectPosition: "top" }}
           />
           <div className="absolute inset-0 flex items-center justify-center">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-center text-black text-6xl">
+            <div className="grid grid-cols-2 md:grid-cols-4 md:mt-8 gap-4 text-center text-black text-6xl">
               <div>
                 <h1 className=" text-6xl md:text-7xl text-white mt-16 md:mt-10 font-semibold">
                   82
@@ -239,59 +292,87 @@ export default function Home() {
           </div>
         </div>
       </div>
+
       <div className="grid grid-cols-2 md:grid-cols-4">
+        {/* Our Farm */}
         <div className="aspect-w-1 aspect-h-1 relative overflow-hidden group">
           <img
             src={img7}
             alt=""
             className="oabsolute inset-0 w-full h-full object-cover object-center"
           />
+          <OurFarm show={showOurFarmModal} closeModal={closeOurFarmModal} />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
+            <button
+              className="text-white text-xl md:text-3xl md:font-bold"
+              onClick={openOurFarmModal}
+            >
               Our Farm
             </button>
           </div>
         </div>
 
+        {/* Field Life */}
         <div className="aspect-w-1 aspect-h-1 relative overflow-hidden group">
           <img
             src={img8}
             alt=""
             className="oabsolute inset-0 w-full h-full object-cover object-center"
           />
+          <FieldLife
+            show={showFieldLifeModal}
+            closeModal={closeFieldLifeModal}
+          />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
+            <button
+              className="text-white text-xl md:text-3xl md:font-bold"
+              onClick={openFieldLifeModal}
+            >
               Field Life
             </button>
           </div>
         </div>
 
+        {/* Organic Milk */}
         <div className="aspect-w-1 aspect-h-1 relative overflow-hidden group">
           <img
             src={img9}
             alt=""
             className="oabsolute inset-0 w-full h-full object-cover object-center"
           />
+          <OrganicMilk
+            show={showOrganicMilkModal}
+            closeModal={closeOrganicMilkModal}
+          />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
+            <button
+              className="text-white text-xl md:text-3xl md:font-bold"
+              onClick={openOrganicMilkModal}
+            >
               Organic Milk
             </button>
           </div>
         </div>
 
+        {/* Farm Crew */}
         <div className="aspect-w-1 aspect-h-1 relative overflow-hidden group">
           <img
             src={img10}
             alt=""
             className="oabsolute inset-0 w-full h-full object-cover object-center"
           />
+          <FarmCrew show={showFarmCrewModal} closeModal={closeFarmCrewModal} />
           <div className="absolute inset-0 bg-black bg-opacity-30 flex items-center justify-center -bottom-10 group-hover:bottom-0 opacity-0 group-hover:opacity-100 transition-all duration-300">
-            <button className="text-white text-2xl md:text-3xl md:font-bold">
+            <button
+              className="text-white text-xl md:text-3xl md:font-bold"
+              onClick={openFarmCrewModal}
+            >
               Farm Crew
             </button>
           </div>
         </div>
       </div>
+
       {/* sản phẩm nổi bật */}
       <div className="flex flex-col items-center mt-8">
         <h1 className="text-xl md:text-3xl font-medium mb-4">
@@ -301,6 +382,7 @@ export default function Home() {
           Xem thêm
         </button>
       </div>
+
       {/* lắng nghe */}
       <div className="mt-8 relative">
         <GrungeSVG position="top" />
@@ -321,9 +403,11 @@ export default function Home() {
                 lòng để lại phản hồi về chất lượng dịch vụ. Hokkaido Việt Nam
                 xin cám ơn!
               </p>
-              <button className="bg-[#FFA734] text-[12px] md:text-[16 px] text-white font-semibold py-2 px-4 transition-transform transform hover:scale-105">
-                ĐÓNG GÓP Ý KIẾN
-              </button>
+              <Link to="/contact">
+                <button className="bg-[#FFA734] text-[12px] md:text-[16 px] text-white font-semibold py-2 px-4 transition-transform transform hover:scale-105">
+                  ĐÓNG GÓP Ý KIẾN
+                </button>
+              </Link>
             </div>
           </div>
 
@@ -346,35 +430,58 @@ export default function Home() {
           {/* 1111 */}
           <div className="flex justify-center items-center">
             {/* Logo Facebook */}
-            <img
-              src={logofb}
-              alt="Facebook"
-              className="w-[50px] h-[55px] md:w-[85px] md:h-[90px] object-contain transition-transform transform hover:scale-105"
-            />
-
+            <a
+              href="https://www.facebook.com/hokkaido.vietnamm"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={logofb}
+                alt="Facebook"
+                className="w-[50px] h-[55px] md:w-[85px] md:h-[90px] object-contain transition-transform transform hover:scale-105"
+              />
+            </a>
             {/* Logo TikTok */}
-            <img
-              src={logotiktok}
-              alt="TikTok"
-              className="w-[40px] h-[45px] md:w-[70px] md:h-[75px] object-contain transition-transform transform hover:scale-105"
-            />
+            <a
+              href="https://www.tiktok.com/@hokkaidovietnam"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={logotiktok}
+                alt="TikTok"
+                className="w-[40px] h-[45px] md:w-[70px] md:h-[75px] object-contain transition-transform transform hover:scale-105"
+              />
+            </a>
 
             {/* Logo Instagram */}
-            <img
-              src={logoinsta}
-              alt="Instagram"
-              className="w-[50px] h-[55px] md:w-[85px] md:h-[90px] object-contain transition-transform transform hover:scale-105"
-            />
-
+            <a
+              href="https://www.instagram.com/hokkaidovietnam1"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={logoinsta}
+                alt="Instagram"
+                className="w-[50px] h-[55px] md:w-[85px] md:h-[90px] object-contain transition-transform transform hover:scale-105"
+              />
+            </a>
             {/* Logo YouTube */}
-            <img
-              src={logoyt}
-              alt="YouTube"
-              className="w-[30px] h-[35px] md:w-[50px] md:h-[55px] object-contain transition-transform transform hover:scale-105"
-            />
+            <a
+              href="https://www.youtube.com/@hokkaidovietnam"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <img
+                src={logoyt}
+                alt="YouTube"
+                className="w-[30px] h-[35px] md:w-[50px] md:h-[55px] object-contain transition-transform transform hover:scale-105"
+              />
+            </a>
           </div>
         </div>
       </div>
+
       {/* tin tức */}
       <div className="flex flex-col items-center mt-16">
         <h1 className="text-xl md:text-3xl font-medium mb-8">TIN TỨC</h1>

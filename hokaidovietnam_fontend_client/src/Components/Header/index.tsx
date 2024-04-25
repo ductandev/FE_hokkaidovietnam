@@ -78,7 +78,11 @@ export default function Header() {
         <ul className="header-menu-container">
           {memorizeMenu.map((menu, idx) => {
             return (
-              <Link className="header-menu-link" to={menu.path} key={idx}>
+              <Link
+                className="header-menu-link transition-transform transform hover:scale-105 hover:font-bold"
+                to={menu.path}
+                key={idx}
+              >
                 {menu.name}
               </Link>
             );
