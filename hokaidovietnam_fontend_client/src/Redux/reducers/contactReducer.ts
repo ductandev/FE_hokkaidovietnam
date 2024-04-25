@@ -55,7 +55,7 @@ export default contactReducer.reducer
 // =================Async Action===================
 export const contactAsyncAction = createAsyncThunk("contactAsyncAction", async (userContact: UserContactFrm) => {
   try {
-    const res = await httpNonAuth.post("/api/auth/signup", userContact);
+    const res = await httpNonAuth.post("/api/auth/signin", userContact);
     toast.success('Gửi thông tin liên hệ thành công!', toastOptions);
     return res.data.content;
 

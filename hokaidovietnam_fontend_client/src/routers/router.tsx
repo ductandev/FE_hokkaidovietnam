@@ -6,7 +6,7 @@ import {
   BrandPage,
   ContactPage,
   PaymentPage,
-  // CartPage,
+  CartPage,
   // LoginPage,
   // ProfilePage,
   // RegisterPage,
@@ -38,6 +38,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/cart",
+        element: <CartPage />,
       },
       {
         path: "/payment",
