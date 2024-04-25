@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Carousel } from "../../Components/Carousel/Carousel";
 import { FaPlayCircle } from "react-icons/fa";
+
 import img1 from "../../assets/img_home/1.jpg";
 import img2 from "../../assets/img_home/2.jpg";
 import img3 from "../../assets/img_home/3.jpg";
@@ -20,7 +21,56 @@ import logotiktok from "../../assets/img_home/logo-tiktok.png";
 import logoinsta from "../../assets/img_home/logo-insta.png";
 import logoyt from "../../assets/img_home/logo-yt.png";
 import tree from "../../assets/img_home/tree.png";
+
+
 import GrungeSVG from "@/Components/GrungeSVG/GrungeSVG";
+import { Fragment } from "react"
+import { ProductCard } from "@/Components/ProductCard";
+
+
+const PRODUCTS: Array<any> = [
+  {
+    id: "_pid1",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid2",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid3",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid4",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid5",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid6",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid7",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid8",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+];
+
 
 export default function Home() {
   const slides: string[] = [
@@ -54,6 +104,22 @@ export default function Home() {
       }
     };
   }, []);
+
+
+  const firstFourProducts = PRODUCTS.slice(0, 4);
+
+  const RenderProductCards = (): JSX.Element[] => {
+    return firstFourProducts.map((product, idx) => {
+      return (
+        <Fragment key={`${product.id}_${idx}`}>
+          <ProductCard {...product} />
+        </Fragment>
+      )
+    })
+  }
+
+
+
   return (
     <div>
       {/* carosel */}
@@ -297,6 +363,9 @@ export default function Home() {
         <h1 className="text-xl md:text-3xl font-medium mb-4">
           SẢN PHẨM NỔI BẬT
         </h1>
+        <div className="container grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {RenderProductCards()}
+        </div>
         <button className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform">
           Xem thêm
         </button>
