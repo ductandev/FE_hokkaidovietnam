@@ -101,13 +101,13 @@ export default function NewPaginate() {
   return (
     <div>
       {/* Display products */}
-      <div className="grid grid-cols-1 md:grid-cols-2 md:mt-8 gap-4 mx-5 md:mx-0 md:gap-8">
+      <div className="grid grid-cols-1 xl:grid-cols-2 mt-8 gap-4 mx-5 md:mx-0 lg:gap-8">
         {news.map((newsItem) => (
           <div key={newsItem.id}>
-            <div className="gap-2 grid md:grid-cols-1 md:h-[140px] ">
-              <div className="flex flex-col md:flex-row md:space-x-4 ">
+            <div className="gap-2 grid lg:grid-cols-1 lg:h-[140px]">
+              <div className="flex flex-col md:flex-row md:space-x-4">
                 <img
-                  className="min-w-[180px] h-[200px] md:min-w-[220px] md:h-[150px]"
+                  className="min-w-[180px] object-cover h-[200px] md:min-w-[220px] md:h-[150px]"
                   src={newsItem.img}
                   alt=""
                 />
@@ -129,6 +129,7 @@ export default function NewPaginate() {
           </div>
         ))}
       </div>
+
       {/* Pagination */}
       <ReactPaginate
         previousLabel={<FaArrowLeftLong />}
