@@ -5,7 +5,8 @@ import {
   ProductListPage,
   BrandPage,
   ContactPage,
-  // CartPage,
+  PaymentPage,
+  CartPage,
   // LoginPage,
   // ProfilePage,
   // RegisterPage,
@@ -43,7 +44,15 @@ const router = createBrowserRouter([
         path: "/media",
         element: <Media />,
       },
-    ],
+      {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
+        path: "/payment",
+        element: <PaymentPage />,
+      },
+    ]
   },
 ]);
 

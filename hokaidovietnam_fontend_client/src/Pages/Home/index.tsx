@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-
-import { Carousel } from "../../Components/Carousel/Carousel";
-import { FaPlayCircle } from "react-icons/fa";
+import { Fragment } from "react"
 import { Link } from "react-router-dom";
+import { FaPlayCircle } from "react-icons/fa";
+
 import img1 from "../../assets/img_home/1.jpg";
 import img2 from "../../assets/img_home/2.jpg";
 import img3 from "../../assets/img_home/3.jpg";
@@ -25,11 +25,58 @@ import logozalo from "../../assets/img_home/logo-zalo.png";
 import logophone from "../../assets/img_home/logo-phone.png";
 import logomes from "../../assets/img_home/logo-mes.png";
 import tree from "../../assets/img_home/tree.png";
+
+import { Carousel } from "../../Components/Carousel/Carousel";
 import GrungeSVG from "@/Components/GrungeSVG/GrungeSVG";
 import OurFarm from "@/Components/OurFarm/OurFarm";
 import FarmCrew from "@/Components/FarmCrew/FarmCrew";
 import OrganicMilk from "@/Components/OrganicMilk/OrganicMilk";
 import FieldLife from "@/Components/FieldLife/FieldLife";
+import { ProductCard } from "@/Components/ProductCard";
+
+
+const PRODUCTS: Array<any> = [
+  {
+    id: "_pid1",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid2",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid3",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid4",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid5",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid6",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid7",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+  {
+    id: "_pid8",
+    product_name: "Sữa tươi nguyên chất 200ml",
+    product_price: "50000"
+  },
+];
 
 export default function Home() {
   const slides: string[] = [
@@ -63,6 +110,8 @@ export default function Home() {
       }
     };
   }, []);
+  
+  
   const [showOurFarmModal, setShowOurFarmModal] = useState(false);
   const [showFieldLifeModal, setShowFieldLifeModal] = useState(false);
   const [showOrganicMilkModal, setShowOrganicMilkModal] = useState(false);
@@ -102,6 +151,21 @@ export default function Home() {
   const handleClick = () => {
     window.location.href = "https://zalo.me/0904229229";
   };
+
+    
+  const firstFourProducts = PRODUCTS.slice(0, 4);
+
+  const RenderProductCards = (): JSX.Element[] => {
+    return firstFourProducts.map((product, idx) => {
+      return (
+        <Fragment key={`${product.id}_${idx}`}>
+          <ProductCard {...product} />
+        </Fragment>
+      )
+    })
+  }
+
+    
   return (
     <div className="relative">
       {/* carosel */}
@@ -214,6 +278,7 @@ export default function Home() {
               src="https://hokkaidovietnam.com/wp-content/uploads/2018/04/h2-img-4a.jpg"
               alt=""
             />
+
             <div className="absolute inset-0 object-cover flex items-center justify-center">
               <button className="text-white hover:scale-110" id="playButton">
                 <FaPlayCircle size={80} />
@@ -384,6 +449,9 @@ export default function Home() {
         <h1 className="text-xl md:text-3xl font-medium mb-4">
           SẢN PHẨM NỔI BẬT
         </h1>
+        <div className="container grid grid-cols-2 lg:grid-cols-4 gap-5">
+          {RenderProductCards()}
+        </div>
         <button className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform">
           Xem thêm
         </button>
