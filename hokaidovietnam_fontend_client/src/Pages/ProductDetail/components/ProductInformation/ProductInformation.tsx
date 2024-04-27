@@ -1,4 +1,5 @@
 import { Divider } from "@/Components/Divider"
+import Quantity from "@/Components/Quantity/Quantity"
 import { formatCurrency } from "@/Helper/helper"
 
 type PropsType = {
@@ -42,7 +43,10 @@ const ProductInformation: React.FC<PropsType> = () => {
 
 
         <div className="my-6 grid grid-cols-2">
-            <div>quantity component</div>
+            <div>
+                <Quantity defaultValue={1} />
+            </div>
+
             <div>button component</div>
         </div>
 

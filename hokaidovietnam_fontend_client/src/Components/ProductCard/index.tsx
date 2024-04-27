@@ -30,9 +30,8 @@ export const ProductCard: React.FC<MergedType> = (props: MergedType) => {
     return <div
         className="cursor-pointer w-full"
     >
-
         <div className="h-96 w-full" onClick={() => {
-            onShowDetail && onShowDetail()
+            onShowDetail && onShowDetail(san_pham_id)
         }}>
             <img src="https://source.unsplash.com/random" alt="" className="mx-auto max-w-full h-full" />
         </div>

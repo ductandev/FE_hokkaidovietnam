@@ -1,5 +1,5 @@
 // ! React Library
-import { Fragment, useDeferredValue, useState } from "react"
+import { Fragment, useCallback, useDeferredValue, useState } from "react"
 import { useQuery } from "react-query";
 
 // ! Component
@@ -26,12 +26,20 @@ import { getProducts } from "@/Apis/Product.api";
 import { getProductTypes } from "@/Apis/ProductType.api";
 
 import { Product } from "@/Types/Product.type";
+import Quantity from "@/Components/Quantity/Quantity";
+import { Button } from "@/Components/ui/button";
 
 const PAGE_SIZE = 8;
+const TAB_TYPE_ALL = {
+    loai_san_pham_id: 0,
+    ten_loai_san_pham: "Tất cả",
+    isDelete: false
+}
 
 export default function Products() {
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [typeId, setTypeId] = useState<number>(0);
+    const [detailProduct, setDetailProduct] = useState<Product>();
     const [page, setPage] = useState(1);
 
     const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
@@ -63,7 +71,7 @@ export default function Products() {
     });
 
     const handleToggleModal = (visible: boolean) => {
-        setIsVisible(visible)
+        setIsVisible(visible);
     };
 
     const slideImages = [
@@ -79,13 +87,13 @@ export default function Products() {
                 <ImageGallery
                     slides={slideImages}
                     options={{}}
-                    customClass="pr-28"
+                    customClass="pr-10 w-full"
                     showArrow
                 />
             </div>
 
             <div className="text-center text-black">
-                <h3 className="text-2xl font-light">Sữa nguyên chất 200ml</h3>
+                <h3 className="text-2xl font-light">{detailProduct?.ten_san_pham}</h3>
 
                 <div className="my-5">
                     <span className=" font-light text-base text-[#777171]">Thương hiệu <span className="font-medium text-black">Hokkaido</span></span>
@@ -94,28 +102,39 @@ export default function Products() {
                 <p className="font-normal text-4xl">{formatCurrency(50000)}</p>
 
                 <p className="font-light text-sm mt-3">
-                    BÍ MẬT CỦA SỮA NGUYÊN CHẤT HOKKAIDO LÀM CÁC BÉ SAY MÊ NẰM Ở CON SỐ 3.6*! <br />
-                    Theo số liệu của Hiệp hội Sữa Nhật Bản, con số 3.6 trong sữa thể hiện hàm hàm lượng chất béo trong sữa là 3.6%, hương vị thơm, đậm đà béo hơn hẳn so với các loại sữa tươi thông thường khác.
-                    Sữa nguyên kem Hokkaido không đường, vị ngọt thanh tự nhiên, béo ngậy, ngon đúng gu các bé yêu thích. <br />
-                    Đảm bảo vị sữa ngon khác biệt hẳn với các loại sữa bột thông thường khác.<br />
-                    Xuất xứ: Nhật Bản
+                    {detailProduct?.mo_ta_chi_tiet}
                 </p>
 
                 <div className="my-6 grid grid-cols-2">
-                    <div>quantity component</div>
-                    <div>button component</div>
+                    <div className="mr-1">
+                        <Quantity defaultValue={1} />
+                    </div>
+
+                    <Button className="ml-1 w-full h-full rounded-none text-lg" size={"lg"} >
+                        Thêm vào giỏ hàng
+                    </Button>
                 </div>
 
                 <Divider className="my-6" />
 
                 <span className="text-sm font-light text-[#777171]">Gọi đặt mua: <span className="font-medium text-black">0904 229 229</span> để nhanh chóng đặt hàng</span>
-                d</div>
+            </div>
         </div>
     }
 
     const deferredProductList = useDeferredValue(productList?.data?.content || []);
     const deferredProductType = useDeferredValue(productType?.data?.content || []);
-    console.log({ productList })
+
+    const handleShowDetailProduct = useCallback(
+        (san_pham_id: string | number) => {
+            handleToggleModal(true);
+
+            const findProductById: Product = deferredProductList.find((prod: Product) => prod.san_pham_id === san_pham_id)
+            setDetailProduct(findProductById)
+        },
+        [deferredProductList],
+    )
+
     return (
         <main >
             <Banner title="Cửa hàng" />
@@ -130,11 +149,7 @@ export default function Products() {
             <div className='container mb-16 mt-24'>
                 {!isLoadingProductType && <CategoryTabs
                     options={[
-                        {
-                            loai_san_pham_id: 0,
-                            ten_loai_san_pham: "Tất cả",
-                            isDelete: false
-                        },
+                        TAB_TYPE_ALL,
                         ...deferredProductType
                     ]}
                     onHandleToggleTab={(typeId: number) => {
@@ -154,8 +169,8 @@ export default function Products() {
                         return <Fragment key={`${product.san_pham_id}_${idx}`}>
                             <ProductCard
                                 {...product}
-                                onShowDetail={() => {
-                                    handleToggleModal(true)
+                                onShowDetail={(san_pham_id: string | any) => {
+                                    handleShowDetailProduct(san_pham_id)
                                 }}
                             />
                         </Fragment>
@@ -173,8 +188,6 @@ export default function Products() {
                         }}
                     />
                 </div>
-
-
             </>}
         </main>
     )
