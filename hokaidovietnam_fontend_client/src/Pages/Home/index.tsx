@@ -23,7 +23,6 @@ import logoinsta from "../../assets/img_home/logo-insta.png";
 import logoyt from "../../assets/img_home/logo-yt.png";
 import logozalo from "../../assets/img_home/logo-zalo.png";
 import logophone from "../../assets/img_home/logo-phone.png";
-import logomes from "../../assets/img_home/logo-mes.png";
 import tree from "../../assets/img_home/tree.png";
 
 import { Carousel } from "../../Components/Carousel/Carousel";
@@ -110,8 +109,8 @@ export default function Home() {
       }
     };
   }, []);
-  
-  
+
+
   const [showOurFarmModal, setShowOurFarmModal] = useState(false);
   const [showFieldLifeModal, setShowFieldLifeModal] = useState(false);
   const [showOrganicMilkModal, setShowOrganicMilkModal] = useState(false);
@@ -152,7 +151,7 @@ export default function Home() {
     window.location.href = "https://zalo.me/0904229229";
   };
 
-    
+
   const firstFourProducts = PRODUCTS.slice(0, 4);
 
   const RenderProductCards = (): JSX.Element[] => {
@@ -165,7 +164,7 @@ export default function Home() {
     })
   }
 
-    
+
   return (
     <div className="relative">
       {/* carosel */}
