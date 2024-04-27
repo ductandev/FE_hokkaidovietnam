@@ -1,6 +1,6 @@
 import React from "react";
 
-export const Payments = () => {
+export const PaymentsMethod = () => {
   return (
     <div className="p-4 md:p-8 mx-5">
       <h1 className="text-2xl font-bold mb-4 text-center">
