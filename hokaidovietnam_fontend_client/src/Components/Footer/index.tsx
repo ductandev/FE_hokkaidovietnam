@@ -9,7 +9,7 @@ function Footer() {
     introduce: [
       {
         label: "Câu chuyện thương hiệu",
-        link: "/",
+        link: "/brand",
       },
       {
         label: "Danh mục",
@@ -17,41 +17,41 @@ function Footer() {
       },
       {
         label: "Sản phẩm",
-        link: "/",
+        link: "/products",
       },
       {
-        label: "Cẩm nang",
-        link: "/",
+        label: "Tin tức",
+        link: "/media",
       },
       {
         label: "Liên hệ",
-        link: "/",
+        link: "/contact",
       },
     ],
     support: [
       {
         label: "Điều khoản sử dụng",
-        link: "/",
+        link: "/terms",
       },
       {
         label: "Hướng dẫn mua hàng",
-        link: "/",
+        link: "/shopping",
       },
       {
         label: "hình thức thanh toán",
-        link: "/",
+        link: "/payments",
       },
       {
         label: "chính sách vận chuyển",
-        link: "/",
+        link: "/shipping",
       },
       {
         label: "chính sách đổi trả",
-        link: "/",
+        link: "/return",
       },
       {
         label: "chính sách bảo mật",
-        link: "/",
+        link: "/privacy",
       },
     ],
   };

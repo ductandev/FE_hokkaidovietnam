@@ -9,7 +9,7 @@ const VideoItem: React.FC<VideoItemProps> = ({ src, title }) => {
   return (
     <div className="flex flex-col items-center ">
       <iframe
-        className="w-full md:w-[400px] h-[calc(400px * 0.75)] md:h-[250px] max-w-full"
+        className="w-full lg:w-[500px] h-[calc(500px * 0.75)] md:h-[300px] max-w-full"
         src={src}
         title={title}
         frameBorder="0"
