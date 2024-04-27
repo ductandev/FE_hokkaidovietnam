@@ -3,8 +3,9 @@ import React from "react";
 interface IProps {
   position: string;
 }
-const grungeTop = `top-0 transform rotate-180`;
-const grungeBottom = `bottom-0 translate-y-[1px]`;
+
+const grungeTop = `top-0 transform rotate-180 translate-y-[-1px]`
+const grungeBottom = `bottom-0 translate-y-[1px]`
 
 // function GrungeSVG({position, transform = "", rotate =""}) {
 function GrungeSVG(props: IProps) {
