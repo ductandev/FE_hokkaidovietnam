@@ -42,6 +42,11 @@ export function HPagination(
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [totalPage]);
 
+    useEffect(() => {
+        setCurrentPage(current);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [current]);
+
     const getPager = (page: number) => {
         let startPage: number;
         let endPage: number;
@@ -103,8 +108,13 @@ export function HPagination(
                 {pages?.length ? (
                     pages.map((page: number, index: any) => (
                         <PaginationItem key={index}>
-                            <PaginationLink onClick={e => handleChangePage(e, page)} className={`${currentPage === page ? 'text-black' : 'text-secondary'
-                                }`} isActive={currentPage === page}>{page}</PaginationLink>
+                            <PaginationLink
+                                onClick={e => handleChangePage(e, page)}
+                                className={`${currentPage === page ? 'text-black' : 'text-secondary'}`}
+                                isActive={currentPage === page}
+                            >
+                                {page}
+                            </PaginationLink>
                         </PaginationItem>
                     ))
                 ) : (

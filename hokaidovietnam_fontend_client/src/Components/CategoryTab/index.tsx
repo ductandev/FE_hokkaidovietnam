@@ -1,15 +1,10 @@
 import React, { useState } from "react";
-
+import { ProductType } from "@/Types/ProductType.type";
 
 import "./styles.scss";
 
-export interface TOption {
-    label: string,
-    value: string | number;
-}
-
 interface IProps {
-    options: Array<TOption>
+    options: Array<ProductType>
     onHandleToggleTab: Function
     isShowSummary?: boolean
     summaryIndex?: number;
@@ -27,14 +22,14 @@ export const CategoryTabs: React.FC<IProps> = (props: IProps) => {
 
     return <div className="categoryTabs">
         <div className="categoryTabs-menu">
-            {options.map((tab, index) => {
+            {options.map((tab: ProductType, index) => {
                 return <div
-                    className={`categoryTabs-menuItem ${activeTab === tab.value ? "categoryTabs-menuItem__active" : ""}`}
+                    className={`categoryTabs-menuItem ${activeTab === tab.loai_san_pham_id ? "categoryTabs-menuItem__active" : ""}`}
                     key={index}
                     onClick={() => {
-                        handleToggleTab(tab.value)
+                        handleToggleTab(tab.loai_san_pham_id)
                     }}>
-                    {tab.label}
+                    {tab.ten_loai_san_pham}
                 </div>
             })}
         </div>
