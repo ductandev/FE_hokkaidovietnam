@@ -12,6 +12,7 @@ import {
   UseInterceptors,
   UploadedFiles,
   Patch,
+  Query,
 } from '@nestjs/common';
 import { ProductService } from './product.service';
 
@@ -33,7 +34,7 @@ import { FileUploadDto_product } from './dto/upload.dto';
 // @UseGuards(AuthGuard("jwt"))
 // @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @ApiTags('SanPham')
-@Controller('api/product/')
+@Controller('api/')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
@@ -42,16 +43,36 @@ export class ProductController {
   // ============================================
   @HttpCode(200)
   // @Roles(Role.ADMIN, Role.USER)
-  @Get('get-all-product')
+  @Get('products')
   getAllProducts(@Res() res: Response) {
     return this.productService.getAllProducts(res);
+  }
+
+  // ============================================
+  //        GET ALL PRODUCTS BY TYPE_ID
+  // ============================================
+  @HttpCode(200)
+  // @Roles(Role.ADMIN, Role.USER)
+  @Get('products-pagination')
+  getAllProductsByTypeId(
+    @Query('typeID') typeID: number,
+    @Query('page') pageIndex: number,
+    @Query('limit') pageSize: number,
+    @Res() res: Response,
+  ) {
+    return this.productService.getAllProductsByTypeId(
+      typeID,
+      pageIndex,
+      pageSize,
+      res,
+    );
   }
 
   // ============================================
   //          GET NAME PRODUCT BY ID
   // ============================================
   @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
+  // @Roles(Role.ADMIN, Role.USER)
   @Get('get-product-by-id/:productID')
   getProductById(@Param('productID') productID: number, @Res() res: Response) {
     return this.productService.getProductById(productID, res);
@@ -61,7 +82,7 @@ export class ProductController {
   //           GET PRODUCT BY NAME
   // ============================================
   @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
+  // @Roles(Role.ADMIN, Role.USER)
   @Get('get-product-by-name/:nameProduct')
   getNameProduct(
     @Param('nameProduct') nameProduct: string,
@@ -74,11 +95,13 @@ export class ProductController {
   //        GET PANIGATION LIST PRODUCT
   // ============================================
   @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  @Get('get-panigation-product/:pageIndex/:pageSize')
+  // @Roles(Role.ADMIN, Role.USER)
+  // @Get("get-pagination-product/:pageIndex/:pageSize")
+  // get-pagination-product?pageIndex=1&pageSize=3
+  @Get('get-pagination-product')
   getPanigationProduct(
-    @Param('pageIndex') pageIndex: number,
-    @Param('pageSize') pageSize: number,
+    @Query('page') pageIndex: number,
+    @Query('limit') pageSize: number,
     @Res() res: Response,
   ) {
     return this.productService.getPanigationProduct(pageIndex, pageSize, res);
@@ -89,6 +112,7 @@ export class ProductController {
   // ============================================
   @ApiConsumes('multipart/form-data')
   @HttpCode(201)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
   @Post('post-product')
   @UseInterceptors(FilesInterceptor('hinhAnh', 20))
@@ -104,6 +128,7 @@ export class ProductController {
   //             PUT PRODUCT INFO
   // ============================================
   @HttpCode(200)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
   @Put('put-product-info/:productID')
   putRoom(
@@ -119,6 +144,7 @@ export class ProductController {
   // ============================================
   @ApiConsumes('multipart/form-data')
   @HttpCode(200)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
   @Put('put-product-img/:productID')
   @UseInterceptors(FilesInterceptor('hinhAnh', 20))
@@ -135,6 +161,7 @@ export class ProductController {
   //              DELETE PRODUCT
   // ============================================
   @HttpCode(200)
+  @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
   @Delete('delete-product/:productID')
   deleteProduct(@Param('productID') productID: number, @Res() res: Response) {
