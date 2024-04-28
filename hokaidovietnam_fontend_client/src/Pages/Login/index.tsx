@@ -48,10 +48,10 @@ export default function Login() {
                 </a>
             </div>
 
-            <div className="container mx-auto pt-[50px] leading-none">
+            <div className="container mx-auto pt-[20px] sm:pt-[50px] leading-none">
                 <h2
                     className={`
-                    pb-[10px] 
+                    sm:pb-[10px] 
                     mb-[75px]
 
                     text-xl 
@@ -63,7 +63,7 @@ export default function Login() {
                 </h2>
 
                 <form
-                    className="sm:w-[400px] max-w-full mx-auto"
+                    className="sm:w-[400px] mx-auto"
                     onSubmit={loginFrm.handleSubmit}
                 >
                     <div className="mb-[32px]">

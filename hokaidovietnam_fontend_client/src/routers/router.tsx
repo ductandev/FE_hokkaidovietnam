@@ -8,13 +8,13 @@ import {
   PaymentPage,
   CartPage,
   MediaPage,
+  ForgotPasswordPage
   // ProfilePage,
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
 import Login from "@/Pages/Login";
 import Register from "@/Pages/Register";
-import ForgotPassword from "@/Pages/ForgotPassword";
 
 import { Terms } from "@/Components/Tems/Terms";
 import { Shopping } from "@/Components/Shopping/Shopping";
@@ -84,6 +84,10 @@ const router = createBrowserRouter([
         path: "/privacy",
         element: <Privacy />,
       },
+      {
+        path: "/forgot-password",
+        element: <ForgotPasswordPage />,
+      },
     ],
   },
   {
@@ -93,10 +97,6 @@ const router = createBrowserRouter([
   {
     path: "/register",
     Component: Register
-  },
-  {
-    path: "/forgot-password",
-    Component: ForgotPassword
   },
 ]);
 
