@@ -6,16 +6,17 @@ import {
   BrandPage,
   ContactPage,
   CartPage,
+  MediaPage,
   // LoginPage,
   // ProfilePage,
   // RegisterPage,
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
-import Media from "@/Pages/Media";
+
 import { Terms } from "@/Components/Tems/Terms";
 import { Shopping } from "@/Components/Shopping/Shopping";
-import { Payments } from "@/Components/Payments/Payments";
+import { PaymentsMethod } from "@/Components/Payments/Payments";
 import { Shipping } from "@/Components/Shipping/Shipping";
 import { Return } from "@/Components/Return/Return";
 import { Privacy } from "@/Components/Privacy/Privacy";
@@ -46,8 +47,12 @@ const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
+        path: "/cart",
+        element: <CartPage />,
+      },
+      {
         path: "/media",
-        element: <Media />,
+        element: <MediaPage />,
       },
       {
         path: "/terms",
@@ -58,8 +63,8 @@ const router = createBrowserRouter([
         element: <Shopping />,
       },
       {
-        path: "/payments",
-        element: <Payments />,
+        path: "/payments-method",
+        element: <PaymentsMethod />,
       },
       {
         path: "/shipping",
