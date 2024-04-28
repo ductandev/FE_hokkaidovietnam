@@ -3,7 +3,7 @@ import http from "@/lib/utils"
 
 const Models = {
     list: 'products-pagination',
-    item: 'product'
+    item: 'get-product-by-id'
 };
 
 export const getProducts = (
@@ -18,6 +18,6 @@ export const getProducts = (
             typeID: typeId
         },
         signal
-    })
+    });
 
 export const getProduct = (id: number | string) => http.get<Product>(`${Models.item}/${id}`)

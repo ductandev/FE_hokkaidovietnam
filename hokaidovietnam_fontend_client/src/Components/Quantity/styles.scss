@@ -11,12 +11,8 @@ $fixed-size: 50px;
     align-items: center;
     border-radius: $border-radius;
     border: 1px solid #000000;
-    // max-width: 140px;
-
-
-    &:focus {
-        background: red;
-    }
+    max-width: 160px;
+    min-width: 160px;
 }
 
 #{$block}__modifier,
@@ -54,7 +50,7 @@ $fixed-size: 50px;
 }
 
 #{$block}__screen {
-    width: 4rem;
+    width: 100%;
     font-size: 20px;
     color: #000;
     border: 0;

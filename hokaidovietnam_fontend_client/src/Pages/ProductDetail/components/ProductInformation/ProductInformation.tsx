@@ -1,14 +1,53 @@
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useCartStorage } from "@/Hooks/useCartStorage";
+
 import { Divider } from "@/Components/Divider"
 import Quantity from "@/Components/Quantity/Quantity"
-import { formatCurrency } from "@/Helper/helper"
+import { Button } from "@/Components/ui/button"
 
-type PropsType = {
+import { HandleAddCart, formatCurrency } from "@/Helper/helper"
+import { actions } from "@/Redux/actions/cart.action";
 
-}
+import { Product } from "@/Types/Product.type";
 
-const ProductInformation: React.FC<PropsType> = () => {
+const DEFAULT_QUANTITY = 1;
+
+const ProductInformation: React.FC<Product> = (props: Product) => {
+    const {
+        ten_san_pham,
+        trang_thai_san_pham,
+        gia_ban,
+        mo_ta_chi_tiet,
+        so_luong_trong_kho
+    } = props;
+
+    const { saveCartStorage } = useCartStorage();
+    const dispatch: any = useDispatch();
+
+    const [quantityState, setQuantityState] = useState<number>(DEFAULT_QUANTITY);
+
+    const handleAddCart = () => {
+        const payload = {
+            ...props,
+            quantity: quantityState
+        }
+
+        const resolveCart = HandleAddCart(payload)
+
+        // * convert JSON string để lưu xuống local storage
+        saveCartStorage(resolveCart);
+
+        // * Thao tác với state cart trong reducer
+        dispatch(actions.setCart(resolveCart));
+    };
+
+    const handleQuantityChanged = (quantity: number) => {
+        setQuantityState(quantity);
+    }
+
     return <div><div className="text-black">
-        <h3 className="text-4xl font-light">Sữa nguyên chất 200ml</h3>
+        <h3 className="text-4xl font-light">{ten_san_pham}</h3>
 
         <div className="mt-5">
             <span className="font-light text-base text-[#777171]">
@@ -20,34 +59,38 @@ const ProductInformation: React.FC<PropsType> = () => {
 
             <span className="font-light text-base text-[#777171]">
                 Tình trạng:
-                <span className="font-medium text-black ml-1">Còn hàng</span>
+                <span className="font-medium text-black ml-1">{trang_thai_san_pham ? "Còn hàng" : "Hết hàng"}</span>
             </span>
         </div>
 
-        <span className="font-light text-base text-[#777171]">
-            Mã:
-            <span className="font-medium text-black ml-1">004-1</span>
-        </span>
-
-        <p className="mt-8 font-normal text-4xl">{formatCurrency(50000)}</p>
+        <p className="mt-8 font-normal text-4xl">{formatCurrency(gia_ban)}</p>
 
         <p className="font-light text-secondary text-base mt-5">
-            BÍ MẬT CỦA SỮA NGUYÊN CHẤT HOKKAIDO LÀM CÁC BÉ SAY MÊ NẰM Ở CON SỐ 3.6*! <br />
-            Theo số liệu của Hiệp hội Sữa Nhật Bản, con số 3.6 trong sữa thể hiện hàm hàm lượng chất béo trong sữa là 3.6%, hương vị thơm, đậm đà béo hơn hẳn so với các loại sữa tươi thông thường khác.
-            Sữa nguyên kem Hokkaido không đường, vị ngọt thanh tự nhiên, béo ngậy, ngon đúng gu các bé yêu thích. <br />
-            Đảm bảo vị sữa ngon khác biệt hẳn với các loại sữa bột thông thường khác.<br />
-            Xuất xứ: Nhật Bản
+            {mo_ta_chi_tiet}
         </p>
 
         <Divider className="my-6" />
 
 
-        <div className="my-6 grid grid-cols-2">
-            <div>
-                <Quantity defaultValue={1} />
+        <div className="my-6 flex">
+            <div className="mr-1">
+                <Quantity
+                    defaultValue={1}
+                    hasPreventByLimit
+                    limit={so_luong_trong_kho}
+                    onChanged={handleQuantityChanged}
+                />
             </div>
 
-            <div>button component</div>
+            <div className="ml-1 flex-1">
+                <Button
+                    size={'cart'}
+                    variant={'cart-btn'}
+                    onClick={handleAddCart}
+                >
+                    Thêm vào giỏ hàng
+                </Button>
+            </div>
         </div>
 
 

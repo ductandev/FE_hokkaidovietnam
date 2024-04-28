@@ -1,6 +1,9 @@
 // ! React Library
 import { Fragment, useCallback, useDeferredValue, useState } from "react"
 import { useQuery } from "react-query";
+import { useCartStorage } from "@/Hooks/useCartStorage";
+import { useDispatch } from "react-redux";
+import { actions } from "@/Redux/actions/cart.action";
 
 // ! Component
 import Banner from '@/Components/Banner'
@@ -11,6 +14,8 @@ import { Divider } from "@/Components/Divider";
 import { ImageGallery } from "@/Components/ImageGallery";
 import Modal from "@/Components/Modal/Modal";
 import BlankPage from "@/Components/BlankPage/BlankPage";
+import Quantity from "@/Components/Quantity/Quantity";
+import { Button } from "@/Components/ui/button";
 
 // ! Assests
 import Slider1 from "@/assets/image/detail/slide-1.png";
@@ -19,28 +24,32 @@ import Slider3 from "@/assets/image/detail/slide-3.png";
 import Slider4 from "@/assets/image/detail/slide-4.png";
 
 // ! Helpers
-import { formatCurrency } from "@/Helper/helper";
+import { HandleAddCart, formatCurrency } from "@/Helper/helper";
 
 // ! Apis and Types
 import { getProducts } from "@/Apis/Product.api";
 import { getProductTypes } from "@/Apis/ProductType.api";
-
 import { Product } from "@/Types/Product.type";
-import Quantity from "@/Components/Quantity/Quantity";
-import { Button } from "@/Components/ui/button";
 
 const PAGE_SIZE = 8;
+
 const TAB_TYPE_ALL = {
     loai_san_pham_id: 0,
     ten_loai_san_pham: "Tất cả",
     isDelete: false
 }
 
+const DEFAULT_QUANTITY = 1
+
 export default function Products() {
+    const dispatch: any = useDispatch();
+
     const [isVisible, setIsVisible] = useState<boolean>(false);
     const [typeId, setTypeId] = useState<number>(0);
     const [detailProduct, setDetailProduct] = useState<Product>();
     const [page, setPage] = useState(1);
+    const [quantityState, setQuantityState] = useState<number>(DEFAULT_QUANTITY);
+    const { saveCartStorage, getCartStorage } = useCartStorage();
 
     const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
         queryKey: ['products', page, typeId],
@@ -72,6 +81,10 @@ export default function Products() {
 
     const handleToggleModal = (visible: boolean) => {
         setIsVisible(visible);
+
+        if (!visible) {
+            setQuantityState(DEFAULT_QUANTITY)
+        }
     };
 
     const slideImages = [
@@ -99,31 +112,64 @@ export default function Products() {
                     <span className=" font-light text-base text-[#777171]">Thương hiệu <span className="font-medium text-black">Hokkaido</span></span>
                 </div>
 
-                <p className="font-normal text-4xl">{formatCurrency(50000)}</p>
+                <p className="font-normal text-4xl">{formatCurrency(detailProduct?.gia_ban || 0)}</p>
 
                 <p className="font-light text-sm mt-3">
                     {detailProduct?.mo_ta_chi_tiet}
                 </p>
 
-                <div className="my-6 grid grid-cols-2">
-                    <div className="mr-1">
-                        <Quantity defaultValue={1} />
+                <div className="my-6 flex items-center justify-center">
+                    <div className="pr-1">
+                        <Quantity
+                            defaultValue={DEFAULT_QUANTITY}
+                            limit={detailProduct?.so_luong_trong_kho}
+                            onChanged={handleQuantityChanged}
+                            hasPreventByLimit
+                        />
                     </div>
 
-                    <Button className="ml-1 w-full h-full rounded-none text-lg" size={"lg"} >
-                        Thêm vào giỏ hàng
-                    </Button>
+                    <div className="flex-1 ml-1">
+                        <Button
+                            size={'cart'}
+                            variant={'cart-btn'}
+                            onClick={handleCart}
+                        >
+                            Thêm vào giỏ hàng
+                        </Button>
+                    </div>
+
                 </div>
 
                 <Divider className="my-6" />
 
                 <span className="text-sm font-light text-[#777171]">Gọi đặt mua: <span className="font-medium text-black">0904 229 229</span> để nhanh chóng đặt hàng</span>
             </div>
-        </div>
+        </div >
     }
 
     const deferredProductList = useDeferredValue(productList?.data?.content || []);
     const deferredProductType = useDeferredValue(productType?.data?.content || []);
+
+    const handleQuantityChanged = (quantity: number) => {
+        setQuantityState(quantity);
+    }
+
+    const handleCart = () => {
+        const payload = {
+            ...detailProduct,
+            quantity: quantityState
+        }
+
+        const resolveCart = HandleAddCart(payload)
+
+        // * convert JSON string để lưu xuống local storage
+        saveCartStorage(resolveCart);
+
+        // * Thao tác với state cart trong reducer
+        dispatch(actions.setCart(resolveCart))
+
+        handleToggleModal(false)
+    }
 
     const handleShowDetailProduct = useCallback(
         (san_pham_id: string | number) => {
@@ -163,7 +209,14 @@ export default function Products() {
             </div>
 
 
-            {isLoadingProductList ? <>Đang tải</> : <>
+            {isLoadingProductList ? <div className="container grid grid-cols-4 gap-5">
+                {Array.from(Array(PAGE_SIZE).keys()).map((_, idx) => {
+                    return <ProductCard
+                        key={idx}
+                        isSkeleton
+                    />
+                })}
+            </div> : <>
                 {deferredProductList.length ? <div className="container grid grid-cols-4 gap-5">
                     {deferredProductList.map((product: Product, idx: any) => {
                         return <Fragment key={`${product.san_pham_id}_${idx}`}>
