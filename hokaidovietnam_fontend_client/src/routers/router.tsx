@@ -8,12 +8,12 @@ import {
   PaymentPage,
   CartPage,
   MediaPage,
-  // LoginPage,
   // ProfilePage,
-  // RegisterPage,
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
+import Login from "@/Pages/Login";
+import Register from "@/Pages/Register";
 
 import { Terms } from "@/Components/Tems/Terms";
 import { Shopping } from "@/Components/Shopping/Shopping";
@@ -85,6 +85,14 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: "/login",
+    Component: Login
+  },
+  {
+    path: "/register",
+    Component: Register
+  }
 ]);
 
 export default router;

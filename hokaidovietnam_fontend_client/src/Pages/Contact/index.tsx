@@ -60,7 +60,6 @@ export default function Contact() {
             md:pt-12
             lg:pt-14
             xl:pt-[67px]
-            
             `}
       >
         <div
