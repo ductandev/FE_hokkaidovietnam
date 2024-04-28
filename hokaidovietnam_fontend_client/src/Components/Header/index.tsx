@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useWindowDimensions from "@/Hooks/useWindowDimension";
+import { useSelector } from "react-redux";
+import { selectCart } from "@/Redux/selectors/cart.selector";
 
 import { CircleUserRound, ShoppingCart, Search, Menu, X } from "lucide-react";
 import logo from "assets/image/logo.png";
@@ -35,8 +37,12 @@ export default function Header() {
   const { width } = useWindowDimensions();
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
-
+  const cartState = useSelector(selectCart);
+  console.log("from header", {
+    cartState
+  })
   const isUseTransition = location.pathname === "/";
+
   const memorizeMenu = useMemo(() => {
     return MENU_REDIRECT;
   }, []);
@@ -66,13 +72,11 @@ export default function Header() {
 
   return (
     <header
-      className={`header ${
-        isUseTransition ? "header__transparent" : "header__whitebox"
-      } ${
-        isScrolled
+      className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"
+        } ${isScrolled
           ? "header__transparent__scrolling"
           : "header__whitebox__scrolling"
-      } z-50`}
+        } z-50`}
     >
       <div className="header-menu">
         <ul className="header-menu-container">
@@ -120,7 +124,27 @@ export default function Header() {
           <Search className="mr-10 cursor-pointer header-actions-search" />
 
           <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
-          <ShoppingCart className="cursor-pointer" />
+
+          <Link to="/cart" >
+            <div className="relative">
+              <ShoppingCart className="cursor-pointer" />
+
+              <div
+                className="flex items-center justify-center absolute border rounded-full border-red-600"
+                style={{
+                  top: -10,
+                  right: -10,
+                  width: 15,
+                  height: 15
+                }}
+              >
+                <p className="text-xs mb-0 text-red-600">
+                  {cartState.length}
+                </p>
+              </div>
+
+            </div>
+          </Link>
         </div>
       </div>
 

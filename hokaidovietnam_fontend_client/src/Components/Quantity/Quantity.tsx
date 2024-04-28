@@ -4,15 +4,23 @@ import "./styles.scss";
 
 type PropTypes = {
     defaultValue: number;
-    onChanged?: Function
+    onChanged?: Function;
+    hasPreventByLimit?: boolean;
+    limit?: number;
 }
 
 function Quantity(props: PropTypes) {
-    const { defaultValue, onChanged } = props
+    const { defaultValue, onChanged, limit = 0, hasPreventByLimit } = props
     const [value, setValue] = useState(defaultValue);
 
     const increment = () => {
-        const param = value + 1
+        const param = value + 1;
+
+        //* Trường hợp đặt hàng quá số lượng tồn hàng trong kho
+        if (hasPreventByLimit && param > limit) {
+            return;
+        }
+
         setValue(param);
         onChanged && onChanged(param)
     }
@@ -25,9 +33,15 @@ function Quantity(props: PropTypes) {
         onChanged && onChanged(param)
     }
 
-    const onChangeInput = (input: number | string) => {
-        setValue(+input);
-        onChanged && onChanged(input);
+    const onChangeInput = (input: string) => {
+        let returnValue = +input;
+
+        if (hasPreventByLimit && +input > limit) {
+            returnValue = limit
+        }
+
+        setValue(returnValue);
+        onChanged && onChanged(returnValue);
     }
 
     return (
@@ -36,9 +50,18 @@ function Quantity(props: PropTypes) {
                 &mdash;
             </button>
 
-            <input className="quantity-input__screen" type="text" value={value} onChange={(e) => {
-                onChangeInput(e.target.value)
-            }} />
+            <input
+                className="quantity-input__screen"
+                type="text" value={value}
+                onKeyPress={(e) => {
+                    if (!/[0-9]/.test(e.key)) {
+                        e.preventDefault();
+                    }
+                }}
+                onChange={(e: any) => {
+                    onChangeInput(e.target.value)
+                }}
+            />
 
             <button className="quantity-input__modifier quantity-input__modifier--right" onClick={increment}>
                 &#xff0b;
