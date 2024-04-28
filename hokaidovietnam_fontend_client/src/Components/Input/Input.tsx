@@ -13,13 +13,13 @@ interface InputProps {
 
 const Input: React.FC<InputProps> = ({
   id,
+  name,
   type = "text",
   placeholder,
   disabled,
   required,
   onInput,
   onBlur,
-  name,
 }) => {
 
   return (

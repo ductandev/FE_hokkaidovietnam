@@ -7,12 +7,13 @@ import {
   ContactPage,
   CartPage,
   MediaPage,
-  // LoginPage,
+  ForgotPasswordPage
   // ProfilePage,
-  // RegisterPage,
   // SearchPage
 } from "../Pages";
 import HomeTemplate from "../Templates/HomeTemplate";
+import Login from "@/Pages/Login";
+import Register from "@/Pages/Register";
 
 import { Terms } from "@/Components/Tems/Terms";
 import { Shopping } from "@/Components/Shopping/Shopping";
@@ -79,10 +80,18 @@ const router = createBrowserRouter([
         element: <Privacy />,
       },
       {
-        path: "/cart",
-        element: <CartPage />,
+        path: "/forgot-password",
+        element: <ForgotPasswordPage />,
       },
     ],
+  },
+  {
+    path: "/login",
+    Component: Login
+  },
+  {
+    path: "/register",
+    Component: Register
   },
 ]);
 
