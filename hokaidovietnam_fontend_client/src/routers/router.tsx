@@ -14,6 +14,7 @@ import {
 import HomeTemplate from "../Templates/HomeTemplate";
 import Login from "@/Pages/Login";
 import Register from "@/Pages/Register";
+import ForgotPassword from "@/Pages/ForgotPassword";
 
 import { Terms } from "@/Components/Tems/Terms";
 import { Shopping } from "@/Components/Shopping/Shopping";
@@ -92,7 +93,11 @@ const router = createBrowserRouter([
   {
     path: "/register",
     Component: Register
-  }
+  },
+  {
+    path: "/forgot-password",
+    Component: ForgotPassword
+  },
 ]);
 
 export default router;

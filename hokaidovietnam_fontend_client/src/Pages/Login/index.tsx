@@ -7,7 +7,7 @@ import * as yup from "yup";
 
 export interface UserLoginFrm {
     email: string;
-    password: string;
+    mat_khau: string;
     remember: boolean;
 }
 
@@ -16,7 +16,7 @@ export default function Login() {
     const loginFrm = useFormik<UserLoginFrm>({
         initialValues: {
             email: "",
-            password: "",
+            mat_khau: "",
             remember: false,
         },
         validationSchema: yup.object().shape({
@@ -24,11 +24,11 @@ export default function Login() {
                 .string()
                 .required("Email không được bỏ trống!")
                 .email("Email không hợp lệ!"),
-            password: yup
+            mat_khau: yup
                 .string()
-                .required("Password không được bỏ trống!")
-                .min(6, "Password phải từ 6 đến 32 ký tự.")
-                .max(32, "Password phải từ 6 đến 32 ký tự."),
+                .required("Mật khẩu không được bỏ trống!")
+                .min(6, "Mật khẩu phải từ 6 đến 32 ký tự.")
+                .max(32, "Mật khẩu phải từ 6 đến 32 ký tự."),
             remember: yup
                 .boolean()
         }),
@@ -41,8 +41,8 @@ export default function Login() {
 
     return (
         <div>
-            <div className="flex justify-between items-center p-10">
-                <h2 className="text-[32px] leading-none font-light">Tài Khoản Của Tôi</h2>
+            <div className="flex justify-between items-center p-5 sm:p-10">
+                <h2 className="text-2xl sm:text-[32px] leading-none font-light">Tài Khoản Của Tôi</h2>
                 <a href="/">
                     <GrClose className="w-6 h-6" />
                 </a>
@@ -51,18 +51,19 @@ export default function Login() {
             <div className="container mx-auto pt-[50px] leading-none">
                 <h2
                     className={`
+                    pb-[10px] 
+                    mb-[75px]
+
                     text-xl 
                     text-center 
                     font-medium 
-                    pb-[10px] 
                     underline 
                     underline-offset-8
-                    mb-[75px]
                     `}>Đăng Nhập
                 </h2>
 
                 <form
-                    className="w-[400px] max-w-full mx-auto"
+                    className="sm:w-[400px] max-w-full mx-auto"
                     onSubmit={loginFrm.handleSubmit}
                 >
                     <div className="mb-[32px]">
@@ -81,8 +82,8 @@ export default function Login() {
                     </div>
                     <div className="mb-[30px]">
                         <InputFrm
-                            id="password"
-                            name="password"
+                            id="mat_khau"
+                            name="mat_khau"
                             type="password"
                             label="Mật khẩu"
                             required
@@ -90,8 +91,8 @@ export default function Login() {
                             onBlur={loginFrm.handleChange}
                             disabled={false}
                         />
-                        {loginFrm.errors.password && (
-                            <p className="text-rose-500 text-sm mt-1">{loginFrm.errors.password}</p>
+                        {loginFrm.errors.mat_khau && (
+                            <p className="text-rose-500 text-sm mt-1">{loginFrm.errors.mat_khau}</p>
                         )}
                     </div>
                     <div className='mb-[30px] flex items-center'>
@@ -104,7 +105,7 @@ export default function Login() {
                             onInput={loginFrm.handleChange}
                             onBlur={loginFrm.handleChange}
                         />
-                        <label htmlFor='remember' className='select-none ml-2 text-zinc-400'>Remember me</label>
+                        <label htmlFor='remember' className='select-none ml-2 text-zinc-400'>Duy trì đăng nhập</label>
                     </div>
 
                     <button
@@ -116,15 +117,37 @@ export default function Login() {
                     </button>
                 </form>
 
-                <div className="mt-[50px] mb-[30px]">
-                    <h3
+                <div
+                    className={`
+                    sm:w-[400px] 
+                    max-w-full 
+                    mx-auto 
+                    flex 
+                    justify-between
+                    gap-5 
+                    mt-[50px] 
+                    mb-[30px]
+                    `}>
+                    <a
+                        href="/forgot-password"
                         className="
                         text-center 
                         font-medium 
                         underline
                         underline-offset-8">
                         Quên mật khẩu ?
-                    </h3>
+                    </a>
+                    <a
+                        href="/register"
+                        className="
+                        text-center 
+                        font-medium
+                        mb-6
+                        underline
+                        underline-offset-8">
+                        Đăng ký tài khoản
+                    </a>
+
                 </div>
             </div>
         </div>
