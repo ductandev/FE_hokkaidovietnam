@@ -5,7 +5,6 @@ import {
   ProductListPage,
   BrandPage,
   ContactPage,
-  PaymentPage,
   CartPage,
   // LoginPage,
   // ProfilePage,
@@ -74,7 +73,7 @@ const router = createBrowserRouter([
         path: "/privacy",
         element: <Privacy />,
       },
-      {        
+      {
         path: "/cart",
         element: <CartPage />,
       },
