@@ -7,6 +7,14 @@ import { useFormik } from "formik";
 import * as yup from "yup";
 
 import Input from "@/Components/Input/Input";
+import Selection from "@/Components/Selection";
+
+import { useSelector } from "react-redux";
+import { selectCart } from "@/Redux/selectors/cart.selector";
+import { Product } from "@/Types/Product.type";
+import { formatCurrency, summaryPriceInCart } from "@/Helper/helper";
+import { useAddress } from "@/Hooks/useAddress/useAddress";
+import { useReducer } from "react";
 
 export interface UserPaymentFrm {
   email: string;
@@ -17,40 +25,27 @@ export interface UserPaymentFrm {
   notePayment: string;
 }
 
-export interface Product {
-  id: number;
-  image: string;
-  title: string;
-  price: number;
-  quantity: number;
+type AddressState = {
+  provinceId: number | string;
+  districtId: number | string;
+  wardId: number | string;
 }
 
-const arrData = [
-  {
-    id: 1,
-    image: "sp4.png",
-    title: "Sữa tươi nguyên chất 200ml",
-    price: 1000,
-    quantity: 2,
-  },
-  {
-    id: 2,
-    image: "sp5.png",
-    title: "Sữa tươi vị dâu 200ml",
-    price: 500,
-    quantity: 1,
-  },
-  {
-    id: 3,
-    image: "sp6.png",
-    title: "Sữa tươi vị socola 200ml",
-    price: 500,
-    quantity: 1,
-  },
-];
+export default function CheckoutPage() {
+  // * State to handle Address
+  const [state, setState] = useReducer(
+    (data: AddressState, partialData: Partial<AddressState>): AddressState => {
+      return { ...data, ...partialData };
+    },
+    {
+      provinceId: "",
+      districtId: "",
+      wardId: ""
+    },
+  );
+  const { getProvince, getDistrict, getWard }: any = useAddress();
 
-export default function Payments() {
-  // const dispatch: DispatchType = useDispatch();
+  const cartState = useSelector(selectCart);
 
   const paymentFrm = useFormik<UserPaymentFrm>({
     initialValues: {
@@ -90,9 +85,39 @@ export default function Payments() {
     },
   });
 
+  const totalPrice: any = cartState.reduce((accumulator: number, product: Product | any) => {
+    return accumulator + (product.quantity * product.gia_ban);
+  }, 0);
+
+  const handleChangeAddress = (name: string, value: string) => {
+    let updatedState: any = {};
+
+    // Set the value for the input field
+    updatedState[name] = value;
+
+    // Additional logic for specific fields
+    if (name === "provinceId") {
+      // If provinceId is changed, reset districtId and wardId
+      updatedState["districtId"] = "";
+      updatedState["wardId"] = "";
+    } else if (name === "districtId") {
+      // If districtId is changed, reset wardId
+      updatedState["wardId"] = "";
+    }
+
+    setState({
+      ...updatedState
+    });
+  };
+
+  console.log({
+    state
+  })
+
+
   const renderData = (): JSX.Element[] => {
-    return arrData.map((item: Product, index) => {
-      let { id, image, title, price, quantity } = item;
+    return cartState.map((item: Product | any, index) => {
+      let { quantity, ten_san_pham, gia_ban } = item;
 
       return (
         <div
@@ -100,7 +125,6 @@ export default function Payments() {
             flex 
             flex-row 
             justify-between 
-
             text-[10px] 
             lg:text-xl
             font-light
@@ -109,19 +133,19 @@ export default function Payments() {
             mb-[22px] 
             lg:leading-6 
             `}
-          key={id}
+          key={index}
         >
-          <img
+          {/* <img
             className="w-[50px] h-[50px] lg:w-[80px] lg:h-[80px]"
             src={require(`assets/image/${image}`)}
             alt={image}
-          />
+          /> */}
           <div className="w-full">
-            <p className="">{title}</p>
+            <p className="">{ten_san_pham}</p>
             <p className="text-[#777171]">Số lượng: {quantity}</p>
           </div>
           <span className="text-[#777171]">
-            {price}.000đ
+            {formatCurrency(gia_ban)}
           </span>
         </div>
       );
@@ -151,8 +175,6 @@ export default function Payments() {
         <div className="flex flex-col-reverse lg:flex-row lg:mt-16">
 
           <div className="lg:w-[45%] lg:pe-[50px]">
-
-
             <div className="flex flex-row justify-between mb-[14px] lg:mb-5">
               <h1 className="text-[13px] lg:text-2xl leading-6 font-bold">
                 <span className="lg:hidden">
@@ -175,12 +197,14 @@ export default function Payments() {
                 onInput={paymentFrm.handleChange}
                 onBlur={paymentFrm.handleChange}
               />
+
               {paymentFrm.errors.email && (
                 <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
                   {paymentFrm.errors.email}
                 </p>
               )}
             </div>
+
             <div className="relative">
               <Input
                 id="name"
@@ -189,12 +213,14 @@ export default function Payments() {
                 onInput={paymentFrm.handleChange}
                 onBlur={paymentFrm.handleChange}
               />
+
               {paymentFrm.errors.name && (
                 <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
                   {paymentFrm.errors.name}
                 </p>
               )}
             </div>
+
             <div className="relative">
               <div className="flex">
                 <Input
@@ -204,6 +230,7 @@ export default function Payments() {
                   onInput={paymentFrm.handleChange}
                   onBlur={paymentFrm.handleChange}
                 />
+
                 <p
                   className={`
                   flex
@@ -224,6 +251,7 @@ export default function Payments() {
                   +84
                 </p>
               </div>
+
               {paymentFrm.errors.phone && (
                 <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
                   {paymentFrm.errors.phone}
@@ -244,14 +272,46 @@ export default function Payments() {
                 </p>
               )}
             </div>
+
             <div className="relative">
-              <Input
-                id="province"
-                name="province"
-                placeholder="Tỉnh thành"
-                onInput={paymentFrm.handleChange}
-                onBlur={paymentFrm.handleChange}
+              <Selection
+                title="Tỉnh thành"
+                placeholder="Chọn tỉnh thành"
+                options={getProvince()}
+                displayKey={"name"}
+                value={"id"}
+                name="provinceId"
+                onChanged={handleChangeAddress}
+                defaultValue={state.provinceId}
+                customClassTrigger="mb-4"
               />
+
+              <Selection
+                title="Quận huyện"
+                placeholder="Chọn quận/huyện"
+                options={getDistrict(state.provinceId)}
+                displayKey={"name"}
+                value={"id"}
+                name="districtId"
+                onChanged={handleChangeAddress}
+                disabled={!state.provinceId}
+                defaultValue={state.districtId}
+                customClassTrigger="mb-4"
+              />
+
+              <Selection
+                title="Phường xã"
+                placeholder="Chọn phường/xã"
+                options={getWard(state.districtId)}
+                displayKey={"name"}
+                value={"id"}
+                name="wardId"
+                onChanged={handleChangeAddress}
+                disabled={!state.provinceId || !state.districtId}
+                defaultValue={state.wardId}
+                customClassTrigger="mb-4"
+              />
+
               {paymentFrm.errors.province && (
                 <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
                   {paymentFrm.errors.province}
@@ -378,7 +438,7 @@ export default function Payments() {
               lg:mb-[68px]
           `}
             >
-              Đơn hàng (4 sản phẩm)
+              Đơn hàng ({cartState.length} sản phẩm)
             </h1>
 
             {renderData()}
@@ -440,11 +500,11 @@ export default function Payments() {
               leading-6`}>
               <div className="flex justify-between mb-1 lg:mb-5">
                 <p>Tạm tính</p>
-                <p>200.000đ</p>
+                <p>{summaryPriceInCart(cartState)}</p>
               </div>
               <div className="flex justify-between">
                 <p>Phí vận chuyển</p>
-                <p>30.000đ</p>
+                <p>{formatCurrency(30000)}</p>
               </div>
             </div>
 
@@ -459,7 +519,7 @@ export default function Payments() {
                   mb-5
                   lg:mb-9`}>
                 <p>Tổng cộng</p>
-                <p>230.000đ</p>
+                <p>{formatCurrency(totalPrice + 30000)}</p>
               </div>
 
               <div className="hidden lg:flex justify-between text-xl">

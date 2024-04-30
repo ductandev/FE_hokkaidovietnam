@@ -49,7 +49,7 @@ export default function Products() {
     const [detailProduct, setDetailProduct] = useState<Product>();
     const [page, setPage] = useState(1);
     const [quantityState, setQuantityState] = useState<number>(DEFAULT_QUANTITY);
-    const { saveCartStorage, getCartStorage } = useCartStorage();
+    const { saveCartStorage } = useCartStorage();
 
     const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
         queryKey: ['products', page, typeId],
