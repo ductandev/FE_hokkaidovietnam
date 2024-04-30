@@ -7,7 +7,8 @@ import {
   ContactPage,
   CartPage,
   MediaPage,
-  ForgotPasswordPage
+  ForgotPasswordPage,
+  CheckoutPage
   // ProfilePage,
   // SearchPage
 } from "../Pages";
@@ -82,6 +83,10 @@ const router = createBrowserRouter([
       {
         path: "/forgot-password",
         element: <ForgotPasswordPage />,
+      },
+      {
+        path: "/checkout",
+        element: <CheckoutPage />,
       },
     ],
   },

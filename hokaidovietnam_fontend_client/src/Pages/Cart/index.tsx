@@ -173,6 +173,9 @@ export default function Cart() {
                         `}
                         variant={'order-btn-dark'}
                         disabled={!cartState.length}
+                        onClick={() => {
+                            navigate("/checkout")
+                        }}
                     >
                         Đặt hàng ngay
                     </Button>
