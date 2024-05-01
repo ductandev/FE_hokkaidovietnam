@@ -7,15 +7,14 @@ import { HPagination } from "@/Components/Pagination";
 import PageSize from "@/Components/PageSize";
 import { Input } from "@/Components/ui/input"
 
-import { LiaBoxSolid } from "react-icons/lia";
-
+import { FaRegUser } from "react-icons/fa";
 
 
 function AdminCustomer() {
     const Metrics = useMemo(() => {
         return [
             {
-                icon: <LiaBoxSolid />,
+                icon: <FaRegUser />,
                 label: "Khách hàng",
                 index: 55,
                 format: "khách"
