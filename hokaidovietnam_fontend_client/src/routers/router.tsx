@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+
 import {
   ProductDetailPage,
   HomePage,
@@ -12,7 +13,9 @@ import {
   // ProfilePage,
   // SearchPage
 } from "../Pages";
-import HomeTemplate from "../Templates/HomeTemplate";
+
+import { HomeTemplate, AdminTemplate } from "@/Templates";
+
 import Login from "@/Pages/Login";
 import Register from "@/Pages/Register";
 
@@ -22,6 +25,8 @@ import { PaymentsMethod } from "@/Components/Payments/Payments";
 import { Shipping } from "@/Components/Shipping/Shipping";
 import { Return } from "@/Components/Return/Return";
 import { Privacy } from "@/Components/Privacy/Privacy";
+
+import { AdminCustomer, AdminOrder, AdminProduct } from "@/Pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -89,6 +94,24 @@ const router = createBrowserRouter([
         element: <CheckoutPage />,
       },
     ],
+  },
+  {
+    path: "/admin",
+    Component: AdminTemplate,
+    children: [
+      {
+        path: "order",
+        element: <AdminOrder />
+      },
+      {
+        path: "customer",
+        element: <AdminCustomer />
+      },
+      {
+        path: "product",
+        element: <AdminProduct />
+      }
+    ]
   },
   {
     path: "/login",
