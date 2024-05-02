@@ -199,7 +199,14 @@ export class ProductService {
   // ============================================
   async postProduct(files: Express.Multer.File[], body: CreateProductDto, res: Response) {
     try {
-      let { loai_san_pham_id, ten_san_pham, gia_ban, gia_giam, mo_ta_chi_tiet, don_vi_tinh, so_luong_trong_kho } = body;
+      let { loai_san_pham_id, ten_san_pham, gia_ban, gia_giam, mo_ta_chi_tiet, don_vi_tinh, so_luong_trong_kho, ABC } = body;
+      console.log(body);
+
+      const test = body.ABC
+      const test1 = body.XYZ
+
+      console.log("🚀", test);
+      console.log("🚀", test1);
 
       let data = await this.model.sanPham.findFirst({
         where: {
