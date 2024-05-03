@@ -1,7 +1,11 @@
 import InputFrm from "@/Components/Input/InputFrm";
 import { GrClose } from "react-icons/gr";
 
+import { Navigate } from "react-router-dom";
+
 import { useFormik } from "formik";
+import { useAuth } from "@/Auth/AuthProvider";
+
 import * as yup from "yup";
 
 export interface UserRegisterFrm {
@@ -14,6 +18,7 @@ export interface UserRegisterFrm {
 
 
 export default function Register() {
+    const { isLogin } = useAuth();
 
     const registerFrm = useFormik<UserRegisterFrm>({
         initialValues: {
@@ -52,6 +57,10 @@ export default function Register() {
             // dispatch(actionApi);
         },
     });
+
+    if (isLogin) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div>

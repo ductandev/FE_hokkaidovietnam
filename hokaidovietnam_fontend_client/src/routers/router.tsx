@@ -26,6 +26,7 @@ import { Shipping } from "@/Components/Shipping/Shipping";
 import { Return } from "@/Components/Return/Return";
 import { Privacy } from "@/Components/Privacy/Privacy";
 
+// ! Admin Pages
 import { AdminCustomer, AdminOrder, AdminProduct } from "@/Pages/Admin";
 
 const router = createBrowserRouter([
