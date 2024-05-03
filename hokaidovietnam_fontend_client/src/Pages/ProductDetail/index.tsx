@@ -7,7 +7,7 @@ import { EmblaOptionsType } from 'embla-carousel';
 import ProductInformation from './components/ProductInformation/ProductInformation';
 import { ProductDetailSkeleton } from './components/Skeleton';
 
-import { getProduct } from '@/Apis/Product.api';
+import { getProduct } from '@/Apis/Product/Product.api';
 
 import Slider1 from "@/assets/image/detail/slide-1.png"
 import Slider2 from "@/assets/image/detail/slide-2.png"

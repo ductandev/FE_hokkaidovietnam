@@ -1,7 +1,11 @@
+import { Navigate } from "react-router-dom";
+
 import InputFrm from "@/Components/Input/InputFrm";
 import { GrClose } from "react-icons/gr";
 
+import { useAuth } from "@/Auth/AuthProvider";
 import { useFormik } from "formik";
+
 import * as yup from "yup";
 
 
@@ -12,6 +16,7 @@ export interface UserLoginFrm {
 }
 
 export default function Login() {
+    const { isLogin } = useAuth();
 
     const loginFrm = useFormik<UserLoginFrm>({
         initialValues: {
@@ -38,6 +43,10 @@ export default function Login() {
             // dispatch(actionApi);
         },
     });
+
+    if (isLogin) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div>

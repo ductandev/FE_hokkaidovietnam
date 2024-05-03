@@ -10,8 +10,8 @@ export function useLocalStorage() {
   const checkEnableCookie = () => {
     let cookieEnabled = navigator.cookieEnabled;
     if (!cookieEnabled) {
-      document.cookie = "facebookadscookiehere";
-      cookieEnabled = document.cookie.indexOf("facebookadscookiehere") !== -1;
+      document.cookie = "hokkaidocookies";
+      cookieEnabled = document.cookie.indexOf("hokkaidocookies") !== -1;
     }
     return cookieEnabled;
   };

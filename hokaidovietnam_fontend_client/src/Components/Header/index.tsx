@@ -2,6 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useWindowDimensions from "@/Hooks/useWindowDimension";
 import { useSelector } from "react-redux";
+
 import { selectCart } from "@/Redux/selectors/cart.selector";
 
 import { CircleUserRound, ShoppingCart, Search, Menu, X } from "lucide-react";
@@ -38,9 +39,7 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const cartState = useSelector(selectCart);
-  console.log("from header", {
-    cartState
-  })
+
   const isUseTransition = location.pathname === "/";
 
   const memorizeMenu = useMemo(() => {
