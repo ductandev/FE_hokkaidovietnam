@@ -10,11 +10,11 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { CommentModule } from './comment/comment.module';
 
 import { CloudinaryModule } from './cloudinary/cloudinary.module';
-import { ProductTypeModule } from './product-type/product-type.module';
-import { BannerModule } from './banner/banner.module';
+// import { BannerModule } from './banner/banner.module';
+// import { ProductTypeModule } from './product-type/product-type.module';
 import { ProductModule } from './product/product.module';
-import { OrderModule } from './order/order.module';
-import { OrderDetailModule } from './order-detail/order-detail.module';
+// import { OrderModule } from './order/order.module';
+// import { OrderDetailModule } from './order-detail/order-detail.module';
 
 
 @Module({
@@ -25,10 +25,11 @@ import { OrderDetailModule } from './order-detail/order-detail.module';
     UserModule,
     CommentModule,
     ProductModule,
-    ProductTypeModule,
-    OrderModule,
-    OrderDetailModule,
-    BannerModule],
+    // ProductTypeModule,
+    // OrderModule,
+    // OrderDetailModule,
+    // BannerModule],
+  ],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
 })

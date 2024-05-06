@@ -44,14 +44,15 @@ export class ProductService {
   }
 
   // ============================================
-  //        GET ALL PRODUCTS BY TYPE_ID
-  // ============================================ 
+  //   GET ALL PRODUCTS PAGINATION BY TYPE_ID
+  // ============================================
   async getAllProductsByTypeId(typeID: number, pageIndex: number, pageSize: number, res: Response) {
     try {
+      if (pageIndex <= 0 || pageSize <= 0) {
+        return failCode(res, '', 400, "page và limit phải lớn hơn 0 !")
+      }
+
       let index = (pageIndex - 1) * pageSize;
-      if (index < 0) {
-        return failCode(res, '', 400, "pageIndex phải lớn hơn 0 !")
-      };
 
       if (+typeID === 0) {
         let total = await this.model.sanPham.findMany({
@@ -112,7 +113,7 @@ export class ProductService {
   }
 
   // ============================================
-  //           GET NAME PRODUCT BY ID
+  //           GET PRODUCT BY ID
   // ============================================ 
   async getProductById(productID: number, res: Response) {
     try {
@@ -164,42 +165,11 @@ export class ProductService {
 
 
   // ============================================
-  //         GET PANIGATION LIST PRODUCT
-  // ============================================
-  async getPanigationProduct(pageIndex: number, pageSize: number, res: Response) {
-    try {
-      let index = (pageIndex - 1) * pageSize;
-      if (index < 0) {
-        return failCode(res, '', 400, "pageIndex phải lớn hơn 0 !")
-      };
-
-      let data = await this.model.sanPham.findMany({
-        skip: +index,     // Sử dụng skip thay vì offset
-        take: +pageSize,  // Sử dụng take thay vì limit
-        where: {
-          isDelete: false,
-        }
-      });
-
-      if (data.length === 0) {
-        return successCode(res, data, 200, "Không có dữ liệu sản phẩm được tìm thấy !")
-      }
-
-      successCode(res, data, 200, "Thành công !")
-    }
-    catch (exception) {
-      console.log("🚀 ~ file: product.service.ts:123 ~ ProductService ~ getPanigationRoom ~ exception:", exception);
-      errorCode(res, "Lỗi BE")
-    }
-  }
-
-
-  // ============================================
   //                POST PRODUCT  
   // ============================================
   async postProduct(files: Express.Multer.File[], body: CreateProductDto, res: Response) {
     try {
-      let { loai_san_pham_id, ten_san_pham, gia_ban, gia_giam, mo_ta_chi_tiet, don_vi_tinh, so_luong_trong_kho } = body;
+      let { loai_san_pham_id, ten_san_pham, gia_ban, gia_giam, mo_ta, thong_tin_chi_tiet, so_luong_trong_kho } = body;
 
       let data = await this.model.sanPham.findFirst({
         where: {
@@ -237,8 +207,8 @@ export class ProductService {
           ten_san_pham,
           gia_ban: +gia_ban,
           gia_giam: +gia_giam,
-          mo_ta_chi_tiet,
-          don_vi_tinh,
+          mo_ta,
+          thong_tin_chi_tiet,
           so_luong_trong_kho: +so_luong_trong_kho,
           hinh_anh: dataCloudinaryArray.map(item => item.url),        // Lấy ra array URL
         }

@@ -1,19 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Delete,
-  UseGuards,
-  HttpCode,
-  Res,
-  Put,
-  UseInterceptors,
-  UploadedFiles,
-  Patch,
-  Query,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Delete, UseGuards, HttpCode, Res, Put, UseInterceptors, UploadedFiles, Patch, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
@@ -34,7 +19,7 @@ import { FileUploadDto_product } from './dto/upload.dto';
 // @UseGuards(AuthGuard("jwt"))
 // @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @ApiTags('SanPham')
-@Controller('api/')
+@Controller('api/product')
 export class ProductController {
   constructor(private readonly productService: ProductService) { }
 
@@ -43,17 +28,17 @@ export class ProductController {
   // ============================================
   @HttpCode(200)
   // @Roles(Role.ADMIN, Role.USER)
-  @Get('products')
+  @Get('/')
   getAllProducts(@Res() res: Response) {
     return this.productService.getAllProducts(res);
   }
 
   // ============================================
-  //        GET ALL PRODUCTS BY TYPE_ID
+  //   GET ALL PRODUCTS PAGINATION BY TYPE_ID
   // ============================================
   @HttpCode(200)
   // @Roles(Role.ADMIN, Role.USER)
-  @Get('products-pagination')
+  @Get('pagination')
   getAllProductsByTypeId(
     @Query('typeID') typeID: number,
     @Query('page') pageIndex: number,
@@ -69,13 +54,13 @@ export class ProductController {
   }
 
   // ============================================
-  //          GET NAME PRODUCT BY ID
+  //          GET PRODUCT BY ID
   // ============================================
   @HttpCode(200)
   // @Roles(Role.ADMIN, Role.USER)
-  @Get('get-product-by-id/:productID')
-  getProductById(@Param('productID') productID: number, @Res() res: Response) {
-    return this.productService.getProductById(productID, res);
+  @Get('/:id')
+  getProductById(@Param('id') id: number, @Res() res: Response) {
+    return this.productService.getProductById(id, res);
   }
 
   // ============================================
@@ -83,28 +68,12 @@ export class ProductController {
   // ============================================
   @HttpCode(200)
   // @Roles(Role.ADMIN, Role.USER)
-  @Get('get-product-by-name/:nameProduct')
+  @Get('name/:name')
   getNameProduct(
-    @Param('nameProduct') nameProduct: string,
+    @Param('name') name: string,
     @Res() res: Response,
   ) {
-    return this.productService.getNameProduct(nameProduct, res);
-  }
-
-  // ============================================
-  //        GET PANIGATION LIST PRODUCT
-  // ============================================
-  @HttpCode(200)
-  // @Roles(Role.ADMIN, Role.USER)
-  // @Get("get-pagination-product/:pageIndex/:pageSize")
-  // get-pagination-product?pageIndex=1&pageSize=3
-  @Get('get-pagination-product')
-  getPanigationProduct(
-    @Query('page') pageIndex: number,
-    @Query('limit') pageSize: number,
-    @Res() res: Response,
-  ) {
-    return this.productService.getPanigationProduct(pageIndex, pageSize, res);
+    return this.productService.getNameProduct(name, res);
   }
 
   // ============================================
@@ -114,7 +83,7 @@ export class ProductController {
   @HttpCode(201)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
-  @Post('post-product')
+  @Post('/')
   @UseInterceptors(FilesInterceptor('hinhAnh', 20))
   postProduct(
     @UploadedFiles() files: Express.Multer.File[],

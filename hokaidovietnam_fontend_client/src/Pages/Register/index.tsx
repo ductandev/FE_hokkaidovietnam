@@ -142,7 +142,7 @@ export default function Register() {
                             id='gioi_tinh1'
                             name='gioi_tinh'
                             type='radio'
-                            value="true"
+                            value="Nam"
                             className="w-6 h-6 bg-[#e4e6eb] me-2"
                             style={{ border: "1px solid #e4e6eb" }}
                             onInput={registerFrm.handleChange}
@@ -154,7 +154,7 @@ export default function Register() {
                             id='gioi_tinh2'
                             name='gioi_tinh'
                             type='radio'
-                            value="false"
+                            value="Nữ"
                             className="w-6 h-6 bg-[#e4e6eb] me-2"
                             style={{ border: "1px solid #e4e6eb" }}
                             onInput={registerFrm.handleChange}
