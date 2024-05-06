@@ -6,7 +6,7 @@ import ProductListPage from "./ProductList";
 import HomePage from "./Home";
 import ProfilePage from "./Profile";
 import SearchPage from "./Search";
-import PaymentPage from "./Payments"
+import CheckoutPage from "./Checkout"
 import MediaPage from "./Media";
 import ForgotPasswordPage from "./ForgotPassword";
 
@@ -19,7 +19,7 @@ export {
     HomePage,
     ProfilePage,
     SearchPage,
-    PaymentPage,
+    CheckoutPage,
     MediaPage,
     ForgotPasswordPage,
 }

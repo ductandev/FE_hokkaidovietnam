@@ -1,4 +1,5 @@
 import { createBrowserRouter } from "react-router-dom";
+
 import {
   ProductDetailPage,
   HomePage,
@@ -7,11 +8,14 @@ import {
   ContactPage,
   CartPage,
   MediaPage,
-  ForgotPasswordPage
+  ForgotPasswordPage,
+  CheckoutPage
   // ProfilePage,
   // SearchPage
 } from "../Pages";
-import HomeTemplate from "../Templates/HomeTemplate";
+
+import { HomeTemplate, AdminTemplate } from "@/Templates";
+
 import Login from "@/Pages/Login";
 import Register from "@/Pages/Register";
 
@@ -21,6 +25,9 @@ import { PaymentsMethod } from "@/Components/Payments/Payments";
 import { Shipping } from "@/Components/Shipping/Shipping";
 import { Return } from "@/Components/Return/Return";
 import { Privacy } from "@/Components/Privacy/Privacy";
+
+// ! Admin Pages
+import { AdminCustomer, AdminOrder, AdminProduct } from "@/Pages/Admin";
 
 const router = createBrowserRouter([
   {
@@ -83,7 +90,29 @@ const router = createBrowserRouter([
         path: "/forgot-password",
         element: <ForgotPasswordPage />,
       },
+      {
+        path: "/checkout",
+        element: <CheckoutPage />,
+      },
     ],
+  },
+  {
+    path: "/admin",
+    Component: AdminTemplate,
+    children: [
+      {
+        path: "order",
+        element: <AdminOrder />
+      },
+      {
+        path: "customer",
+        element: <AdminCustomer />
+      },
+      {
+        path: "product",
+        element: <AdminProduct />
+      }
+    ]
   },
   {
     path: "/login",

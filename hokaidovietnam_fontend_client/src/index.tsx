@@ -16,6 +16,8 @@ import { store } from './Redux/configStore';
 import router from './routers/router';
 
 import 'react-toastify/dist/ReactToastify.css';
+// * Provider authentication Handler
+import { AuthProvider } from './Auth/AuthProvider';
 // import "react-image-gallery/styles/scss/image-gallery.scss";
 
 const root = ReactDOM.createRoot(document.getElementById('root') as HTMLElement);
@@ -26,9 +28,11 @@ const queryClient = new QueryClient()
 root.render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-            <ToastContainer />
+            <AuthProvider>
+                <ToastContainer />
 
-            <RouterProvider router={router} />
+                <RouterProvider router={router} />
+            </AuthProvider>
         </QueryClientProvider>
     </Provider>
 );
