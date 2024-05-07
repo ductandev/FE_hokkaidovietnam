@@ -34,7 +34,7 @@ export class ProductController {
   }
 
   // ============================================
-  //   GET ALL PRODUCTS PAGINATION BY TYPE_ID
+  // GET ALL PRODUCTS PAGINATION BY TYPE_ID SEARCH
   // ============================================
   @HttpCode(200)
   // @Roles(Role.ADMIN, Role.USER)
@@ -43,12 +43,14 @@ export class ProductController {
     @Query('typeID') typeID: number,
     @Query('page') pageIndex: number,
     @Query('limit') pageSize: number,
+    @Query('search') search: string,
     @Res() res: Response,
   ) {
     return this.productService.getAllProductsByTypeId(
       typeID,
       pageIndex,
       pageSize,
+      search,
       res,
     );
   }
@@ -84,7 +86,7 @@ export class ProductController {
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
   @Post('/')
-  @UseInterceptors(FilesInterceptor('hinhAnh', 20))
+  @UseInterceptors(FilesInterceptor('hinh_anh', 20))
   postProduct(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() body: CreateProductDto,
@@ -99,13 +101,13 @@ export class ProductController {
   @HttpCode(200)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
-  @Put('put-product-info/:productID')
+  @Put('info/:id')
   putRoom(
-    @Param('productID') productID: number,
+    @Param('id') id: number,
     @Body() body: UpdateProductDto,
     @Res() res: Response,
   ) {
-    return this.productService.putProduct(productID, body, res);
+    return this.productService.putProduct(id, body, res);
   }
 
   // ============================================
@@ -115,15 +117,15 @@ export class ProductController {
   @HttpCode(200)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
-  @Put('put-product-img/:productID')
-  @UseInterceptors(FilesInterceptor('hinhAnh', 20))
+  @Put('img/:id')
+  @UseInterceptors(FilesInterceptor('hinh_anh', 20))
   putProductImg(
     @UploadedFiles() files: Express.Multer.File[],
-    @Param('productID') productID: number,
+    @Param('id') id: number,
     @Body() body: FileUploadDto_product,
     @Res() res: Response,
   ) {
-    return this.productService.putProductImg(files, productID, body, res);
+    return this.productService.putProductImg(files, id, body, res);
   }
 
   // ============================================
@@ -132,8 +134,8 @@ export class ProductController {
   @HttpCode(200)
   @UseGuards(AuthenticationGuard, AuthorizationGuard)
   @Roles(Role.ADMIN)
-  @Delete('delete-product/:productID')
-  deleteProduct(@Param('productID') productID: number, @Res() res: Response) {
-    return this.productService.deleteProduct(productID, res);
+  @Delete('/:id')
+  deleteProduct(@Param('id') id: number, @Res() res: Response) {
+    return this.productService.deleteProduct(id, res);
   }
 }

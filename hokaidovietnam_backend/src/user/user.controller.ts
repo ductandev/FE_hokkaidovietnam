@@ -81,7 +81,7 @@ export class UserController {
     @HttpCode(201)
     @Roles(Role.ADMIN, Role.USER)
     @Post("upload-avatar/:id")
-    @UseInterceptors(FileInterceptor("hinhAnh"))     // Tham số 1: key FE gửi lên
+    @UseInterceptors(FileInterceptor("hinh_anh"))     // Tham số 1: key FE gửi lên
 
     // ************* CÁCH DƯỚI NÀY ĐỂ UPLOAD LƯU VÀO LOCAL SOURCE BE ***************
     // @UseInterceptors(FileInterceptor("hinhAnh",     // Tham số 1: key FE gửi lên

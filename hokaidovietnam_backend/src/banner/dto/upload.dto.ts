@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 
-export class FileUploadDto_user {
+export class FileUploadDto_banner {
     @ApiProperty()
     email: string
 

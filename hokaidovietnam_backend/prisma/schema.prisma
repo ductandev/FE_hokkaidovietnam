@@ -76,9 +76,9 @@ model LoaiSanPham {
 
 model NguoiDung {
   nguoi_dung_id Int        @id @default(autoincrement())
-  vai_tro_id    Int?       @default(3)
-  email         String     @db.VarChar(100)
+  vai_tro_id    Int?       @default(2)
   ho_ten        String     @db.VarChar(100)
+  email         String     @db.VarChar(100)
   mat_khau      String     @db.VarChar(255)
   dia_chi       String     @db.VarChar(255)
   so_dien_thoai String     @unique(map: "so_dien_thoai") @db.VarChar(50)
@@ -172,9 +172,13 @@ model LienHe {
 }
 
 model TinTuc {
-  tin_tuc_id Int      @id @default(autoincrement())
-  noi_dung   String?  @db.Text
-  isDelete   Boolean? @default(false)
+  tin_tuc_id         Int      @id @default(autoincrement())
+  hinh_anh           String?  @db.VarChar(255)
+  tieu_de            String?  @db.VarChar(255)
+  mo_ta              String?  @db.Text
+  noi_dung           String?  @db.Text
+  bai_viet_lien_quan Json?
+  isDelete           Boolean? @default(false)
 }
 
 model TrangThaiDonHang {
