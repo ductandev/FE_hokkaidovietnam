@@ -27,8 +27,8 @@ import Slider4 from "@/assets/image/detail/slide-4.png";
 import { HandleAddCart, formatCurrency } from "@/Helper/helper";
 
 // ! Apis and Types
-import { getProducts } from "@/Apis/Product.api";
-import { getProductTypes } from "@/Apis/ProductType.api";
+import { getProducts } from "@/Apis/Product/Product.api";
+import { getProductTypes } from "@/Apis/Product/ProductType.api";
 import { Product } from "@/Types/Product.type";
 
 const PAGE_SIZE = 8;
@@ -49,7 +49,7 @@ export default function Products() {
     const [detailProduct, setDetailProduct] = useState<Product>();
     const [page, setPage] = useState(1);
     const [quantityState, setQuantityState] = useState<number>(DEFAULT_QUANTITY);
-    const { saveCartStorage, getCartStorage } = useCartStorage();
+    const { saveCartStorage } = useCartStorage();
 
     const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
         queryKey: ['products', page, typeId],

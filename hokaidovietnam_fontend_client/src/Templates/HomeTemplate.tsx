@@ -1,10 +1,12 @@
 import React, { useEffect } from 'react'
 import { Outlet } from 'react-router-dom'
+import { useCartStorage } from '@/Hooks/useCartStorage'
+import { useDispatch } from 'react-redux'
 
 import Header from '@/Components/Header'
 import Footer from '@/Components/Footer'
-import { useCartStorage } from '@/Hooks/useCartStorage'
-import { useDispatch } from 'react-redux'
+
+
 import { actions } from '@/Redux/actions/cart.action'
 
 const HomeTemplate: React.FC = (): JSX.Element => {
@@ -17,7 +19,7 @@ const HomeTemplate: React.FC = (): JSX.Element => {
 
         dispatch(actions.setCart(currentCart || []))
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, []);
 
     return (
         <>

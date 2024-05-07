@@ -1,0 +1,27 @@
+.metric-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    &-icon {
+        margin-right: 42px;
+        color: #1E537C;
+        font-size: 50px;
+    }
+
+    &-label {
+        color: #000000;
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    &-index {
+        color: #1E537C;
+        font-size: 24px;
+        font-weight: 600;
+    }
+}

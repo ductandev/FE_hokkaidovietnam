@@ -1,19 +1,25 @@
 import InputFrm from "@/Components/Input/InputFrm";
 import { GrClose } from "react-icons/gr";
 
+import { Navigate } from "react-router-dom";
+
 import { useFormik } from "formik";
+import { useAuth } from "@/Auth/AuthProvider";
+
 import * as yup from "yup";
 
 export interface UserRegisterFrm {
-    ho_ten: string,
     email: string,
     mat_khau: string,
+    ho_ten: string,
     so_dien_thoai: string,
+    dia_chi: string,
     gioi_tinh: boolean,
 }
 
 
 export default function Register() {
+    const { isLogin } = useAuth();
 
     const registerFrm = useFormik<UserRegisterFrm>({
         initialValues: {
@@ -21,6 +27,7 @@ export default function Register() {
             email: "",
             mat_khau: "",
             so_dien_thoai: "",
+            dia_chi: "",
             gioi_tinh: true,
         },
         validationSchema: yup.object().shape({
@@ -43,6 +50,9 @@ export default function Register() {
                 .matches(/\d$/, "Vui lòng chỉ điền số!")
                 .min(10, "Số điện tối thiểu là 10 số!")
                 .max(10, "Số điện tối đa là 10 số!"),
+            dia_chi: yup
+                .string()
+                .required("Địa chỉ không được bỏ trống!"),
             gioi_tinh: yup
                 .boolean()
         }),
@@ -52,6 +62,10 @@ export default function Register() {
             // dispatch(actionApi);
         },
     });
+
+    if (isLogin) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div>
@@ -80,20 +94,6 @@ export default function Register() {
                     className="sm:w-[400px] max-w-full mx-auto"
                     onSubmit={registerFrm.handleSubmit}
                 >
-                    <div className="mb-[20px]">
-                        <InputFrm
-                            id="ho_ten"
-                            name="ho_ten"
-                            label="Họ Và Tên"
-                            required
-                            onInput={registerFrm.handleChange}
-                            onBlur={registerFrm.handleChange}
-                            disabled={false}
-                        />
-                        {registerFrm.errors.ho_ten && (
-                            <p className="text-rose-500 text-sm mt-1">{registerFrm.errors.ho_ten}</p>
-                        )}
-                    </div>
                     <div className="mb-[20px]">
                         <InputFrm
                             id="email"
@@ -125,6 +125,20 @@ export default function Register() {
                     </div>
                     <div className="mb-[20px]">
                         <InputFrm
+                            id="ho_ten"
+                            name="ho_ten"
+                            label="Họ Và Tên"
+                            required
+                            onInput={registerFrm.handleChange}
+                            onBlur={registerFrm.handleChange}
+                            disabled={false}
+                        />
+                        {registerFrm.errors.ho_ten && (
+                            <p className="text-rose-500 text-sm mt-1">{registerFrm.errors.ho_ten}</p>
+                        )}
+                    </div>
+                    <div className="mb-[20px]">
+                        <InputFrm
                             id="so_dien_thoai"
                             name="so_dien_thoai"
                             label="Số Điện Thoại"
@@ -135,6 +149,20 @@ export default function Register() {
                         />
                         {registerFrm.errors.so_dien_thoai && (
                             <p className="text-rose-500 text-sm mt-1">{registerFrm.errors.so_dien_thoai}</p>
+                        )}
+                    </div>
+                    <div className="mb-[20px]">
+                        <InputFrm
+                            id="dia_chi"
+                            name="dia_chi"
+                            label="Địa chỉ"
+                            required
+                            onInput={registerFrm.handleChange}
+                            onBlur={registerFrm.handleChange}
+                            disabled={false}
+                        />
+                        {registerFrm.errors.dia_chi && (
+                            <p className="text-rose-500 text-sm mt-1">{registerFrm.errors.dia_chi}</p>
                         )}
                     </div>
                     <div className='mb-[20px] flex items-center'>
