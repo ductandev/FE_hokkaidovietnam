@@ -1,16 +1,53 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
+import { useProducts } from "@/Hooks/useProduct";
+import useDebouncedCallback from "@/Hooks/useDebounceCallback";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
 import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
+import { Input } from "@/Components/ui/input";
 import PageSize from "@/Components/PageSize";
-import { Input } from "@/Components/ui/input"
 
 import { LuPackageSearch } from "react-icons/lu";
 import { LiaBoxSolid } from "react-icons/lia";
+import { useQuery } from "react-query";
+import { getProductTypes } from "@/Apis/Product/ProductType.api";
 
 function AdminProduct() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [search, setSearch] = useState("");
+    const [debouncedValue, setDebouncedValue] = useState("");
+
+    const {
+        isLoading,
+        data
+    } = useProducts({ page, pageSize, search: debouncedValue });
+
+    const { isLoading: isLoadingProductType, data: productType }: any = useQuery({
+        queryKey: ['productType'],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000)
+            return getProductTypes(controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
+
+
+
+    const handleChangeDebounced = (value: string) => {
+        setPage(1);
+        setDebouncedValue(value);
+    };
+
+    const [debouncedCallback] = useDebouncedCallback(handleChangeDebounced, 500, [search]);
+
     const Metrics = useMemo(() => {
         return [
             {
@@ -25,7 +62,7 @@ function AdminProduct() {
                 index: 5,
                 format: "loại"
             },
-        ]
+        ];
     }, []);
 
     return (
@@ -45,10 +82,20 @@ function AdminProduct() {
                     <PageSize
                         options={[10, 20, 50]}
                         className="mr-6"
-                        defaultValue={10}
+                        defaultValue={pageSize}
+                        onChange={(size: number) => {
+                            setPage(1);
+                            setPageSize(size)
+                        }}
                     />
 
-                    <Input placeholder="Tìm kiếm" />
+                    <Input placeholder="Tìm kiếm"
+                        value={search}
+                        onChange={(event) => {
+                            debouncedCallback(event.target.value);
+                            setSearch(event.target.value)
+                        }}
+                    />
                 </div>
 
                 <Button>
@@ -56,13 +103,26 @@ function AdminProduct() {
                 </Button>
             </div>
 
-            <DataGrid />
+            {isLoading || isLoadingProductType ? <>
+                <p>Đang tải</p>
+            </> :
+                <DataGrid
+                    data={data?.content}
+                    type={'product'}
+                    page={page}
+                    pageSize={pageSize}
+                    addon={productType?.data?.content}
+                />
+            }
+
 
             <HPagination
-                total={200}
-                pageSize={8}
-                current={2}
-                onChangePage={(page: number) => { }}
+                total={data?.total || 0}
+                pageSize={pageSize}
+                current={page}
+                onChangePage={(page: number) => {
+                    setPage(page)
+                }}
             />
         </div>
     )

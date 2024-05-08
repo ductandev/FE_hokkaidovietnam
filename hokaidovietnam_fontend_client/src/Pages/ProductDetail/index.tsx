@@ -6,6 +6,8 @@ import { ImageGallery } from "@/Components/ImageGallery/ImageGallery"
 import { EmblaOptionsType } from 'embla-carousel';
 import ProductInformation from './components/ProductInformation/ProductInformation';
 import { ProductDetailSkeleton } from './components/Skeleton';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
+import { Divider } from '@/Components/Divider';
 
 import { getProduct } from '@/Apis/Product/Product.api';
 
@@ -47,6 +49,21 @@ export default function ProductDetail() {
                         <ProductInformation {...data?.data?.content} />
                     </div>
             }
+
+            <div className="container mb-10">
+                <Divider />
+            </div>
+
+            <div className='container text-center w-full'>
+                <Tabs defaultValue="account" className="w-[400px]">
+                    <TabsList>
+                        <TabsTrigger value="account">Account</TabsTrigger>
+                        <TabsTrigger value="password">Password</TabsTrigger>
+                    </TabsList>
+                    <TabsContent value="account">Make changes to your account here.</TabsContent>
+                    <TabsContent value="password">Change your password here.</TabsContent>
+                </Tabs>
+            </div>
         </main>
     )
 }

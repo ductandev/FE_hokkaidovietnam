@@ -17,12 +17,6 @@ import BlankPage from "@/Components/BlankPage/BlankPage";
 import Quantity from "@/Components/Quantity/Quantity";
 import { Button } from "@/Components/ui/button";
 
-// ! Assests
-import Slider1 from "@/assets/image/detail/slide-1.png";
-import Slider2 from "@/assets/image/detail/slide-2.png";
-import Slider3 from "@/assets/image/detail/slide-3.png";
-import Slider4 from "@/assets/image/detail/slide-4.png";
-
 // ! Helpers
 import { HandleAddCart, formatCurrency } from "@/Helper/helper";
 
@@ -59,7 +53,7 @@ export default function Products() {
             setTimeout(() => {
                 controller.abort()
             }, 5000)
-            return getProducts(page, PAGE_SIZE, typeId, controller.signal)
+            return getProducts(page, PAGE_SIZE, typeId, "", controller.signal)
         },
         keepPreviousData: true,
         retry: 0
@@ -87,18 +81,12 @@ export default function Products() {
         }
     };
 
-    const slideImages = [
-        Slider1,
-        Slider2,
-        Slider3,
-        Slider4
-    ]
 
     const renderXMLBody = () => {
         return <div className="grid grid-cols-2 mt-12">
             <div>
                 <ImageGallery
-                    slides={slideImages}
+                    slides={detailProduct?.hinh_anh || []}
                     options={{}}
                     customClass="pr-10 w-full"
                     showArrow

@@ -7,7 +7,6 @@ import { useAuth } from '@/Auth/AuthProvider';
 
 
 const SIDEBAR_WITDH = `230px`;
-const HEADER_HEIGHT = `120px`;
 
 const AdminTemplate: React.FC = (): JSX.Element => {
     const { isLogin } = useAuth();
@@ -19,7 +18,6 @@ const AdminTemplate: React.FC = (): JSX.Element => {
 
     const isDesktop = {
         width: `calc(100vw - ${SIDEBAR_WITDH})`,
-        maxHeight: `calc(100vh - ${HEADER_HEIGHT})`,
         marginLeft: `${SIDEBAR_WITDH}`,
         padding: 24
     };

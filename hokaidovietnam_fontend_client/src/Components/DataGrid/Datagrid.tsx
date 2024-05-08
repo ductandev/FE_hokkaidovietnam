@@ -1,48 +1,75 @@
-import { columnsOrder } from "./columns"
-import { DataTable } from "./data-table"
+import { useDeferredValue, useEffect, useState } from "react";
+
+import { columnsProduct } from "./columns";
+import { DataTable } from "./data-table";
+import ProductStatus from "../ProductStatus";
+
+import { ProductType } from "@/Types/ProductType.type";
+
+enum EnumTableDefine {
+    product = 'product',
+    order = 'order',
+    customer = 'customer',
+};
+
+type PropsType = {
+    data: Array<any>;
+    type: EnumTableDefine | string;
+    pageSize: number;
+    page: number;
+    addon: any
+}
+
+export default function DataGrid(props: PropsType) {
+    const { data, type, pageSize, page, addon } = props;
+
+    const [defaultDataTable, setDefaultDataTable] = useState(data);
 
 
-export default function DataGrid() {
-    const data: any = [
-        {
-            index: 1,
-            ma_don_hang: "#123556",
-            ten_khach_hang: "Nguyễn Thị Bé Ba",
-            ngay_tao: "12/12/2022",
-            thanh_tien: 120000,
-            thanh_toan: "cod",
-            trang_thai: "done",
-            hanh_dong: {
-                edit: () => {
-                    console.log("edit")
-                },
-                delete: () => {
-                    console.log("delete")
+    const renderProductTypeXML = (loai_san_pham_id: number) => {
+        return addon.find((y: ProductType) => y.loai_san_pham_id === loai_san_pham_id).ten_loai_san_pham
+    }
+
+    const renderProductStatusXML = (trang_thai_san_pham: number) => {
+        return <ProductStatus status={trang_thai_san_pham} />
+    }
+
+
+    useEffect(() => {
+        const result = data?.map((object, idx) => {
+            const position = idx + 1;
+            const paged = pageSize * (page - 1);
+
+            if (type === 'product') {
+                return {
+                    ...object,
+                    index: position + paged,
+                    renderProductType: renderProductTypeXML(object.loai_san_pham_id),
+                    renderProductStatus: renderProductStatusXML(object.trang_thai_san_pham),
+                }
+            } else {
+                return {
+                    ...object, index: position + paged
                 }
             }
-        },
-        {
-            index: 2,
-            ma_don_hang: "#123526",
-            ten_khach_hang: "Nguyễn Thị Bé Hai",
-            ngay_tao: "12/12/2022",
-            thanh_tien: 120000,
-            thanh_toan: "cash",
-            trang_thai: "cancel",
-            hanh_dong: {
-                edit: () => {
-                    console.log("edit")
-                },
-                delete: () => {
-                    console.log("delete")
-                }
-            }
-        },
-    ]
+
+        });
+
+        setDefaultDataTable(result);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [data, page, pageSize]);
+
+
+    const deferredValue = useDeferredValue(defaultDataTable);
+
+    const columnType: any = {
+        product: columnsProduct
+    }
 
     return (
         <div className="py-10">
-            <DataTable columns={columnsOrder} data={data} />
+            <DataTable columns={columnType[type]} data={deferredValue} />
         </div>
     )
 }

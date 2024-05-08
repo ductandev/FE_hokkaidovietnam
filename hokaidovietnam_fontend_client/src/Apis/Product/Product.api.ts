@@ -2,7 +2,7 @@ import { Products, Product } from '@/Types/Product.type'
 import http from "@/lib/utils"
 
 const Models = {
-    list: 'products-pagination',
+    list: 'product/pagination',
     item: 'get-product-by-id'
 };
 
@@ -10,12 +10,14 @@ export const getProducts = (
     page: number | string,
     limit: number | string,
     typeId: number | string,
+    search: string,
     signal?: AbortSignal) =>
     http.get<Products>(`${Models.list}`, {
         params: {
             page,
             limit,
-            typeID: typeId
+            typeID: typeId,
+            ...(search && { search: search })
         },
         signal
     });

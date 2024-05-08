@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import DataGrid from "@/Components/DataGrid/Datagrid";
+// import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
 import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
@@ -50,7 +50,7 @@ function AdminCustomer() {
                 </Button>
             </div>
 
-            <DataGrid />
+            {/* <DataGrid /> */}
 
             <HPagination
                 total={200}

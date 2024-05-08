@@ -1,8 +1,36 @@
+import { getProducts } from "@/Apis/Product/Product.api";
+import { useQuery } from "react-query";
+
+type TypeListProduct = {
+    page: string | number;
+    pageSize: string | number;
+    search: string;
+}
+const PAGE_SIZE = 10;
+
+export const useProducts = ({ page, pageSize = PAGE_SIZE, search = "" }: TypeListProduct) => {
+    const { isLoading, data }: any = useQuery({
+        queryKey: ['products', `${page}_${search}_${pageSize}`],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000);
+
+            return getProducts(page, pageSize, 0, search, controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
+
+    return { isLoading, data: data?.data }
+}
+
 export const useProduct = () => {
-    const getProduct = () => { } // * Lấy danh sách sản phẩm
     const editProduct = () => { } // * Sửa sản phẩm
     const deleteProduct = () => { } // * Xoá sản phẩm
     const addProduct = () => { } // * Thêm sản phẩm
 
-    return { getProduct, editProduct, deleteProduct, addProduct }
+    return { editProduct, deleteProduct, addProduct }
 }
