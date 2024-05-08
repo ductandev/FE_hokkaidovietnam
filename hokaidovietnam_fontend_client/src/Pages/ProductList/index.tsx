@@ -53,7 +53,7 @@ export default function Products() {
             setTimeout(() => {
                 controller.abort()
             }, 5000)
-            return getProducts(page, PAGE_SIZE, typeId, controller.signal)
+            return getProducts(page, PAGE_SIZE, typeId, "", controller.signal)
         },
         keepPreviousData: true,
         retry: 0

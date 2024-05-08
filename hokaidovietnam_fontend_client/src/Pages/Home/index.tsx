@@ -45,7 +45,7 @@ export default function Home() {
       setTimeout(() => {
         controller.abort()
       }, 5000)
-      return getProducts(1, 4, 0, controller.signal)
+      return getProducts(1, 4, 0, "", controller.signal)
     },
     keepPreviousData: true,
     retry: 0

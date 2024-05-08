@@ -27,6 +27,9 @@ function PageSize(props: any) {
                     displayKey="label"
                     title="Hiển thị"
                     defaultValue={defaultValue}
+                    onChanged={(name: any, value: any) => {
+                        onChange && onChange(value)
+                    }}
                 />
             </div>
         </div>

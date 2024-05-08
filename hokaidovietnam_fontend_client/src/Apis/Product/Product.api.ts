@@ -10,12 +10,14 @@ export const getProducts = (
     page: number | string,
     limit: number | string,
     typeId: number | string,
+    search: string,
     signal?: AbortSignal) =>
     http.get<Products>(`${Models.list}`, {
         params: {
             page,
             limit,
-            typeID: typeId
+            typeID: typeId,
+            ...(search && { search: search })
         },
         signal
     });
