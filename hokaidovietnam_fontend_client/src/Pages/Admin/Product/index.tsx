@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
@@ -9,8 +9,20 @@ import { Input } from "@/Components/ui/input"
 
 import { LuPackageSearch } from "react-icons/lu";
 import { LiaBoxSolid } from "react-icons/lia";
+import useDebouncedCallback from "@/Hooks/useDebounceCallback";
 
 function AdminProduct() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [search, setSearch] = useState("");
+    const [debouncedValue, setDebouncedValue] = useState("");
+
+    const handleChangeDebounced = (value: string) => {
+        setDebouncedValue(value);
+    };
+
+    const [debouncedCallback] = useDebouncedCallback(handleChangeDebounced, 500, [search]);
+
     const Metrics = useMemo(() => {
         return [
             {
@@ -46,9 +58,18 @@ function AdminProduct() {
                         options={[10, 20, 50]}
                         className="mr-6"
                         defaultValue={10}
+                        onChange={(size: number) => {
+                            setPageSize(size)
+                        }}
                     />
 
-                    <Input placeholder="Tìm kiếm" />
+                    <Input placeholder="Tìm kiếm"
+                        value={search}
+                        onChange={(event) => {
+                            debouncedCallback(event.target.value);
+                            setSearch(event.target.value)
+                        }}
+                    />
                 </div>
 
                 <Button>
@@ -59,10 +80,12 @@ function AdminProduct() {
             <DataGrid />
 
             <HPagination
-                total={200}
-                pageSize={8}
-                current={2}
-                onChangePage={(page: number) => { }}
+                total={30}
+                pageSize={pageSize}
+                current={page}
+                onChangePage={(page: number) => {
+                    setPage(page)
+                }}
             />
         </div>
     )

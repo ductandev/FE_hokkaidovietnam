@@ -16,9 +16,8 @@ export interface UserRegisterFrm {
     gioi_tinh: boolean,
 }
 
-
 export default function Register() {
-    const { isLogin } = useAuth();
+    const { isLogin, signUp } = useAuth();
 
     const registerFrm = useFormik<UserRegisterFrm>({
         initialValues: {
@@ -52,9 +51,7 @@ export default function Register() {
                 .boolean()
         }),
         onSubmit: (values: UserRegisterFrm) => {
-            console.log(values)
-            // const actionApi = loginAsyncAction(values);
-            // dispatch(actionApi);
+            signUp(values);
         },
     });
 

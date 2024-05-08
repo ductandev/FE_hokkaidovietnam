@@ -6,7 +6,7 @@ export interface Product {
     san_pham_id: number
     loai_san_pham_id: number
     ten_san_pham: string
-    hinh_anh: HinhAnh
+    hinh_anh: Array<HinhAnh>
     gia_ban: number
     gia_giam: number
     mo_ta_chi_tiet: number

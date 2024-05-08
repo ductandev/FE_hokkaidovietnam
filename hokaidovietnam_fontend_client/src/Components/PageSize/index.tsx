@@ -1,8 +1,10 @@
 import Selection from "@/Components/Selection";
 
 function PageSize(props: any) {
-    const { defaultValue, options,
-        // onChange,
+    const {
+        defaultValue,
+        options,
+        onChange,
         className } = props;
 
     const reOptions = options.map((option: any) => {
