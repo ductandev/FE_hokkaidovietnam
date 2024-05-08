@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 
 export class CreateProductDto {
-    [x: string]: any;
+    // [x: string]: any;
     @ApiProperty()
     loai_san_pham_id?: number
 
