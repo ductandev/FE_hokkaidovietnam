@@ -32,58 +32,32 @@ import FarmCrew from "@/Components/FarmCrew/FarmCrew";
 import OrganicMilk from "@/Components/OrganicMilk/OrganicMilk";
 import FieldLife from "@/Components/FieldLife/FieldLife";
 import { ProductCard } from "@/Components/ProductCard";
+import { useQuery } from "react-query";
+import { getProducts } from "@/Apis/Product/Product.api";
 
-
-const PRODUCTS: Array<any> = [
-  {
-    id: "_pid1",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid2",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid3",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid4",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid5",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid6",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid7",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-  {
-    id: "_pid8",
-    product_name: "Sữa tươi nguyên chất 200ml",
-    product_price: "50000"
-  },
-];
 
 export default function Home() {
+  const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
+    queryKey: ['products'],
+    queryFn: () => {
+      const controller = new AbortController();
+
+      setTimeout(() => {
+        controller.abort()
+      }, 5000)
+      return getProducts(1, 4, 0, "", controller.signal)
+    },
+    keepPreviousData: true,
+    retry: 0
+  });
+
   const slides: string[] = [
     "https://images.pexels.com/photos/10829198/pexels-photo-10829198.jpeg",
     "https://images.unsplash.com/photo-1594731884638-8197c3102d1d",
     "https://images.pexels.com/photos/12639450/pexels-photo-12639450.jpeg",
     "https://images.unsplash.com/photo-1580570598977-4b2412d01bbc",
   ];
+
   useEffect(() => {
     const handlePlayButtonClick = () => {
       const videoUrl = "https://www.youtube.com/watch?v=fYUYUhdsxiY";
@@ -152,10 +126,8 @@ export default function Home() {
   };
 
 
-  const firstFourProducts = PRODUCTS.slice(0, 4);
-
   const RenderProductCards = (): JSX.Element[] => {
-    return firstFourProducts.map((product, idx) => {
+    return productList?.data?.content?.map((product: any, idx: any) => {
       return (
         <Fragment key={`${product.id}_${idx}`}>
           <ProductCard {...product} />
@@ -449,7 +421,7 @@ export default function Home() {
           SẢN PHẨM NỔI BẬT
         </h1>
         <div className="container grid grid-cols-2 lg:grid-cols-4 gap-5">
-          {RenderProductCards()}
+          {!isLoadingProductList && RenderProductCards()}
         </div>
         <a href="/products" className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform">
           Xem thêm

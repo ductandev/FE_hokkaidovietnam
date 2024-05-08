@@ -16,7 +16,7 @@ export interface UserLoginFrm {
 }
 
 export default function Login() {
-    const { isLogin } = useAuth();
+    const { isLogin, signIn } = useAuth();
 
     const loginFrm = useFormik<UserLoginFrm>({
         initialValues: {
@@ -31,16 +31,14 @@ export default function Login() {
                 .email("Email không hợp lệ!"),
             mat_khau: yup
                 .string()
-                .required("Mật khẩu không được bỏ trống!")
-                .min(6, "Mật khẩu phải từ 6 đến 32 ký tự.")
-                .max(32, "Mật khẩu phải từ 6 đến 32 ký tự."),
+                .required("Mật khẩu không được bỏ trống!"),
+            // .min(6, "Mật khẩu phải từ 6 đến 32 ký tự.")
+            // .max(32, "Mật khẩu phải từ 6 đến 32 ký tự."),
             remember: yup
                 .boolean()
         }),
         onSubmit: (values: UserLoginFrm) => {
-            console.log(values)
-            // const actionApi = loginAsyncAction(values);
-            // dispatch(actionApi);
+            signIn(values);
         },
     });
 

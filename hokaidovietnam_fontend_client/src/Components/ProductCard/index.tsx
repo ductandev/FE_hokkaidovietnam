@@ -22,7 +22,8 @@ export const ProductCard: React.FC<PropTypes | MergedType | any> = (props: PropT
         san_pham_id,
         ten_san_pham,
         onShowDetail,
-        isSkeleton = false
+        isSkeleton = false,
+        hinh_anh
     } = props;
 
     const navigate = useNavigate();
@@ -49,7 +50,7 @@ export const ProductCard: React.FC<PropTypes | MergedType | any> = (props: PropT
             <div className="h-96 w-full" onClick={() => {
                 onShowDetail && onShowDetail(san_pham_id)
             }}>
-                <img src="https://source.unsplash.com/random" alt="" className="mx-auto max-w-full h-full" />
+                <img src={hinh_anh[0] || ""} alt="" className="mx-auto max-w-full h-full" />
             </div>
 
             <div className="text-center">

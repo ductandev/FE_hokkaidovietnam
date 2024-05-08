@@ -3,7 +3,7 @@ import http from "@/lib/utils"
 
 
 const Models = {
-    list: 'product-type/get-all-product-type',
+    list: 'product-type',
 };
 
 export const getProductTypes = (
