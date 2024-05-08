@@ -32,7 +32,6 @@ export class NewsController {
     return this.newsService.getAllNews(res)
   }
 
-
   // ============================================
   //          GET PANIGATION LIST NEWS
   // ============================================

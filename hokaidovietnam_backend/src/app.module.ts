@@ -16,6 +16,7 @@ import { ProductModule } from './product/product.module';
 // import { OrderModule } from './order/order.module';
 // import { OrderDetailModule } from './order-detail/order-detail.module';
 import { NewsModule } from './news/news.module';
+import { ContactModule } from './contact/contact.module';
 
 
 @Module({
@@ -30,7 +31,8 @@ import { NewsModule } from './news/news.module';
     // OrderModule,
     // OrderDetailModule,
     BannerModule,
-    NewsModule],
+    NewsModule,
+    ContactModule],
   controllers: [AppController],
   providers: [AppService, JwtStrategy],
 })

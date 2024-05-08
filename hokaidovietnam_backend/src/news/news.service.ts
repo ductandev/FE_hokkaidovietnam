@@ -4,7 +4,6 @@ import { errorCode, failCode, successCode } from 'src/Config/response';
 
 
 import { CreateNewsDto } from './dto/create-news.dto';
-import { UpdateNewsDto } from './dto/update-news.dto';
 import { Response } from 'express';
 
 // =================CLOUDYNARY=====================

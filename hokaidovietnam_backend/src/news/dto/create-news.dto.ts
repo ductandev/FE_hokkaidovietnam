@@ -10,7 +10,7 @@ export class CreateNewsDto {
     @ApiProperty()
     noi_dung?: string
 
-    @ApiProperty()
+    @ApiProperty({ type: 'array', required: false })
     bai_viet_lien_quan?: []
 
 
