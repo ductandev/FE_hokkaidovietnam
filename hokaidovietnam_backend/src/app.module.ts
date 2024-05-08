@@ -14,7 +14,7 @@ import { BannerModule } from './banner/banner.module';
 import { ProductTypeModule } from './product-type/product-type.module';
 import { ProductModule } from './product/product.module';
 import { OrderModule } from './order/order.module';
-// import { OrderDetailModule } from './order-detail/order-detail.module';
+import { OrderDetailModule } from './order-detail/order-detail.module';
 import { NewsModule } from './news/news.module';
 import { ContactModule } from './contact/contact.module';
 import { CartModule } from './cart/cart.module';
@@ -30,7 +30,7 @@ import { CartModule } from './cart/cart.module';
     ProductModule,
     ProductTypeModule,
     OrderModule,
-    // OrderDetailModule,
+    OrderDetailModule,
     BannerModule,
     NewsModule,
     ContactModule,
