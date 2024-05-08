@@ -71,6 +71,9 @@ export class ContactService {
               contains: search   // LIKE '%nameProduct%'
             },
             isDelete: false
+          },
+          include: {
+            TrangThaiLienHe: true
           }
         });
 
@@ -104,6 +107,9 @@ export class ContactService {
           },
           trang_thai_lien_he_id: +typeID,
           isDelete: false
+        },
+        include: {
+          TrangThaiLienHe: true
         }
       });
 
