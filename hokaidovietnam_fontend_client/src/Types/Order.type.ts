@@ -6,4 +6,4 @@ export interface Order {
     trang_thai_dat_hang: boolean;
 }
 
-export type Orders = Pick<Order, 'so_phieu'>[]
+export type Orders = Array<Order>

@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 
 // import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
@@ -8,9 +8,21 @@ import PageSize from "@/Components/PageSize";
 import { Input } from "@/Components/ui/input"
 
 import { FaRegUser } from "react-icons/fa";
-
+import useDebouncedCallback from "@/Hooks/useDebounceCallback";
+import { useCustomerList } from "@/Hooks/useCustomer";
+import DataGrid from "@/Components/DataGrid/Datagrid";
 
 function AdminCustomer() {
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(10);
+    const [search, setSearch] = useState("");
+    const [debouncedValue, setDebouncedValue] = useState("");
+
+    const {
+        isLoading,
+        data
+    } = useCustomerList({ page, pageSize, search: debouncedValue });
+
     const Metrics = useMemo(() => {
         return [
             {
@@ -21,6 +33,13 @@ function AdminCustomer() {
             },
         ]
     }, []);
+
+    const handleChangeDebounced = (value: string) => {
+        setPage(1);
+        setDebouncedValue(value);
+    };
+
+    const [debouncedCallback] = useDebouncedCallback(handleChangeDebounced, 500, [search]);
 
     return (
         <div>
@@ -39,24 +58,46 @@ function AdminCustomer() {
                     <PageSize
                         options={[10, 20, 50]}
                         className="mr-6"
-                        defaultValue={10}
+                        defaultValue={pageSize}
+                        onChange={(size: number) => {
+                            setPage(1);
+                            setPageSize(size)
+                        }}
                     />
 
-                    <Input placeholder="Tìm kiếm" />
+                    <Input placeholder="Tìm kiếm"
+                        value={search}
+                        onChange={(event) => {
+                            debouncedCallback(event.target.value);
+                            setSearch(event.target.value)
+                        }}
+                    />
                 </div>
 
                 <Button>
-                    Tạo khách hàng
+                    Tạo sản phẩm
                 </Button>
             </div>
 
-            {/* <DataGrid /> */}
+            {isLoading ? <>
+                <p>Đang tải</p>
+            </> :
+                <DataGrid
+                    data={data?.content}
+                    type={'customer'}
+                    page={page}
+                    pageSize={pageSize}
+                />
+            }
+
 
             <HPagination
-                total={200}
-                pageSize={8}
-                current={2}
-                onChangePage={(page: number) => { }}
+                total={data?.total || 0}
+                pageSize={pageSize}
+                current={page}
+                onChangePage={(page: number) => {
+                    setPage(page)
+                }}
             />
         </div>
     )

@@ -41,3 +41,20 @@ export const summaryPriceInCart = (cart: Product[]) => {
 
     return formatCurrency(totalPrice)
 }
+
+export function formatTime(utcTime: any, format: string) {
+    const date = new Date(utcTime);
+    const day = ("0" + date.getUTCDate()).slice(-2);
+    const month = ("0" + (date.getUTCMonth() + 1)).slice(-2);
+    const year: any = date.getUTCFullYear();
+    const hours = ("0" + date.getUTCHours()).slice(-2);
+    const minutes = ("0" + date.getUTCMinutes()).slice(-2);
+
+    // Replace placeholders in the format string with corresponding values
+    format = format.replace("dd", day);
+    format = format.replace("mm", month);
+    format = format.replace("yyyy", year);
+    format = format.replace("hh", hours);
+    format = format.replace("mm", minutes);
+    return format;
+}

@@ -8,9 +8,9 @@ type TypeListOrder = {
     pageSize: string | number;
     search: string;
 }
-const PAGE_SIZE = 10;
+const DEFAULT_PAGE_SIZE = 10;
 
-export const useOrderList = ({ page, pageSize = PAGE_SIZE, search = "" }: TypeListOrder) => {
+export const useOrderList = ({ page, pageSize = DEFAULT_PAGE_SIZE, search = "" }: TypeListOrder) => {
     const { isLoading, data }: any = useQuery({
         queryKey: ['orders', `${page}_${search}`],
         queryFn: () => {
@@ -18,19 +18,18 @@ export const useOrderList = ({ page, pageSize = PAGE_SIZE, search = "" }: TypeLi
 
             setTimeout(() => {
                 controller.abort()
-            }, 5000)
+            }, 5000);
+
             return getOrders(page, pageSize, search, controller.signal)
         },
         keepPreviousData: true,
         retry: 0
     });
 
-    return { isLoading, data }
+    return { isLoading, data: data?.data }
 }
 
 export const useOrder = () => {
-
-
     const editOrder = () => { } // * Sửa đơn hàng
 
     const deleteOrder = () => { } // * Xoá đơn hàng

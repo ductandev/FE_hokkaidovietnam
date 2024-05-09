@@ -1,5 +1,5 @@
 import { Products, Product } from '@/Types/Product.type'
-import http from "@/lib/utils"
+import { http } from "@/lib/utils"
 
 const Models = {
     list: 'product/pagination',

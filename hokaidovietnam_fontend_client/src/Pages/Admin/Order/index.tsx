@@ -1,6 +1,6 @@
 import { useMemo, useState } from "react";
 
-// import DataGrid from "@/Components/DataGrid/Datagrid";
+import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
 import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
@@ -53,9 +53,8 @@ function AdminOrder() {
     console.log({ data })
 
     return (
-
         <div>
-            <div className="flex justify-between items-center">
+            <div className="flex items-center">
                 {Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
@@ -70,38 +69,46 @@ function AdminOrder() {
                     <PageSize
                         options={[10, 20, 50]}
                         className="mr-6"
-                        defaultValue={10}
+                        defaultValue={pageSize}
                         onChange={(size: number) => {
+                            setPage(1);
                             setPageSize(size)
                         }}
                     />
 
-                    <Input placeholder="Tìm kiếm" value={search} onChange={(event) => {
-                        debouncedCallback(event.target.value);
-
-                        setSearch(event.target.value)
-                    }} />
+                    <Input placeholder="Tìm kiếm"
+                        value={search}
+                        onChange={(event) => {
+                            debouncedCallback(event.target.value);
+                            setSearch(event.target.value)
+                        }}
+                    />
                 </div>
 
-
-
                 <Button>
-                    Tạo đơn hàng
+                    Tạo sản phẩm
                 </Button>
             </div>
 
-            {!isLoading && <>
-                {/* <DataGrid /> */}
-
-                <HPagination
-                    total={30}
+            {isLoading ? <>
+                <p>Đang tải</p>
+            </> :
+                <DataGrid
+                    data={data?.content || []}
+                    type={'order'}
+                    page={page}
                     pageSize={pageSize}
-                    current={page}
-                    onChangePage={(page: number) => {
-                        setPage(page)
-                    }}
                 />
-            </>}
+            }
+
+            <HPagination
+                total={data?.total || 0}
+                pageSize={pageSize}
+                current={page}
+                onChangePage={(page: number) => {
+                    setPage(page)
+                }}
+            />
         </div>
     )
 }

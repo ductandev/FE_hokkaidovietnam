@@ -39,8 +39,6 @@ function AdminProduct() {
         retry: 0
     });
 
-
-
     const handleChangeDebounced = (value: string) => {
         setPage(1);
         setDebouncedValue(value);
