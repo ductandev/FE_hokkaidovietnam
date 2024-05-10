@@ -10,7 +10,7 @@ import * as yup from "yup";
 
 
 export interface UserLoginFrm {
-    email: string;
+    email_or_phone: string;
     mat_khau: string;
     remember: boolean;
 }
@@ -20,20 +20,19 @@ export default function Login() {
 
     const loginFrm = useFormik<UserLoginFrm>({
         initialValues: {
-            email: "",
+            email_or_phone: "",
             mat_khau: "",
             remember: false,
         },
         validationSchema: yup.object().shape({
-            email: yup
+            email_or_phone: yup
                 .string()
-                .required("Email không được bỏ trống!")
-                .email("Email không hợp lệ!"),
+                .required("Email hoặc số điện thoại không được bỏ trống!"),
             mat_khau: yup
                 .string()
-                .required("Mật khẩu không được bỏ trống!"),
-            // .min(6, "Mật khẩu phải từ 6 đến 32 ký tự.")
-            // .max(32, "Mật khẩu phải từ 6 đến 32 ký tự."),
+                .required("Mật khẩu không được bỏ trống!")
+                .min(6, "Mật khẩu phải từ 6 đến 32 ký tự.")
+                .max(32, "Mật khẩu phải từ 6 đến 32 ký tự."),
             remember: yup
                 .boolean()
         }),
@@ -75,16 +74,16 @@ export default function Login() {
                 >
                     <div className="mb-[32px]">
                         <InputFrm
-                            id="email"
-                            name="email"
-                            label="Email"
+                            id="email_or_phone"
+                            name="email_or_phone"
+                            label="Email hoặc SĐT"
                             required
                             onInput={loginFrm.handleChange}
                             onBlur={loginFrm.handleChange}
                             disabled={false}
                         />
-                        {loginFrm.errors.email && (
-                            <p className="text-rose-500 text-sm mt-1">{loginFrm.errors.email}</p>
+                        {loginFrm.errors.email_or_phone && (
+                            <p className="text-rose-500 text-sm mt-1">{loginFrm.errors.email_or_phone}</p>
                         )}
                     </div>
                     <div className="mb-[30px]">
