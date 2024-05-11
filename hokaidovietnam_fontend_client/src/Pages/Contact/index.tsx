@@ -13,9 +13,9 @@ import { contactAsyncAction } from "@/Redux/reducers/contactReducer";
 import Input from "@/Components/Input/Input";
 
 export interface UserContactFrm {
-  name: string;
+  ho_ten: string;
   email: string;
-  contentContact: string;
+  noi_dung: string;
 }
 
 export default function Contact() {
@@ -23,12 +23,12 @@ export default function Contact() {
 
   const contactFrm = useFormik<UserContactFrm>({
     initialValues: {
-      name: "",
+      ho_ten: "",
       email: "",
-      contentContact: "",
+      noi_dung: "",
     },
     validationSchema: yup.object().shape({
-      name: yup
+      ho_ten: yup
         .string()
         .required("Họ và tên không được bỏ trống!")
         .matches(
@@ -39,7 +39,7 @@ export default function Contact() {
         .string()
         .required("Email không được bỏ trống!")
         .email("Email không hợp lệ!"),
-      contentContact: yup.string(),
+      noi_dung: yup.string(),
     }),
     onSubmit: async (values: UserContactFrm) => {
       console.log(values);
@@ -103,15 +103,15 @@ export default function Contact() {
               <form onSubmit={contactFrm.handleSubmit}>
                 <div className="relative">
                   <Input
-                    id="name"
-                    name="name"
+                    id="ho_ten"
+                    name="ho_ten"
                     placeholder="Họ và tên"
                     onInput={contactFrm.handleChange}
                     onBlur={contactFrm.handleChange}
                   />
-                  {contactFrm.errors.name && (
+                  {contactFrm.errors.ho_ten && (
                     <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
-                      {contactFrm.errors.name}
+                      {contactFrm.errors.ho_ten}
                     </p>
                   )}
                 </div>
@@ -130,8 +130,8 @@ export default function Contact() {
                   )}
                 </div>
                 <textarea
-                  id="contentContact"
-                  name="contentContact"
+                  id="noi_dung"
+                  name="noi_dung"
                   className={`indent-3 sm:indent-5 h-[69px] sm:h-[104px] w-full mb-5 pt-1 text-[10px] sm:text-base`}
                   placeholder="Nội dung"
                   style={{ border: "0.5px solid #777171" }}

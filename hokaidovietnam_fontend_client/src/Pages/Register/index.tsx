@@ -9,12 +9,12 @@ import { useAuth } from "@/Auth/AuthProvider";
 import * as yup from "yup";
 
 export interface UserRegisterFrm {
+    ho_ten: string,
     email: string,
     mat_khau: string,
-    ho_ten: string,
     so_dien_thoai: string,
     dia_chi: string,
-    gioi_tinh: boolean,
+    gioi_tinh: string,
 }
 
 export default function Register() {
@@ -27,7 +27,7 @@ export default function Register() {
             mat_khau: "",
             so_dien_thoai: "",
             dia_chi: "",
-            gioi_tinh: true,
+            gioi_tinh: "Nam",
         },
         validationSchema: yup.object().shape({
             ho_ten: yup
@@ -53,9 +53,10 @@ export default function Register() {
                 .string()
                 .required("Địa chỉ không được bỏ trống!"),
             gioi_tinh: yup
-                .boolean()
+                .string()
         }),
         onSubmit: (values: UserRegisterFrm) => {
+            console.log("🚀 ", values);
             signUp(values);
         },
     });
