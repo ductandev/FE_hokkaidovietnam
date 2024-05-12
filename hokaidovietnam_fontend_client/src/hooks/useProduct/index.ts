@@ -1,4 +1,4 @@
-import { getProducts } from "@/Apis/Product/Product.api";
+import { getProductSummary, getProducts } from "@/Apis/Product/Product.api";
 import { useQuery } from "react-query";
 
 type TypeListProduct = {
@@ -19,6 +19,25 @@ export const useProducts = ({ page, pageSize = PAGE_SIZE, search = "" }: TypeLis
             }, 5000);
 
             return getProducts(page, pageSize, 0, search, controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
+
+    return { isLoading, data: data?.data }
+};
+
+export const useProductSummary = () => {
+    const { isLoading, data }: any = useQuery({
+        queryKey: ['product_summary'],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000);
+
+            return getProductSummary(controller.signal)
         },
         keepPreviousData: true,
         retry: 0

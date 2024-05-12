@@ -10,6 +10,7 @@ export interface authContextState {
     signUp: Function,
     signOut: Function,
     isLogin: any
+    isAdmin: boolean
 }
 
 export interface AppProviderProps {
@@ -20,15 +21,19 @@ export const AuthContext = React.createContext<authContextState>({
     signIn: () => { },
     signUp: () => { },
     signOut: () => { },
-    isLogin: false
+    isLogin: false,
+    isAdmin: false,
 });
 
 export const ACCESS_TOKEN_KEY = 'hk_tk_access';
+export const HK_ROLE = "hk_role";
 
 export const AuthProvider = function (props: AppProviderProps) {
     const { setItem, removeItem, getItem } = useLocalStorage();
 
     const [isLogin, setIsLogin] = useState<any>(getItem(ACCESS_TOKEN_KEY));
+    const getDefaultRole: any = getItem(HK_ROLE) || 0
+    const [isAdmin, setIsAdmin] = useState<boolean>(parseInt(getDefaultRole) === 1);
 
     const { mutateAsync: mutateAsyncLogin }: any = useMutation({
         mutationFn: (body: UserLogin) => {
@@ -45,9 +50,11 @@ export const AuthProvider = function (props: AppProviderProps) {
     const signIn = async (payload: UserLogin) => {
         try {
             const response = await mutateAsyncLogin(payload);
-            const token = response.data.content;
+            const token = response.data.token;
             setItem(ACCESS_TOKEN_KEY, token);
-            setIsLogin(true)
+            setItem(HK_ROLE, response.data.content.vai_tro_id);
+            setIsLogin(true);
+            setIsAdmin(response.data.content.vai_tro_id === 1)
         } catch (error) {
             console.log(error);
         }
@@ -66,13 +73,15 @@ export const AuthProvider = function (props: AppProviderProps) {
         // ! Clear token
         removeItem(ACCESS_TOKEN_KEY);
         setIsLogin(false)
+        setIsAdmin(false)
     }
 
     const authContextState = {
         signIn,
         signUp,
         signOut,
-        isLogin
+        isLogin,
+        isAdmin
     } as authContextState;
 
     return (

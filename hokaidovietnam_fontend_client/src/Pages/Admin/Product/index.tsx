@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useProducts } from "@/Hooks/useProduct";
+import { useProductSummary, useProducts } from "@/Hooks/useProduct";
 import useDebouncedCallback from "@/Hooks/useDebounceCallback";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
@@ -24,6 +24,7 @@ function AdminProduct() {
         isLoading,
         data
     } = useProducts({ page, pageSize, search: debouncedValue });
+    const { isLoading: isLoadingSummary, data: dataSummary } = useProductSummary();
 
     const { isLoading: isLoadingProductType, data: productType }: any = useQuery({
         queryKey: ['productType'],
@@ -51,22 +52,24 @@ function AdminProduct() {
             {
                 icon: <LuPackageSearch />,
                 label: "Số lượng sản phẩm",
-                index: 55,
+                index: dataSummary?.content?.totalProduct,
                 format: "sản phẩm"
             },
             {
                 icon: <LiaBoxSolid />,
                 label: "Loại sản phẩm",
-                index: 5,
+                index: dataSummary?.content?.totalTypeProduct,
                 format: "loại"
             },
         ];
-    }, []);
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataSummary]);
 
     return (
         <div>
             <div className="flex items-center">
-                {Metrics.map((metric, index) => {
+                {!isLoadingSummary && Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>

@@ -204,6 +204,50 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
     },
 ];
 
+export const columnsContact: ColumnDef<Customer>[] = [
+    {
+        accessorKey: "index",
+        header: "Số thứ tự",
+    },
+    {
+        accessorKey: "ho_ten",
+        header: "Tên khách hàng",
+    },
+    {
+        accessorKey: "don_da_mua",
+        header: "Đơn đã mua",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span >
+                    {row?.original?.DonHang.length}
+                </span>
+            </div>
+        },
+    },
+    {
+        accessorKey: "dia_chi",
+        header: "Địa chỉ",
+    },
+    {
+        accessorKey: "email",
+        header: "Email",
+    },
+    {
+        accessorKey: "so_dien_thoai",
+        header: "Số điện thoại",
+    },
+    {
+        accessorKey: "hanh_dong",
+        header: "Hành động",
+        cell: ({ row }) => {
+            return <div className="flex items-center justify-start">
+                <span className="mr-4" >{svgEdit}</span>
+                <span >{svgDelete}</span>
+            </div>
+        },
+    },
+];
+
 const svgEdit = <svg xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 25 25" fill="none">
     <path d="M11.625 4.5H4.625C4.09457 4.5 3.58586 4.71071 3.21079 5.08579C2.83571 5.46086 2.625 5.96957 2.625 6.5V20.5C2.625 21.0304 2.83571 21.5391 3.21079 21.9142C3.58586 22.2893 4.09457 22.5 4.625 22.5H18.625C19.1554 22.5 19.6641 22.2893 20.0392 21.9142C20.4143 21.5391 20.625 21.0304 20.625 20.5V13.5" stroke="#624DE3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
     <path d="M19.125 2.99998C19.5228 2.60216 20.0624 2.37866 20.625 2.37866C21.1876 2.37866 21.7272 2.60216 22.125 2.99998C22.5228 3.39781 22.7463 3.93737 22.7463 4.49998C22.7463 5.06259 22.5228 5.60216 22.125 5.99998L12.625 15.5L8.625 16.5L9.625 12.5L19.125 2.99998Z" stroke="#624DE3" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />

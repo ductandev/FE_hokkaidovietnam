@@ -6,4 +6,7 @@ export type UserRegister = {
     anh_dai_dien: string,
     gioi_tinh: string
 }
-export type UserLogin = Pick<UserRegister, 'email' | 'mat_khau'>
+export type UserLogin = {
+    email_or_phone: string | number;
+    mat_khau: string;
+}

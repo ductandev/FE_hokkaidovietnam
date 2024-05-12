@@ -1,4 +1,6 @@
 import { useMemo, useState } from "react";
+import useDebouncedCallback from "@/Hooks/useDebounceCallback";
+import { useOrderList, useOrderSummary } from "@/Hooks/useOrder";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
@@ -10,14 +12,15 @@ import { Input } from "@/Components/ui/input"
 import { IoCartOutline } from "react-icons/io5";
 import { BsWallet2 } from "react-icons/bs";
 import { BsBoxSeam } from "react-icons/bs";
-import { useOrderList } from "@/Hooks/useOrder";
-import useDebouncedCallback from "@/Hooks/useDebounceCallback";
 
 function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
+
+    const { isLoading, data } = useOrderList({ page, pageSize, search: debouncedValue });
+    const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
 
     const handleChangeDebounced = (value: string) => {
         setDebouncedValue(value);
@@ -30,32 +33,30 @@ function AdminOrder() {
             {
                 icon: <BsBoxSeam />,
                 label: "Tổng đơn hàng",
-                index: 55,
+                index: dataSummary?.content?.totalOrderStatusDone,
                 format: "đơn"
             },
             {
                 icon: <IoCartOutline />,
                 label: "Đơn hàng trong tháng",
-                index: 25,
+                index: dataSummary?.content?.totalOderOnMonth,
                 format: "đơn"
             },
             {
                 icon: <BsWallet2 />,
                 label: "Doanh số",
-                index: 999000000,
+                index: dataSummary?.content?.nestSaleSummary,
                 format: "currency"
             }
-        ]
-    }, []);
+        ];
 
-    const { isLoading, data } = useOrderList({ page, pageSize, search: debouncedValue });
-
-    console.log({ data })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataSummary]);
 
     return (
         <div>
             <div className="flex items-center">
-                {Metrics.map((metric, index) => {
+                {!isLoadingSummary && Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>

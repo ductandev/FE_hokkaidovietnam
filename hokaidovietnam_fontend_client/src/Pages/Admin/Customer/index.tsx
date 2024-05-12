@@ -9,7 +9,7 @@ import { Input } from "@/Components/ui/input"
 
 import { FaRegUser } from "react-icons/fa";
 import useDebouncedCallback from "@/Hooks/useDebounceCallback";
-import { useCustomerList } from "@/Hooks/useCustomer";
+import { useCustomerList, useCustomerSummary } from "@/Hooks/useCustomer";
 import DataGrid from "@/Components/DataGrid/Datagrid";
 
 function AdminCustomer() {
@@ -22,17 +22,19 @@ function AdminCustomer() {
         isLoading,
         data
     } = useCustomerList({ page, pageSize, search: debouncedValue });
+    const { isLoading: isLoadingSummary, data: dataSummary } = useCustomerSummary();
 
     const Metrics = useMemo(() => {
         return [
             {
                 icon: <FaRegUser />,
                 label: "Khách hàng",
-                index: 55,
+                index: dataSummary?.content?.totalUser,
                 format: "khách"
             },
         ]
-    }, []);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataSummary]);
 
     const handleChangeDebounced = (value: string) => {
         setPage(1);
@@ -44,7 +46,7 @@ function AdminCustomer() {
     return (
         <div>
             <div className="flex items-center">
-                {Metrics.map((metric, index) => {
+                {!isLoadingSummary && Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>

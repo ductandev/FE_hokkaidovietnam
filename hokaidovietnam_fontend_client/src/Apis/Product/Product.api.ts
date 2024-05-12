@@ -3,7 +3,8 @@ import { http } from "@/lib/utils"
 
 const Models = {
     list: 'product/pagination',
-    item: 'get-product-by-id'
+    item: 'get-product-by-id',
+    summary: "product/summary"
 };
 
 export const getProducts = (
@@ -19,6 +20,12 @@ export const getProducts = (
             typeID: typeId,
             ...(search && { search: search })
         },
+        signal
+    });
+
+export const getProductSummary = (
+    signal?: AbortSignal) =>
+    http.get(`${Models.summary}`, {
         signal
     });
 

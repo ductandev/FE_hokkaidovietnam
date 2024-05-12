@@ -7,6 +7,7 @@ import { httpGuard } from "@/lib/utils";
 
 const Models = {
     list: 'order',
+    summary: "order/summary"
 };
 
 export const getOrders = (
@@ -20,6 +21,12 @@ export const getOrders = (
             limit,
             ...(search && { search }),
         },
+        signal
+    });
+
+export const getOrderSummary = (
+    signal?: AbortSignal) =>
+    httpGuard.get(`${Models.summary}`, {
         signal
     });
 

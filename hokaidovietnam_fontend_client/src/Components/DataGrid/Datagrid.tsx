@@ -1,6 +1,6 @@
 import { useDeferredValue, useEffect, useState } from "react";
 
-import { columnsCustomer, columnsOrder, columnsProduct } from "./columns";
+import { columnsContact, columnsCustomer, columnsOrder, columnsProduct } from "./columns";
 import { DataTable } from "./data-table";
 import ProductStatus from "../ProductStatus";
 
@@ -66,7 +66,8 @@ export default function DataGrid(props: PropsType) {
     const columnType: any = {
         product: columnsProduct,
         order: columnsOrder,
-        customer: columnsCustomer
+        customer: columnsCustomer,
+        contact: columnsContact
     }
 
     return (

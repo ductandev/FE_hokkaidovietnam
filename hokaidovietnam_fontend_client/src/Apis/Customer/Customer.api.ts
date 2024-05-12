@@ -3,6 +3,7 @@ import { httpGuard } from "@/lib/utils"
 
 const Models = {
     list: 'user/pagination',
+    summary: 'user/summary',
 };
 
 export const getCustomers = (
@@ -17,6 +18,12 @@ export const getCustomers = (
             vaiTroID: 0,
             ...(search && { search: search })
         },
+        signal
+    });
+
+export const getCustomerSummary = (
+    signal?: AbortSignal) =>
+    httpGuard.get(`${Models.summary}`, {
         signal
     });
 

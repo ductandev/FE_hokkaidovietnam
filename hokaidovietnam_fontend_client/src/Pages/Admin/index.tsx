@@ -3,5 +3,7 @@ import AdminOrder from "./Order";
 import AdminProduct from "./Product";
 
 export {
-    AdminCustomer, AdminOrder, AdminProduct
+    AdminCustomer,
+    AdminOrder,
+    AdminProduct
 }
