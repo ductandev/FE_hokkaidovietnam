@@ -75,7 +75,10 @@ export default function Header() {
         } ${isScrolled
           ? "header__transparent__scrolling"
           : "header__whitebox__scrolling"
-        } z-50`}
+        } z-50
+        hover:bg-white
+        hover:text-black
+        `}
     >
       <div className="header-menu">
         <ul className="header-menu-container">

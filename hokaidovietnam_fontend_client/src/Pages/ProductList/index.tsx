@@ -103,7 +103,7 @@ export default function Products() {
                 <p className="font-normal text-4xl">{formatCurrency(detailProduct?.gia_ban || 0)}</p>
 
                 <p className="font-light text-sm mt-3">
-                    {detailProduct?.mo_ta_chi_tiet}
+                    {detailProduct?.mo_ta}
                 </p>
 
                 <div className="my-6 flex items-center justify-center">

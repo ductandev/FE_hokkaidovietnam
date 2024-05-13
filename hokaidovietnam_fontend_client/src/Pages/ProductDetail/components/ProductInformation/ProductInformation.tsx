@@ -18,7 +18,7 @@ const ProductInformation: React.FC<Product> = (props: Product) => {
         ten_san_pham,
         trang_thai_san_pham,
         gia_ban,
-        mo_ta_chi_tiet,
+        mo_ta,
         so_luong_trong_kho
     } = props;
 
@@ -54,9 +54,7 @@ const ProductInformation: React.FC<Product> = (props: Product) => {
                 Thương hiệu:
                 <span className="font-medium text-black ml-1">Hokkaido</span>
             </span>
-
             <span className="mx-2">|</span>
-
             <span className="font-light text-base text-[#777171]">
                 Tình trạng:
                 <span className="font-medium text-black ml-1">{trang_thai_san_pham ? "Còn hàng" : "Hết hàng"}</span>
@@ -66,7 +64,7 @@ const ProductInformation: React.FC<Product> = (props: Product) => {
         <p className="mt-8 font-normal text-4xl">{formatCurrency(gia_ban)}</p>
 
         <p className="font-light text-secondary text-base mt-5">
-            {mo_ta_chi_tiet}
+            {mo_ta}
         </p>
 
         <Divider className="my-6" />
