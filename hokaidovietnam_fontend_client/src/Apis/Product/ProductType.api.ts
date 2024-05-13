@@ -1,5 +1,5 @@
 import { ProductType } from '@/Types/ProductType.type'
-import http from "@/lib/utils"
+import { http } from "@/lib/utils"
 
 
 const Models = {

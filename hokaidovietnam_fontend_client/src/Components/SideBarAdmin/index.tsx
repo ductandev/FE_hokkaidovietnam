@@ -16,6 +16,10 @@ function SidebarAdmin() {
             name: "Sản phẩm",
             to: "product"
         },
+        {
+            name: "Liên hệ",
+            to: "contact"
+        },
     ]
     return (
         <nav className='sidebar-admin'>

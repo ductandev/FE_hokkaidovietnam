@@ -1,6 +1,6 @@
 import { useDeferredValue, useEffect, useState } from "react";
 
-import { columnsProduct } from "./columns";
+import { columnsContact, columnsCustomer, columnsOrder, columnsProduct } from "./columns";
 import { DataTable } from "./data-table";
 import ProductStatus from "../ProductStatus";
 
@@ -17,14 +17,23 @@ type PropsType = {
     type: EnumTableDefine | string;
     pageSize: number;
     page: number;
-    addon: any
+    addon?: any;
+    onHandleRemove?: Function;
+    onHandleEdit?: Function
 }
 
 export default function DataGrid(props: PropsType) {
-    const { data, type, pageSize, page, addon } = props;
+    const {
+        data,
+        type,
+        pageSize,
+        page,
+        addon,
+        onHandleRemove,
+        onHandleEdit
+    } = props;
 
     const [defaultDataTable, setDefaultDataTable] = useState(data);
-
 
     const renderProductTypeXML = (loai_san_pham_id: number) => {
         return addon.find((y: ProductType) => y.loai_san_pham_id === loai_san_pham_id).ten_loai_san_pham
@@ -33,7 +42,6 @@ export default function DataGrid(props: PropsType) {
     const renderProductStatusXML = (trang_thai_san_pham: number) => {
         return <ProductStatus status={trang_thai_san_pham} />
     }
-
 
     useEffect(() => {
         const result = data?.map((object, idx) => {
@@ -46,6 +54,12 @@ export default function DataGrid(props: PropsType) {
                     index: position + paged,
                     renderProductType: renderProductTypeXML(object.loai_san_pham_id),
                     renderProductStatus: renderProductStatusXML(object.trang_thai_san_pham),
+                    onEdit: (id: any, product: any) => {
+                        onHandleEdit && onHandleEdit(id, product)
+                    },
+                    onRemove: (id: string | number) => {
+                        onHandleRemove && onHandleRemove(id)
+                    }
                 }
             } else {
                 return {
@@ -64,7 +78,10 @@ export default function DataGrid(props: PropsType) {
     const deferredValue = useDeferredValue(defaultDataTable);
 
     const columnType: any = {
-        product: columnsProduct
+        product: columnsProduct,
+        order: columnsOrder,
+        customer: columnsCustomer,
+        contact: columnsContact
     }
 
     return (

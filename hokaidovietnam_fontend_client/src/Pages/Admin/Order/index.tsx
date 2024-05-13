@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react";
+import useDebouncedCallback from "@/Hooks/useDebounceCallback";
+import { useOrderList, useOrderSummary } from "@/Hooks/useOrder";
 
-// import DataGrid from "@/Components/DataGrid/Datagrid";
+import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
 import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
@@ -10,14 +12,15 @@ import { Input } from "@/Components/ui/input"
 import { IoCartOutline } from "react-icons/io5";
 import { BsWallet2 } from "react-icons/bs";
 import { BsBoxSeam } from "react-icons/bs";
-import { useOrderList } from "@/Hooks/useOrder";
-import useDebouncedCallback from "@/Hooks/useDebounceCallback";
 
 function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
+
+    const { isLoading, data } = useOrderList({ page, pageSize, search: debouncedValue });
+    const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
 
     const handleChangeDebounced = (value: string) => {
         setDebouncedValue(value);
@@ -30,33 +33,30 @@ function AdminOrder() {
             {
                 icon: <BsBoxSeam />,
                 label: "Tổng đơn hàng",
-                index: 55,
+                index: dataSummary?.content?.totalOrderStatusDone,
                 format: "đơn"
             },
             {
                 icon: <IoCartOutline />,
                 label: "Đơn hàng trong tháng",
-                index: 25,
+                index: dataSummary?.content?.totalOderOnMonth,
                 format: "đơn"
             },
             {
                 icon: <BsWallet2 />,
                 label: "Doanh số",
-                index: 999000000,
+                index: dataSummary?.content?.nestSaleSummary,
                 format: "currency"
             }
-        ]
-    }, []);
+        ];
 
-    const { isLoading, data } = useOrderList({ page, pageSize, search: debouncedValue });
-
-    console.log({ data })
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataSummary]);
 
     return (
-
         <div>
-            <div className="flex justify-between items-center">
-                {Metrics.map((metric, index) => {
+            <div className="flex items-center">
+                {!isLoadingSummary && Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>
@@ -70,38 +70,46 @@ function AdminOrder() {
                     <PageSize
                         options={[10, 20, 50]}
                         className="mr-6"
-                        defaultValue={10}
+                        defaultValue={pageSize}
                         onChange={(size: number) => {
+                            setPage(1);
                             setPageSize(size)
                         }}
                     />
 
-                    <Input placeholder="Tìm kiếm" value={search} onChange={(event) => {
-                        debouncedCallback(event.target.value);
-
-                        setSearch(event.target.value)
-                    }} />
+                    <Input placeholder="Tìm kiếm"
+                        value={search}
+                        onChange={(event) => {
+                            debouncedCallback(event.target.value);
+                            setSearch(event.target.value)
+                        }}
+                    />
                 </div>
 
-
-
                 <Button>
-                    Tạo đơn hàng
+                    Tạo sản phẩm
                 </Button>
             </div>
 
-            {!isLoading && <>
-                {/* <DataGrid /> */}
-
-                <HPagination
-                    total={30}
+            {isLoading ? <>
+                <p>Đang tải</p>
+            </> :
+                <DataGrid
+                    data={data?.content || []}
+                    type={'order'}
+                    page={page}
                     pageSize={pageSize}
-                    current={page}
-                    onChangePage={(page: number) => {
-                        setPage(page)
-                    }}
                 />
-            </>}
+            }
+
+            <HPagination
+                total={data?.total || 0}
+                pageSize={pageSize}
+                current={page}
+                onChangePage={(page: number) => {
+                    setPage(page)
+                }}
+            />
         </div>
     )
 }

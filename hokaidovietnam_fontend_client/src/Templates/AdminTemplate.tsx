@@ -9,10 +9,10 @@ import { useAuth } from '@/Auth/AuthProvider';
 const SIDEBAR_WITDH = `230px`;
 
 const AdminTemplate: React.FC = (): JSX.Element => {
-    const { isLogin } = useAuth();
+    const { isLogin, isAdmin } = useAuth();
 
     // TODO: If user haven't login and not admin (do later) before, redirect to homepage "/"
-    if (!isLogin) {
+    if (!isLogin || !isAdmin) {
         return <Navigate to="/" />;
     }
 

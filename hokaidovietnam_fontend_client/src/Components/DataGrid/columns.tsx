@@ -1,6 +1,7 @@
 "use client"
 
-import { formatCurrency } from "@/Helper/helper"
+import { formatCurrency, formatTime } from "@/Helper/helper"
+import { Customer } from "@/Types/Customer.type";
 import { Product } from "@/Types/Product.type"
 import { ColumnDef } from "@tanstack/react-table"
 
@@ -21,32 +22,64 @@ export const columnsOrder: ColumnDef<Order>[] = [
         header: "Số thứ tự",
     },
     {
-        accessorKey: "ma_don_hang",
+        accessorKey: "don_hang_id",
         header: "Mã đơn hàng",
     },
     {
-        accessorKey: "ten_khach_hang",
+        accessorKey: "ho_ten",
         header: "Tên khách hàng",
     },
     {
-        accessorKey: "ngay_tao",
-        header: "Ngày tạo",
+        accessorKey: "thoi_gian_dat_hang",
+        header: "Ngày",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span>
+                    {formatTime(row.original.thoi_gian_dat_hang, "dd/mm/yyyy hh:mm")}
+                </span>
+            </div>
+        },
     },
     {
-        accessorKey: "thanh_tien",
+        accessorKey: "tong_tien",
         header: "Thành tiền",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span>
+                    {formatCurrency(row.original.tong_tien)}
+                </span>
+            </div>
+        },
     },
     {
-        accessorKey: "thanh_toan",
+        accessorKey: "HinhThucThanhToan",
         header: "Thanh toán",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span>
+                    {row.original.HinhThucThanhToan.ten_hinh_thuc_thanh_toan}
+                </span>
+            </div>
+        },
+    },
+    {
+        accessorKey: "TrangThaiDonHang",
+        header: "Trạng thái",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span>
+                    {row.original.TrangThaiDonHang.ten_trang_thai_don_hang}
+                </span>
+            </div>
+        },
     },
     {
         accessorKey: "hanh_dong",
         header: "Hành động",
         cell: ({ row }) => {
             return <div className="flex items-center justify-start">
-                <span className="mr-4" onClick={row.original.hanh_dong.edit}>{svgEdit}</span>
-                <span onClick={row.original.hanh_dong.delete}>{svgDelete}</span>
+                <span className="mr-4" >{svgEdit}</span>
+                <span >{svgDelete}</span>
             </div>
         },
     },
@@ -117,11 +150,99 @@ export const columnsProduct: ColumnDef<Product>[] = [
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4"
-                // onClick={row.original.hanh_dong.edit}
+                // onClick={row.original.onEdit}
                 >{svgEdit}</span>
                 <span
-                // onClick={row.original.hanh_dong.delete}
+                    onClick={() => {
+                        row.original.onRemove(row.original.san_pham_id)
+                    }}
                 >{svgDelete}</span>
+            </div>
+        },
+    },
+];
+
+export const columnsCustomer: ColumnDef<Customer>[] = [
+    {
+        accessorKey: "index",
+        header: "Số thứ tự",
+    },
+    {
+        accessorKey: "ho_ten",
+        header: "Tên khách hàng",
+    },
+    {
+        accessorKey: "don_da_mua",
+        header: "Đơn đã mua",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span >
+                    {row?.original?.DonHang.length}
+                </span>
+            </div>
+        },
+    },
+    {
+        accessorKey: "dia_chi",
+        header: "Địa chỉ",
+    },
+    {
+        accessorKey: "email",
+        header: "Email",
+    },
+    {
+        accessorKey: "so_dien_thoai",
+        header: "Số điện thoại",
+    },
+    {
+        accessorKey: "hanh_dong",
+        header: "Hành động",
+        cell: ({ row }) => {
+            return <div className="flex items-center justify-start">
+                <span className="mr-4" >{svgEdit}</span>
+                <span >{svgDelete}</span>
+            </div>
+        },
+    },
+];
+
+
+// "lien_he_id": 25,
+// "trang_thai_lien_he_id": 1,
+// "ho_ten": "Tấn",
+// "email": "admin@example.com",
+// "noi_dung": "TESSSSSSSSSSSSSSSSs",
+// "isDelete": false,
+// "TrangThaiLienHe": {
+//   "trang_thai_lien_he_id": 1,
+//   "ten_trang_thai_lien_he": "Chưa gọi",
+//   "isDelete": false
+// }
+
+export const columnsContact: ColumnDef<Customer>[] = [
+    {
+        accessorKey: "index",
+        header: "Số thứ tự",
+    },
+    {
+        accessorKey: "ho_ten",
+        header: "Họ tên",
+    },
+    {
+        accessorKey: "noi_dung",
+        header: "Nội dung",
+    },
+    {
+        accessorKey: "email",
+        header: "email",
+    },
+    {
+        accessorKey: "hanh_dong",
+        header: "Hành động",
+        cell: ({ row }) => {
+            return <div className="flex items-center justify-start">
+                <span className="mr-4" >{svgEdit}</span>
+                <span >{svgDelete}</span>
             </div>
         },
     },

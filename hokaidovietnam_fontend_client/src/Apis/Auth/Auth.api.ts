@@ -1,4 +1,4 @@
-import http from "@/lib/utils";
+import { http } from "@/lib/utils";
 
 import { UserLogin, UserRegister } from '@/Types/Auth.type';
 
