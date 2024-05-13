@@ -1,10 +1,9 @@
 import axios from "axios";
 
 //setup hằng số
-export const DOMAIN = "https://airbnbnew.cybersoft.edu.vn";
+export const DOMAIN = "http://hokkaido.ductandev.io.vn";
 export const TOKEN = "accessToken";
 export const USER_LOGIN = "userLogin";
-export const TOKEN_CYBERSOFT = `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0ZW5Mb3AiOiJCb290Y2FtcCA0MyIsIkhldEhhblN0cmluZyI6IjI0LzEyLzIwNTAiLCJIZXRIYW5UaW1lIjoiMTcwMzM3NjAwMDAwMCIsIm5iZiI6MTY2OTQ4MjAwMCwiZXhwIjoxNzAzNTIzNjAwfQ.2radbmx70seDqJ5jDWARBnqLSkzyIAziLcejvrw6QB0`;
 
 export const { getStoreJson, setStoreJson, getStore, setStore, clearStorage } = {
   getStoreJson: (name: string): any => {
@@ -44,7 +43,6 @@ httpNonAuth.interceptors.request.use(
   (config: any) => {
     config.baseURL = DOMAIN;
     config.headers = { ...config.headers };
-    config.headers.tokenCybersoft = `${TOKEN_CYBERSOFT}`;
     return config;
   },
   (err: any) => {
@@ -57,7 +55,6 @@ http.interceptors.request.use(
     config.headers = { ...config.headers };
     let token = getStoreJson(USER_LOGIN)?.token;
     config.headers.token = `${token}`;
-    config.headers.tokenCybersoft = `${TOKEN_CYBERSOFT}`;
     return config;
   },
   (err: any) => {

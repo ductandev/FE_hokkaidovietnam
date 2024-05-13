@@ -25,8 +25,8 @@ export class OrderDetailController {
   //            GET ALL "ORDER-DETAIL"
   // ============================================ 
   @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  @Get("get-all-order-detail")
+  @Roles(Role.ADMIN)
+  @Get("/")
   getAllOrderDetail(@Res() res: Response) {
     return this.orderDetailService.getAllOrderDetail(res)
   }
@@ -36,42 +36,17 @@ export class OrderDetailController {
   // ============================================ 
   @HttpCode(200)
   @Roles(Role.ADMIN, Role.USER)
-  @Get("get-order-detail-by-id/:orderDetailID")
-  getOrderDetailById(@Param("orderDetailID") orderDetailID: number, @Res() res: Response) {
-    return this.orderDetailService.getOrderDetailById(orderDetailID, res)
-  }
-
-  // ============================================
-  //   GET DETAIL "ORDER-DETAIL" BY DON_HANG_ID
-  // ============================================ 
-  @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  @Get("get-order-detail-by-order-id/:orderID")
-  getOrderDetailByOrderId(@Param("orderID") orderID: number, @Res() res: Response) {
-    return this.orderDetailService.getOrderDetailByOrderId(orderID, res)
-  }
-
-  // ============================================
-  //      GET PANIGATION LIST "ORDER-DETAIL"
-  // ============================================
-  @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  // @Get("get-pagination-order-detail/:pageIndex/:pageSize")
-  @Get("get-pagination-order-detail")
-  getPanigationOrderDetail(
-    @Query("page") pageIndex: number,
-    @Query("limit") pageSize: number,
-    @Res() res: Response
-  ) {
-    return this.orderDetailService.getPanigationOrderDetail(pageIndex, pageSize, res)
+  @Get("/:id")
+  getOrderDetailById(@Param("id") id: number, @Res() res: Response) {
+    return this.orderDetailService.getOrderDetailById(id, res)
   }
 
   // ============================================
   //             POST "ORDER-DETAIL"
   // ============================================
   @HttpCode(201)
-  @Roles(Role.ADMIN, Role.USER)
-  @Post("post-order-detail")
+  @Roles(Role.ADMIN)
+  @Post("")
   postOrderDetail(@Body() body: CreateOrderDetailDto, @Res() res: Response) {
     return this.orderDetailService.postOrderDetail(body, res)
   }
@@ -80,10 +55,14 @@ export class OrderDetailController {
   //               PUT "ORDER-DETAIL"
   // ============================================
   @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  @Put("put-order-detail/:orderDetailID")
-  putOrderDetailById(@Param("orderDetailID") orderDetailID: number, @Body() body: CreateOrderDetailDto, @Res() res: Response) {
-    return this.orderDetailService.putOrderDetailById(orderDetailID, body, res)
+  @Roles(Role.ADMIN)
+  @Put("/:id")
+  putOrderDetailById(
+    @Param("id") id: number,
+    @Body() body: CreateOrderDetailDto,
+    @Res() res: Response
+  ) {
+    return this.orderDetailService.putOrderDetailById(id, body, res)
   }
 
   // ============================================
@@ -91,8 +70,8 @@ export class OrderDetailController {
   // ============================================
   @HttpCode(200)
   @Roles(Role.ADMIN)
-  @Delete("delete-order-detail/:orderDetailID")
-  deleteOrderDetailById(@Param("orderDetailID") orderDetailID: number, @Res() res: Response) {
-    return this.orderDetailService.deleteOrderDetailById(orderDetailID, res)
+  @Delete("/:id")
+  deleteOrderDetailById(@Param("id") id: number, @Res() res: Response) {
+    return this.orderDetailService.deleteOrderDetailById(id, res)
   }
 }

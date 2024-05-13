@@ -17,7 +17,7 @@ import { CreateOrderDto } from './dto/create-order.dto';
 // @UseGuards(AuthGuard("jwt"))
 @UseGuards(AuthenticationGuard, AuthorizationGuard)
 @ApiTags("DonHang")
-@Controller('api/order/')
+@Controller('api/order')
 export class OrderController {
   constructor(private readonly orderService: OrderService) { }
 
@@ -25,10 +25,42 @@ export class OrderController {
   //            GET ALL ORDER
   // ============================================ 
   @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  @Get("get-all-order")
+  @Roles(Role.ADMIN)
+  @Get("/")
   getAllOrder(@Res() res: Response) {
     return this.orderService.getAllOrder(res)
+  }
+
+  // ============================================
+  // GET ALL ORDER PAGINATION BY TYPE_ID SEARCH
+  // ============================================
+  @HttpCode(200)
+  @Roles(Role.ADMIN)
+  @Get('pagination')
+  getAllPagination(
+    @Query('typeID') typeID: number,
+    @Query('page') pageIndex: number,
+    @Query('limit') pageSize: number,
+    @Query('search') search: string,
+    @Res() res: Response,
+  ) {
+    return this.orderService.getAllPagination(
+      typeID,
+      pageIndex,
+      pageSize,
+      search,
+      res,
+    );
+  }
+
+  // ============================================
+  //            GET ALL ORDER SUMARY
+  // ============================================
+  @HttpCode(200)
+  @Roles(Role.ADMIN)
+  @Get("summary")
+  getOrderSummary(@Res() res: Response) {
+    return this.orderService.getOrderSummary(res)
   }
 
   // ============================================
@@ -36,42 +68,28 @@ export class OrderController {
   // ============================================ 
   @HttpCode(200)
   @Roles(Role.ADMIN, Role.USER)
-  @Get("get-order-by-id/:orderID")
-  getOrderById(@Param("orderID") orderID: number, @Res() res: Response) {
-    return this.orderService.getOrderById(orderID, res)
+  @Get("/:id")
+  getOrderById(@Param("id") id: number, @Res() res: Response) {
+    return this.orderService.getOrderById(id, res)
   }
 
   // ============================================
-  //             GET ORDER BY USER ID
+  //         GET ORDER BY USER PHONE
   // ============================================ 
   @HttpCode(200)
   @Roles(Role.ADMIN, Role.USER)
-  @Get("get-order-by-user-id/:userID")
-  getOrderByUserId(@Param("userID") userID: number, @Res() res: Response) {
-    return this.orderService.getOrderByUserId(userID, res)
+  @Get("user/:phone")
+  getOrderByUserId(@Param("phone") phone: string, @Res() res: Response) {
+    return this.orderService.getOrderByUserId(phone, res)
   }
 
-  // ============================================
-  //        GET PANIGATION LIST ORDER
-  // ============================================
-  @HttpCode(200)
-  @Roles(Role.ADMIN, Role.USER)
-  // @Get("get-pagination-order/:pageIndex/:pageSize")
-  @Get("get-pagination-order")
-  getPanigationOrder(
-    @Query("page") pageIndex: number,
-    @Query("limit") pageSize: number,
-    @Res() res: Response
-  ) {
-    return this.orderService.getPanigationOrder(pageIndex, pageSize, res)
-  }
 
   // ============================================
   //               POST ORDER
   // ============================================
   @HttpCode(201)
   @Roles(Role.ADMIN, Role.USER)
-  @Post("post-order")
+  @Post("/")
   postOrder(@Body() body: CreateOrderDto, @Res() res: Response) {
     return this.orderService.postOrder(body, res)
   }
@@ -79,21 +97,21 @@ export class OrderController {
   // ============================================
   //               PUT ORDER
   // ============================================
-  @HttpCode(201)
-  @Roles(Role.ADMIN, Role.USER)
-  @Put("put-order/:orderID")
-  putOrderById(@Param("orderID") orderID: number, @Body() body: CreateOrderDto, @Res() res: Response) {
-    return this.orderService.putOrderById(orderID, body, res)
-  }
+  // @HttpCode(201)
+  // @Roles(Role.ADMIN)
+  // @Put("/:id")
+  // putOrderById(@Param("id") id: number, @Body() body: CreateOrderDto, @Res() res: Response) {
+  //   return this.orderService.putOrderById(id, body, res)
+  // }
 
   // ============================================
   //            DELETE ORDER  
   // ============================================
   @HttpCode(200)
   @Roles(Role.ADMIN)
-  @Delete("delete-order/:orderID")
-  deleteOrderById(@Param("orderID") orderID: number, @Res() res: Response) {
-    return this.orderService.deleteOrderById(orderID, res)
+  @Delete("/:id")
+  deleteOrderById(@Param("id") id: number, @Res() res: Response) {
+    return this.orderService.deleteOrderById(id, res)
   }
 
 }

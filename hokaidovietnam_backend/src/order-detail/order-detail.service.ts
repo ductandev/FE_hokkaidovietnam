@@ -39,19 +39,19 @@ export class OrderDetailService {
   // ============================================
   //       GET DETAIL "ORDER-DETAIL" BY ID
   // ============================================ 
-  async getOrderDetailById(orderDetailID: number, res: Response) {
+  async getOrderDetailById(id: number, res: Response) {
     try {
       let data = await this.model.chiTietDonHang.findFirst({
         where: {
-          id: +orderDetailID,
+          id: +id,
           isDelete: false
         },
         include: {
-          DonHang: {
-            include: {
-              NguoiDung: true
-            }
-          },
+          // DonHang: {
+          //   include: {
+          //     NguoiDung: true
+          //   }
+          // },
           SanPham: true
         }
       });
@@ -64,68 +64,6 @@ export class OrderDetailService {
     }
     catch (exception) {
       console.log("🚀 ~ file: order-detail.service.ts:66 ~ OrderDetailService ~ getOrderDetailById ~ exception:", exception);
-      errorCode(res, "Lỗi BE")
-    }
-  }
-
-  // ============================================
-  //       GET DETAIL "ORDER-DETAIL" BY ID
-  // ============================================ 
-  async getOrderDetailByOrderId(orderID: number, res: Response) {
-    try {
-      let data = await this.model.chiTietDonHang.findMany({
-        where: {
-          don_hang_id: +orderID,
-          isDelete: false
-        },
-        include: {
-          DonHang: {
-            include: {
-              NguoiDung: true
-            }
-          },
-          SanPham: true
-        }
-      });
-
-      if (data.length === 0) {
-        return failCode(res, data, 400, "OrderID không tồn tại hoặc đã bị xóa trước đó !")
-      }
-
-      successCode(res, data, 200, "Thành công !")
-    }
-    catch (exception) {
-      console.log("🚀 ~ file: order-detail.service.ts:98 ~ OrderDetailService ~ getOrderDetailByOrderId ~ exception:", exception);
-      errorCode(res, "Lỗi BE")
-    }
-  }
-
-  // ============================================
-  //        GET PANIGATION LIST "ORDER-DETAIL"
-  // ============================================
-  async getPanigationOrderDetail(pageIndex: number, pageSize: number, res: Response) {
-    try {
-      let index = (pageIndex - 1) * pageSize;
-      if (index < 0) {
-        return failCode(res, '', 400, "PageIndex phải lớn hơn 0 !")
-      };
-
-      let data = await this.model.chiTietDonHang.findMany({
-        skip: +index,     // Sử dụng skip thay vì offset
-        take: +pageSize,  // Sử dụng take thay vì limit
-        where: {
-          isDelete: false,
-        }
-      });
-
-      if (data.length === 0) {
-        return successCode(res, data, 200, "Không có dữ liệu 'chi-tiết-đơn-hàng' nào được tìm thấy !")
-      }
-
-      successCode(res, data, 200, "Thành công !")
-    }
-    catch (exception) {
-      console.log("🚀 ~ file: order-detail.service.ts:128 ~ OrderDetailService ~ getPanigationOrderDetail ~ exception:", exception);
       errorCode(res, "Lỗi BE")
     }
   }
@@ -156,7 +94,7 @@ export class OrderDetailService {
         data: body
       })
 
-      successCode(res, data, 200, "Thêm đơn hàng mới thành công !")
+      successCode(res, data, 200, "Thêm chi tiết đơn hàng mới thành công !")
     }
     catch (exception) {
       console.log("🚀 ~ file: order-detail.service.ts:162 ~ OrderDetailService ~ postOrderDetail ~ exception:", exception);
@@ -167,7 +105,7 @@ export class OrderDetailService {
   // ============================================
   //               PUT "ORDER-DETAIL"
   // ============================================
-  async putOrderDetailById(orderDetailID: number, body: CreateOrderDetailDto, res: Response) {
+  async putOrderDetailById(id: number, body: CreateOrderDetailDto, res: Response) {
     try {
       let { don_hang_id } = body;
 
@@ -177,7 +115,7 @@ export class OrderDetailService {
 
       let checkOrderDetail = await this.model.chiTietDonHang.findFirst({
         where: {
-          id: +orderDetailID,
+          id: +id,
           don_hang_id,
           isDelete: false
         }
@@ -189,7 +127,7 @@ export class OrderDetailService {
 
       let data = await this.model.chiTietDonHang.update({
         where: {
-          id: +orderDetailID,
+          id: +id,
           don_hang_id
         },
         data: body
@@ -207,11 +145,11 @@ export class OrderDetailService {
   // ============================================
   //                DELETE "ORDER-DETAIL"  
   // ============================================
-  async deleteOrderDetailById(orderDetailID: number, res: Response) {
+  async deleteOrderDetailById(id: number, res: Response) {
     try {
       let data = await this.model.chiTietDonHang.findFirst({
         where: {
-          id: +orderDetailID,
+          id: +id,
           isDelete: false
         },
       });
@@ -222,7 +160,7 @@ export class OrderDetailService {
 
       await this.model.chiTietDonHang.update({
         where: {
-          id: +orderDetailID,
+          id: +id,
         },
         data: {
           isDelete: true
