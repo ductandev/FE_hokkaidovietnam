@@ -29,9 +29,7 @@ export default function Modal(props: IProps) {
             }}
             open={visible}
         >
-            <DialogContent style={{
-                width: "820px"
-            }}>
+            <DialogContent >
                 <DialogHeader>
                     {renderHeader && <DialogTitle>
                         {renderHeader}

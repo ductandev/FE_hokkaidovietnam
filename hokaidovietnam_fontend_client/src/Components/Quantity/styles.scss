@@ -13,6 +13,11 @@ $fixed-size: 50px;
     border: 1px solid #000000;
     max-width: 160px;
     min-width: 160px;
+
+    &_full {
+        max-width: 100%;
+        min-width: 100%;
+    }
 }
 
 #{$block}__modifier,

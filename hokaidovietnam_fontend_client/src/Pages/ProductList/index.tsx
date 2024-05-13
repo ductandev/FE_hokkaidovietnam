@@ -24,6 +24,7 @@ import { HandleAddCart, formatCurrency } from "@/Helper/helper";
 import { getProducts } from "@/Apis/Product/Product.api";
 import { getProductTypes } from "@/Apis/Product/ProductType.api";
 import { Product } from "@/Types/Product.type";
+import { toast } from "react-toastify";
 
 const PAGE_SIZE = 8;
 
@@ -81,33 +82,32 @@ export default function Products() {
         }
     };
 
-
     const renderXMLBody = () => {
-        return <div className="grid grid-cols-2 mt-12">
+        return <div className="grid grid-cols-1 md:grid-cols-2 mt-12">
             <div>
                 <ImageGallery
                     slides={detailProduct?.hinh_anh || []}
                     options={{}}
-                    customClass="pr-10 w-full"
+                    customClass="md:pr-10 w-full"
                     showArrow
                 />
             </div>
 
             <div className="text-center text-black">
-                <h3 className="text-2xl font-light">{detailProduct?.ten_san_pham}</h3>
+                <h3 className="mt-4 md:mt-0 text-xl font-light">{detailProduct?.ten_san_pham}</h3>
 
-                <div className="my-5">
+                <div className="my-3 md:my-5">
                     <span className=" font-light text-base text-[#777171]">Thương hiệu <span className="font-medium text-black">Hokkaido</span></span>
                 </div>
 
-                <p className="font-normal text-4xl">{formatCurrency(detailProduct?.gia_ban || 0)}</p>
+                <p className="font-normal text-2xl md:text-4xl">{formatCurrency(detailProduct?.gia_ban || 0)}</p>
 
                 <p className="font-light text-sm mt-3">
                     {detailProduct?.mo_ta}
                 </p>
 
-                <div className="my-6 flex items-center justify-center">
-                    <div className="pr-1">
+                <div className="my-6 flex items-center justify-center flex-col sm:flex-row">
+                    <div className="pr-1 sm:mb-0 mb-4">
                         <Quantity
                             defaultValue={DEFAULT_QUANTITY}
                             limit={detailProduct?.so_luong_trong_kho}
@@ -116,7 +116,7 @@ export default function Products() {
                         />
                     </div>
 
-                    <div className="flex-1 ml-1">
+                    <div className="w-full sm:flex-1 ml-0 sm:ml-1">
                         <Button
                             size={'cart'}
                             variant={'cart-btn'}
@@ -156,7 +156,10 @@ export default function Products() {
         // * Thao tác với state cart trong reducer
         dispatch(actions.setCart(resolveCart))
 
-        handleToggleModal(false)
+        handleToggleModal(false);
+        toast.success('Thêm giỏ hàng thành công', {
+            position: 'bottom-center'
+        });
     }
 
     const handleShowDetailProduct = useCallback(
@@ -197,7 +200,7 @@ export default function Products() {
             </div>
 
 
-            {isLoadingProductList ? <div className="container grid grid-cols-4 gap-5">
+            {isLoadingProductList ? <div className="container grid grid-cols-3 grid-md-cols-4 gap-5">
                 {Array.from(Array(PAGE_SIZE).keys()).map((_, idx) => {
                     return <ProductCard
                         key={idx}
@@ -205,7 +208,7 @@ export default function Products() {
                     />
                 })}
             </div> : <>
-                {deferredProductList.length ? <div className="container grid grid-cols-4 gap-5">
+                {deferredProductList.length ? <div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
                     {deferredProductList.map((product: Product, idx: any) => {
                         return <Fragment key={`${product.san_pham_id}_${idx}`}>
                             <ProductCard
