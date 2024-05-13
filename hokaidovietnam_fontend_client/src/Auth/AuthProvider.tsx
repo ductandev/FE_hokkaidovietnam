@@ -54,7 +54,9 @@ export const AuthProvider = function (props: AppProviderProps) {
             setItem(ACCESS_TOKEN_KEY, token);
             setItem(HK_ROLE, response.data.content.vai_tro_id);
             setIsLogin(true);
-            setIsAdmin(response.data.content.vai_tro_id === 1)
+            setIsAdmin(response.data.content.vai_tro_id === 1);
+
+            // * Redirect sang admin page
         } catch (error) {
             console.log(error);
         }

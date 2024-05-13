@@ -1,20 +1,20 @@
 import { useMemo, useState } from "react";
-import { useProduct, useProductSummary, useProducts } from "@/Hooks/useProduct";
 import useDebouncedCallback from "@/Hooks/useDebounceCallback";
+import {
+    // useContact,
+    useContactList
+} from "@/Hooks/useContact";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
-import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
 import { Input } from "@/Components/ui/input";
 import PageSize from "@/Components/PageSize";
 
 import { LuPackageSearch } from "react-icons/lu";
-import { LiaBoxSolid } from "react-icons/lia";
-import { useQuery } from "react-query";
-import { getProductTypes } from "@/Apis/Product/ProductType.api";
+// import { LiaBoxSolid } from "react-icons/lia";
 
-function AdminProduct() {
+function AdminContact() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
@@ -23,23 +23,8 @@ function AdminProduct() {
     const {
         isLoading,
         data
-    } = useProducts({ page, pageSize, search: debouncedValue });
-    const { isLoading: isLoadingSummary, data: dataSummary } = useProductSummary();
-    const { add, edit, remove } = useProduct({ page, pageSize, search: debouncedValue })
-
-    const { isLoading: isLoadingProductType, data: productType }: any = useQuery({
-        queryKey: ['productType'],
-        queryFn: () => {
-            const controller = new AbortController();
-
-            setTimeout(() => {
-                controller.abort()
-            }, 5000)
-            return getProductTypes(controller.signal)
-        },
-        keepPreviousData: true,
-        retry: 0
-    });
+    } = useContactList({ page, pageSize, search: debouncedValue });
+    // const { add, edit, remove } = useContact({ page, pageSize, search: debouncedValue });
 
     const handleChangeDebounced = (value: string) => {
         setPage(1);
@@ -52,31 +37,31 @@ function AdminProduct() {
         return [
             {
                 icon: <LuPackageSearch />,
-                label: "Số lượng sản phẩm",
-                index: dataSummary?.content?.totalProduct,
-                format: "sản phẩm"
+                label: "Tổng số liên hệ",
+                index: 1000000,
+                format: "liên hệ"
             },
-            {
-                icon: <LiaBoxSolid />,
-                label: "Loại sản phẩm",
-                index: dataSummary?.content?.totalTypeProduct,
-                format: "loại"
-            },
+            // {
+            //     icon: <LiaBoxSolid />,
+            //     label: "Loại sản phẩm",
+            //     index: 200000,
+            //     format: "loại"
+            // },
         ];
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [dataSummary]);
+    }, []);
 
     return (
         <div>
             <div className="flex items-center">
-                {!isLoadingSummary && Metrics.map((metric, index) => {
+                {Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>
 
             <h2 className="text-center uppercase text-xl font-semibold">
-                Sản phẩm
+                Liên hệ
             </h2>
 
             <div className="p-4 mt-8 flex justify-between items-center">
@@ -99,23 +84,6 @@ function AdminProduct() {
                         }}
                     />
                 </div>
-
-                <Button onClick={() => {
-                    add({
-                        loai_san_pham_id: 0,
-                        ten_san_pham: "Sản phẩm tạo demo thử API",
-                        gia_ban: 500000,
-                        gia_giam: 50000,
-                        mo_ta: "Mô tả vãi cả lìn",
-                        thong_tin_chi_tiet: "Đã mô tả còn thông tin chi tiết nữa hài vcl",
-                        don_vi_tinh: "Lon cái này cho thành enum nha má",
-                        trang_thai_san_pham: true,
-                        so_luong_trong_kho: 100,
-                        hinh_anh: ["https://media.istockphoto.com/id/1401126607/vi/anh/khung-c%E1%BA%A3nh-tr%C3%AAn-kh%C3%B4ng-c%E1%BB%A7a-nh%E1%BB%AFng-t%C3%B2a-nh%C3%A0-ch%E1%BB%8Dc-tr%E1%BB%9Di-tuy%E1%BB%87t-%C4%91%E1%BA%B9p-d%E1%BB%8Dc-theo-d%C3%B2ng-s%C3%B4ng-tr%C3%AAn-b%E1%BA%A7u-tr%E1%BB%9Di.jpg?s=612x612&w=0&k=20&c=tKG0XCBB-k7AuUUNvH6VrCW7DjSojIGmrxJD6rcPabE="]
-                    });
-                }}>
-                    Tạo sản phẩm
-                </Button>
 
                 {/* <Button onClick={() => {
                     // * 2 tham số: 1 là sanphamid , 2 là body
@@ -140,17 +108,18 @@ function AdminProduct() {
                 </Button> */}
             </div>
 
-            {isLoading || isLoadingProductType ? <>
-                <p>Đang tải</p>
-            </> : <DataGrid
-                data={data?.content}
-                type={'product'}
-                page={page}
-                pageSize={pageSize}
-                addon={productType?.data?.content}
-                onHandleRemove={remove}
-                onHandleEdit={edit}
-            />}
+            {
+                isLoading ? <>
+                    <p>Đang tải</p>
+                </> : <DataGrid
+                    data={data?.content}
+                    type={'contact'}
+                    page={page}
+                    pageSize={pageSize}
+                // onHandleRemove={remove}
+                // onHandleEdit={edit}
+                />
+            }
 
             <HPagination
                 total={data?.total || 0}
@@ -164,4 +133,4 @@ function AdminProduct() {
     )
 }
 
-export default AdminProduct;
+export default AdminContact;

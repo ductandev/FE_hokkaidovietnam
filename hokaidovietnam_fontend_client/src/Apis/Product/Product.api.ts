@@ -1,10 +1,12 @@
-import { Products, Product } from '@/Types/Product.type'
-import { http } from "@/lib/utils"
+import { Products, Product, ProductCreate } from '@/Types/Product.type'
+import { http, httpGuard } from "@/lib/utils"
 
 const Models = {
     list: 'product/pagination',
-    item: 'get-product-by-id',
-    summary: "product/summary"
+    item: 'product',
+    summary: "product/summary",
+    create: "product",
+    update: "product/info"
 };
 
 export const getProducts = (
@@ -28,5 +30,18 @@ export const getProductSummary = (
     http.get(`${Models.summary}`, {
         signal
     });
+
+export const addProduct = (body: ProductCreate) => {
+    return httpGuard.post<any>(`${Models.create}`, body)
+}
+
+
+export const removeProduct = (id: string | number) => {
+    return httpGuard.delete<any>(`${Models.create}/${id}`)
+}
+
+export const updateProduct = (id: string | number, body: any) => {
+    return httpGuard.put<any>(`${Models.update}/${id}`, body)
+}
 
 export const getProduct = (id: number | string) => http.get<Product>(`${Models.item}/${id}`)

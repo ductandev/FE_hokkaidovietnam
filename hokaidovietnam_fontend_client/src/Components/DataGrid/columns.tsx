@@ -150,10 +150,12 @@ export const columnsProduct: ColumnDef<Product>[] = [
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4"
-                // onClick={row.original.hanh_dong.edit}
+                // onClick={row.original.onEdit}
                 >{svgEdit}</span>
                 <span
-                // onClick={row.original.hanh_dong.delete}
+                    onClick={() => {
+                        row.original.onRemove(row.original.san_pham_id)
+                    }}
                 >{svgDelete}</span>
             </div>
         },
@@ -204,6 +206,19 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
     },
 ];
 
+
+// "lien_he_id": 25,
+// "trang_thai_lien_he_id": 1,
+// "ho_ten": "Tấn",
+// "email": "admin@example.com",
+// "noi_dung": "TESSSSSSSSSSSSSSSSs",
+// "isDelete": false,
+// "TrangThaiLienHe": {
+//   "trang_thai_lien_he_id": 1,
+//   "ten_trang_thai_lien_he": "Chưa gọi",
+//   "isDelete": false
+// }
+
 export const columnsContact: ColumnDef<Customer>[] = [
     {
         accessorKey: "index",
@@ -211,30 +226,15 @@ export const columnsContact: ColumnDef<Customer>[] = [
     },
     {
         accessorKey: "ho_ten",
-        header: "Tên khách hàng",
+        header: "Họ tên",
     },
     {
-        accessorKey: "don_da_mua",
-        header: "Đơn đã mua",
-        cell: ({ row }: any) => {
-            return <div className="flex items-center justify-start">
-                <span >
-                    {row?.original?.DonHang.length}
-                </span>
-            </div>
-        },
-    },
-    {
-        accessorKey: "dia_chi",
-        header: "Địa chỉ",
+        accessorKey: "noi_dung",
+        header: "Nội dung",
     },
     {
         accessorKey: "email",
-        header: "Email",
-    },
-    {
-        accessorKey: "so_dien_thoai",
-        header: "Số điện thoại",
+        header: "email",
     },
     {
         accessorKey: "hanh_dong",
