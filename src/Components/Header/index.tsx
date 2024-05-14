@@ -31,10 +31,6 @@ const MENU_REDIRECT = [
     path: "/contact",
     name: "liên hệ",
   },
-  {
-    path: "/test",
-    name: "Test CI/CD",
-  },
 ];
 
 export default function Header() {
