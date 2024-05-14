@@ -1,12 +1,13 @@
 import InputFrm from "@/Components/Input/InputFrm";
 import { GrClose } from "react-icons/gr";
 
-import { Navigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 import { useFormik } from "formik";
 import { useAuth } from "@/Auth/AuthProvider";
 
 import * as yup from "yup";
+import { toast } from "react-toastify";
 
 export interface UserRegisterFrm {
     ho_ten: string,
@@ -19,6 +20,7 @@ export interface UserRegisterFrm {
 
 export default function Register() {
     const { isLogin, signUp } = useAuth();
+    const navigate = useNavigate();
 
     const registerFrm = useFormik<UserRegisterFrm>({
         initialValues: {
@@ -56,8 +58,15 @@ export default function Register() {
                 .string()
         }),
         onSubmit: (values: UserRegisterFrm) => {
-            console.log("🚀 ", values);
             signUp(values);
+
+            toast.success("Đăng kí thành công", {
+                position: "bottom-center"
+            });
+
+            setTimeout(() => {
+                navigate("/login")
+            }, 1000);
         },
     });
 
