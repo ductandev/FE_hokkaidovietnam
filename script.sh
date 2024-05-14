@@ -12,4 +12,5 @@ sudo docker run -d -p 3100:80 --name cons-fe-hokkaido img-fe-hokkaido
 echo "bat dau thoi gian:$start"
 end=$(date +'%s')
 echo "ket thuc thoi gian:$end"
+# Test CI/CD
 
