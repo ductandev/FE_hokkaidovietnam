@@ -7,11 +7,12 @@ type PropTypes = {
     onChanged?: Function;
     hasPreventByLimit?: boolean;
     limit?: number;
-    fullWidth?: boolean
+    fullWidth?: boolean;
+    isMobile?: boolean
 }
 
 function Quantity(props: PropTypes) {
-    const { defaultValue, onChanged, limit = 0, hasPreventByLimit, fullWidth = false } = props
+    const { defaultValue, onChanged, limit = 0, hasPreventByLimit, fullWidth = false, isMobile = false } = props
     const [value, setValue] = useState(defaultValue);
 
     const increment = () => {
@@ -46,7 +47,7 @@ function Quantity(props: PropTypes) {
     }
 
     return (
-        <div className={`quantity-input ${fullWidth && "quantity-input_full"}`} >
+        <div className={`quantity-input ${isMobile && "quantity-input_mobile"} ${fullWidth && "quantity-input_full"}`} >
             <button className="quantity-input__modifier quantity-input__modifier--left" onClick={decrement}>
                 &mdash;
             </button>

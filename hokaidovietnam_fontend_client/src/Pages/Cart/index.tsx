@@ -14,12 +14,14 @@ import { formatCurrency, summaryPriceInCart } from "@/Helper/helper";
 import { Product } from "@/Types/Product.type";
 import { Button } from "@/Components/ui/button";
 import { useNavigate } from "react-router-dom";
+import useWindowDimensions from "@/Hooks/useWindowDimension";
 
 export default function Cart() {
     const { saveCartStorage } = useCartStorage();
     const cartState = useSelector(selectCart);
     const dispatch: any = useDispatch();
     const navigate = useNavigate();
+    const { width } = useWindowDimensions();
 
     const handleChangedQuantity = (san_pham_id: number, quantity: number) => {
         const findIndexItem = cartState.findIndex(product => product.san_pham_id === san_pham_id);
@@ -51,14 +53,15 @@ export default function Cart() {
                 ten_san_pham,
                 gia_ban,
                 so_luong_trong_kho,
-                san_pham_id
+                san_pham_id,
+                hinh_anh
             }: any = item;
 
             return (
                 <div
                     className={`
                     grid 
-                    grid-cols-10
+                    grid-cols-12
                     h-[100px]
                     lg:h-[150px] 
                     lg:px-11
@@ -66,12 +69,11 @@ export default function Cart() {
                     md:border-b-[1.5px]`}
                     key={index}>
 
-                    <div className="col-span-6 sm:col-span-4 flex items-center">
+                    <div className="col-span-6 sm:col-span-5 flex items-center">
                         <img className="
-                        w-[75px] l
-                        g:w-[115px]
-                        lg:me-11
-                        h-auto" src={`https://source.unsplash.com/random`} alt={"cart_image"} />
+                        w-[50px] lg:w-[80px]
+                        lg:mr-11 mr-4
+                        h-auto" src={hinh_anh[0]} alt={"cart_image"} />
 
                         <div className="pt-[6px]">
                             <p className="text-xs lg:text-base text-[#777171] mb-[15px] md:mb-5">{ten_san_pham}</p>
@@ -79,8 +81,7 @@ export default function Cart() {
                         </div>
                     </div>
 
-
-                    <div className="col-span-2 flex flex-row justify-center items-center  text-[#929292]">
+                    <div className="col-span-4 sm:col-span-3 flex flex-row justify-center items-center  text-[#929292]">
                         <Quantity
                             hasPreventByLimit
                             limit={so_luong_trong_kho}
@@ -88,16 +89,17 @@ export default function Cart() {
                             onChanged={(quantity: number) => {
                                 handleChangedQuantity(san_pham_id, quantity)
                             }}
+                            isMobile={width < 768}
                         />
                     </div>
 
-                    <div className={`col-span-2 sm:col-span-4 flex flex-row justify-end items-center gap-4 text-[#777171]`}>
+                    <div className={`col-span-2 sm:col-span-4 flex justify-end sm:justify-around items-center gap-4 text-[#777171]`}>
                         <p className="hidden sm:block text-xs lg:text-base">Tổng tiền:
-                            <span className="ps-5 text-xs lg:text-base font-semibold text-black">{formatCurrency(gia_ban * quantity)}</span>
+                            <span className="pl-2 md:pl-4 text-xs lg:text-base font-semibold text-black">{formatCurrency(gia_ban * quantity)}</span>
                         </p>
 
                         <p
-                            className="lg:ms-[100px] text-xl flex flex-row items-center cursor-pointer"
+                            className="sm:ml-[20px] text-xl flex items-center cursor-pointer"
                             onClick={() => {
                                 handleDeleteProduct(san_pham_id)
                             }}
@@ -157,6 +159,7 @@ export default function Cart() {
                             md:ms-6
                             md:mt-11
                             md:inline
+                            hidden
                         `}
                         variant={'order-btn-light'}
                         onClick={() => {
@@ -170,6 +173,9 @@ export default function Cart() {
                         className={`
                         md:ms-6
                         md:mt-11
+                        w-full
+                        mt-6
+                        md:mt-0
                         `}
                         variant={'order-btn-dark'}
                         disabled={!cartState.length}
@@ -186,6 +192,10 @@ export default function Cart() {
                             md:mt-11
                             md:inline
                             md:hidden
+                            block
+                            w-full
+                            mt-2
+                        md:mt-0
                         `}
                         variant={'order-btn-light'}
                         onClick={() => {

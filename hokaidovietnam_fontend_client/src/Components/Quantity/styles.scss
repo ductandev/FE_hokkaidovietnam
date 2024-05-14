@@ -18,6 +18,35 @@ $fixed-size: 50px;
         max-width: 100%;
         min-width: 100%;
     }
+
+    &_mobile {
+        max-width: 100px;
+        min-width: 100px;
+
+        #{$block}__screen {
+            width: 100%;
+            font-size: 12px;
+            padding: 6px;
+            height: 30px !important;
+            max-height: 30px !important;
+        }
+
+        #{$block}__modifier {
+            width: 42px;
+            font-size: 12px;
+            cursor: pointer;
+
+            &--left {
+                height: 30px;
+                width: 30px;
+            }
+
+            &--right {
+                height: 30px;
+                width: 30px;
+            }
+        }
+    }
 }
 
 #{$block}__modifier,
