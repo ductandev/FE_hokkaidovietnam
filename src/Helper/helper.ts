@@ -58,3 +58,24 @@ export function formatTime(utcTime: any, format: string) {
     format = format.replace("mm", minutes);
     return format;
 }
+
+export function isNumberKey(e: any) {
+    var evt = e || window.event;
+
+    if (evt) {
+        var charCode = evt.keyCode || evt.which;
+    } else {
+        return true;
+    }
+
+    if ((charCode > 47 && charCode < 58) || charCode === 9 || charCode === 8 || charCode === 46 || charCode === 37 || charCode === 39) {
+        return true;
+    }
+
+    return false;
+}
+
+export function isNumberMobile(e: any) {
+    e.target.value = e.target.value.replace(/[^\d]/g, '');
+    return false;
+}
