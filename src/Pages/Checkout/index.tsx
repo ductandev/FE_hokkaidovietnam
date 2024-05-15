@@ -70,7 +70,7 @@ export default function CheckoutPage() {
     },
   });
 
-  const { mutateAsync, isError }: any = useMutation({
+  const { mutateAsync }: any = useMutation({
     mutationFn: (body: OrderCreate) => {
       return postOrder(body)
     },
@@ -89,11 +89,7 @@ export default function CheckoutPage() {
         position: "bottom-center",
       });
     },
-  })
-
-  console.log({
-    isError
-  })
+  });
 
   const totalPrice: any = cartState.reduce((accumulator: number, product: Product | any) => {
     return accumulator + (product.quantity * product.gia_ban);
