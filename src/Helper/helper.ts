@@ -79,3 +79,13 @@ export function isNumberMobile(e: any) {
     e.target.value = e.target.value.replace(/[^\d]/g, '');
     return false;
 }
+
+export const isEmpty = (obj: Record<string, any>) => {
+    for (var prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+};

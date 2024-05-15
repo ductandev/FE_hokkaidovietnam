@@ -29,7 +29,7 @@ root.render(
     <Provider store={store}>
         <QueryClientProvider client={queryClient}>
             <AuthProvider>
-                <ToastContainer />
+                <ToastContainer autoClose={1000} />
 
                 <RouterProvider router={router} />
             </AuthProvider>

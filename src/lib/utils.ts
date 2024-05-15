@@ -23,7 +23,6 @@ class Http {
         })
     }
 }
-
 class HttpGuard {
     instance: AxiosInstance
     constructor() {

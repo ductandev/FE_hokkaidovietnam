@@ -22,7 +22,7 @@ function PageSize(props: any) {
             <div>
                 <Selection
                     options={reOptions}
-                    value="value"
+                    valueKey="value"
                     name="Hiển thị"
                     displayKey="label"
                     title="Hiển thị"

@@ -1,25 +1,37 @@
+// ! Hooks and Library
+import { useAddress } from "@/Hooks/useAddress/useAddress";
+import { useDispatch, useSelector } from "react-redux";
+import { Controller, useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "react-query";
+import { actions } from "@/Redux/actions/cart.action";
+
+// ! Components
+import { Input } from "@/Components/ui/input";
+import Selection from "@/Components/Selection";
+import { Label } from "@/Components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group"
+import { Textarea } from "@/Components/ui/textarea";
+import { Button } from "@/Components/ui/button";
+
+// ! Redux and Helpers
+import { selectCart } from "@/Redux/selectors/cart.selector";
+import { Product } from "@/Types/Product.type";
+import { formatCurrency, isEmpty, summaryPriceInCart } from "@/Helper/helper";
+
+// ! Assets
 import { PiUserCircleFill } from "react-icons/pi";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaRegIdCard } from "react-icons/fa";
 import { BsCreditCard } from "react-icons/bs";
 
-import { useFormik } from "formik";
-import * as yup from "yup";
+// ! Schema validation
+import { checkoutValidationSchema } from "./checkout.validation";
 
-import { Controller, useForm } from "react-hook-form";
-
-// import Input from "@/Components/Input/Input";
-import { Input } from "@/Components/ui/input";
-import Selection from "@/Components/Selection";
-
-import { useSelector } from "react-redux";
-import { selectCart } from "@/Redux/selectors/cart.selector";
-import { Product } from "@/Types/Product.type";
-import { formatCurrency, summaryPriceInCart } from "@/Helper/helper";
-import { useAddress } from "@/Hooks/useAddress/useAddress";
-import { useReducer } from "react";
-import { Button } from "@/Components/ui/button";
-import { Link } from "react-router-dom";
+import { OrderCreate } from "@/Types/Order.type";
+import { postOrder } from "@/Apis/Order/Order.api";
+import { toast } from "react-toastify";
 
 export interface UserPaymentFrm {
   email: string;
@@ -30,101 +42,62 @@ export interface UserPaymentFrm {
   notePayment: string;
 }
 
-type AddressState = {
-  provinceId: number | string;
-  districtId: number | string;
-  wardId: number | string;
-}
-
 export default function CheckoutPage() {
-  // * State to handle Address
-  const [state, setState] = useReducer(
-    (data: AddressState, partialData: Partial<AddressState>): AddressState => {
-      return { ...data, ...partialData };
-    },
-    {
-      provinceId: "",
-      districtId: "",
-      wardId: ""
-    },
-  );
   const { getProvince, getDistrict, getWard }: any = useAddress();
 
   const cartState = useSelector(selectCart);
+  const dispatch: any = useDispatch();
 
   const {
     handleSubmit,
     control,
-    formState: { errors, isDirty },
+    formState: { errors },
+    watch,
+    setValue
   } = useForm<any>({
     mode: "onChange",
+    resolver: yupResolver(checkoutValidationSchema),
     defaultValues: {
-
-    },
-  });
-
-  const paymentFrm = useFormik<UserPaymentFrm>({
-    initialValues: {
       email: "",
-      name: "",
-      phone: "",
-      address: "",
-      province: "",
-      notePayment: "",
-    },
-    validationSchema: yup.object().shape({
-      name: yup
-        .string()
-        .required("Họ và tên không được bỏ trống!")
-        .matches(
-          /^[a-z A-Z\s áàảạãăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệiíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ ÁÀẢẠÃĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ]+$/,
-          "Tên chỉ được chứa chữ cái."
-        ),
-      email: yup
-        .string()
-        .required("Email không được bỏ trống!")
-        .email("Email không hợp lệ!"),
-      phone: yup
-        .string()
-        .required("Số điện thoại không được bỏ trống!")
-        .matches(/\d$/, "Vui lòng chỉ điền số!")
-        .min(10, "Số điện tối thiểu là 10 số!")
-        .max(10, "Số điện tối đa là 10 số!"),
-      address: yup.string().required("Địa chỉ không được bỏ trống!"),
-      province: yup.string().required("Tỉnh thành không được bỏ trống!"),
-      notePayment: yup.string(),
-    }),
-    onSubmit: async (values: UserPaymentFrm) => {
-      console.log(values);
-      // const actionApi = contactAsyncAction(values);
-      // dispatch(actionApi);
+      ho_ten: "",
+      so_dien_thoai: "",
+      dia_chi: "",
+      ghi_chu: "",
+      tinh_thanh_id: "",
+      quan_id: "",
+      phuong_id: "",
+      hinh_thuc_thanh_toan_id: "2"
     },
   });
+
+  const { mutateAsync, isError }: any = useMutation({
+    mutationFn: (body: OrderCreate) => {
+      return postOrder(body)
+    },
+    onSuccess: () => {
+      toast.success(`Bạn đã đặt hàng thành công`, {
+        position: "bottom-center",
+      });
+
+      // * Clear Current Cart
+      // ! if user login call api clear cart
+      // ! if user not login clear cart in local
+      dispatch(actions.setCart([]));
+    },
+    onError: () => {
+      toast.error(`Đã xảy ra lỗi`, {
+        position: "bottom-center",
+      });
+    },
+  })
+
+  console.log({
+    isError
+  })
 
   const totalPrice: any = cartState.reduce((accumulator: number, product: Product | any) => {
     return accumulator + (product.quantity * product.gia_ban);
   }, 0);
-
-  const handleChangeAddress = (name: string, value: string) => {
-    let updatedState: any = {};
-
-    // Set the value for the input field
-    updatedState[name] = value;
-
-    // Additional logic for specific fields
-    if (name === "provinceId") {
-      // If provinceId is changed, reset districtId and wardId
-      updatedState["districtId"] = "";
-      updatedState["wardId"] = "";
-    } else if (name === "districtId") {
-      // If districtId is changed, reset wardId
-      updatedState["wardId"] = "";
-    }
-
-    setState({
-      ...updatedState
-    });
-  };
 
   const renderData = (): JSX.Element[] => {
     return cartState.map((item: Product | any, index) => {
@@ -167,8 +140,26 @@ export default function CheckoutPage() {
   };
 
   const handleOnSubmitForm = (values: any) => {
+    const payload = {
+      ...values,
+      tong_tien: totalPrice,
+      ma_giam_gia: "",
+      san_pham: cartState.map((product: any) => {
+        return {
+          san_pham_id: product.san_pham_id,
+          so_luong: product.quantity,
+          don_gia: product.gia_ban
+        }
+      }),
+      quan_id: parseInt(values.quan_id),
+      phuong_id: parseInt(values.phuong_id),
+      tinh_thanh_id: parseInt(values.tinh_thanh_id),
+    };
 
+    mutateAsync(payload);
   }
+
+  const SErrors: any = errors
 
   return (
     <div className={`container mx-aut`}>
@@ -183,8 +174,7 @@ export default function CheckoutPage() {
             text-center
             sm:border-b-[1.5px]
             sm:border-b-black
-        `}
-        >
+        `}>
           Thanh toán
         </h1>
       </div>
@@ -213,172 +203,158 @@ export default function CheckoutPage() {
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Input
-                      id="email"
                       placeholder="Email"
-                      className="mb-4"
+                      error={SErrors?.email?.message || ""}
                       {...field}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
 
             <Controller
-              name="user_name"
+              name="ho_ten"
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Input
                       placeholder="Họ và tên"
-                      className="mb-4"
+                      error={SErrors?.ho_ten?.message || ""}
                       {...field}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
 
             <Controller
-              name="phone"
+              name="so_dien_thoai"
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Input
                       startIcon={"+84"}
                       placeholder="Số điện thoại"
-                      className="mb-4"
+                      error={SErrors?.so_dien_thoai?.message || ""}
                       {...field}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
 
             <Controller
-              name="address"
+              name="dia_chi"
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Input
                       placeholder="Địa chỉ"
-                      className="mb-4"
+                      error={SErrors?.dia_chi?.message || ""}
                       {...field}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
 
             <Controller
-              name="provinceId"
+              name="tinh_thanh_id"
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Selection
                       title="Tỉnh thành"
                       placeholder="Chọn tỉnh thành"
                       options={getProvince()}
                       displayKey={"name"}
-                      onChanged={handleChangeAddress}
-                      defaultValue={state.provinceId}
-                      customClassTrigger="mb-4"
+                      onChanged={(_: any, value: any) => {
+                        field.onChange(value);
+                        setValue("quan_id", "")
+                        setValue("phuong_id", "")
+                      }}
+                      defaultValue={field.value}
+                      valueKey={"id"}
+                      error={SErrors?.tinh_thanh_id?.message || ""}
                       {...field}
-                      value={"id"}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
 
             <Controller
-              name="districtId"
+              name="quan_id"
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Selection
                       title="Quận huyện"
-                      placeholder="Chọn quận/huyện"
-                      options={getDistrict(state.provinceId)}
+                      placeholder="Chọn quận huyện"
+                      options={getDistrict(watch("tinh_thanh_id"))}
                       displayKey={"name"}
-                      onChanged={handleChangeAddress}
-                      disabled={!state.provinceId}
-                      defaultValue={state.districtId}
-                      customClassTrigger="mb-4"
+                      disabled={!watch("tinh_thanh_id")}
+                      onChanged={(_: any, value: any) => {
+                        field.onChange(value);
+                        setValue("phuong_id", "")
+                      }}
+                      defaultValue={field.value}
+                      valueKey={"id"}
+                      error={SErrors?.quan_id?.message || ""}
                       {...field}
-                      value={"id"}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
 
-
             <Controller
-              name="wardId"
+              name="phuong_id"
               control={control}
               render={({ field }: any) => {
                 return (
-                  <>
+                  <div className="mb-4">
                     <Selection
                       title="Phường xã"
                       placeholder="Chọn phường/xã"
-                      options={getWard(state.districtId)}
+                      options={getWard(watch("quan_id"))}
                       displayKey={"name"}
-                      onChanged={handleChangeAddress}
-                      disabled={!state.provinceId || !state.districtId}
-                      defaultValue={state.wardId}
-                      customClassTrigger="mb-4"
+                      onChanged={(_: any, value: any) => {
+                        field.onChange(value);
+                      }}
+                      disabled={!watch("quan_id")}
+                      defaultValue={field.value}
+                      valueKey={"id"}
+                      error={SErrors?.phuong_id?.message || ""}
                       {...field}
-                      value={"id"}
                     />
-                  </>
+                  </div>
                 );
               }}
             />
+
             <Controller
-              name="notePayment"
+              name="ghi_chu"
               control={control}
               render={({ field }: any) => {
                 return (
                   <>
-                    <textarea
-                      id="notePayment"
-                      className={`indent-3 sm:indent-5 h-[69px] sm:h-[104px] w-full mb-5 pt-1 text-[10px] sm:text-base`}
+                    <Textarea
+                      className={`h-[69px] sm:h-[104px] w-full mb-5 pt-1 text-sm`}
                       placeholder="Ghi chú (tùy chọn)"
-                      style={{ border: "0.5px solid #777171" }}
-                      onInput={paymentFrm.handleChange}
-                      onBlur={paymentFrm.handleChange}
+                      {...field}
                     />
                   </>
                 );
               }}
             />
-
-            {/* <div className="flex items-center mb-1 lg:mb-2">
-              <input
-                className="w-[10px] h-[10px] lg:w-[25px] lg:h-[25px] me-1 lg:me-3"
-                type="checkbox"
-                name="diffientAddress"
-                id="diffientAddress"
-                value=""
-              />
-
-              <label
-                className="text-[#777171] font-light leading-6 text-[10px] lg:text-base"
-                htmlFor="diffientAddress"
-              >
-                Giao hàng đến địa chỉ khác
-              </label>
-            </div> */}
-
-
 
             <h1 className="text-[13px] lg:text-2xl leading-6 font-bold">
               <span className="lg:hidden">
@@ -387,55 +363,37 @@ export default function CheckoutPage() {
               Thanh toán
             </h1>
 
-            <div className="py-2 lg:py-9 border-b-[1px] border-[#777171] ">
-              <div className="flex items-center lg:mb-2">
-                <input
-                  className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] me-3 lg:me-4"
-                  type="radio"
-                  name="payMethod"
-                  id="COD"
-                  value=""
-                />
-                <label
-                  className="text-[#777171] font-light leading-6 text-[10px] lg:text-base"
-                  htmlFor="COD"
-                >
-                  Thanh toán khi nhận hàng(COD)
-                </label>
-              </div>
-              <div className="flex items-center mb-2 lg:mt-5">
-                <input
-                  className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] me-3 lg:me-4"
-                  type="radio"
-                  name="payMethod"
-                  id="CARD"
-                  value=""
-                />
-                <label
-                  className="text-[#777171] font-light leading-6 text-[10px] lg:text-base"
-                  htmlFor="CARD"
-                >
-                  Chuyển khoản qua ngân hàng
-                </label>
-              </div>
+            <div className="py-4 border-b-[1px] border-[#777171]">
+              <Controller
+                name="hinh_thuc_thanh_toan_id"
+                control={control}
+                render={({ field }: any) => {
+                  return (
+                    <RadioGroup defaultValue={field.value} onChange={(event: any) => {
+                      field.onChange(event.target.value)
+                    }} >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="2" id="2" />
+
+                        <Label htmlFor="2" className="text-base">Chuyển khoản qua ngân hàng</Label>
+                      </div>
+
+                      <div className="flex items-center space-x-2 mt-2">
+                        <RadioGroupItem value="1" id="1" />
+                        <Label htmlFor="1" className="text-base">Thanh toán khi nhận hàng (COD)</Label>
+                      </div>
+                    </RadioGroup>
+                  );
+                }}
+              />
 
               <div className="lg:hidden text-xl border-t-[1px] border-[#777171]">
-                <button
-                  className={`
-                  w-full
-                  py-[8px] 
-                  sm:py-[10px] 
-                  bg-[#1E1E1E] 
-                  text-white
-                  mt-5
-                  mb-4
-                  lg:mb-0 
-                  text-base`}
-                  disabled={!paymentFrm.isValid}
+                <Button
+                  disabled={!isEmpty(errors)}
                   type="submit"
                 >
                   ĐẶT HÀNG
-                </button>
+                </Button>
 
                 <div className="flex justify-center mb-9">
                   <a href="/cart" className="flex items-center text-xs text-[#777171]">
@@ -444,14 +402,12 @@ export default function CheckoutPage() {
                   </a>
                 </div>
               </div>
-
-
             </div>
 
-            <div className="flex justify-end leading-6 text-[10px] lg:text-[13px] text-[#2B5C82] lg:text-black gap-4">
-              <p>Chính sách đổi trả</p>
-              <p>Chính sách bảo mật</p>
-              <p>Điểu khoản sử dụng</p>
+            <div className="flex mt-2 justify-end leading-6 text-[10px] lg:text-[13px] text-[#2B5C82] lg:text-black gap-4">
+              <p className="cursor-pointer">Chính sách đổi trả</p>
+              <p className="cursor-pointer">Chính sách bảo mật</p>
+              <p className="cursor-pointer">Điểu khoản sử dụng</p>
             </div>
           </div>
 
@@ -490,7 +446,6 @@ export default function CheckoutPage() {
               <Input name="discount_code" placeholder="Nhập mã giảm giá" />
 
               <Button className="h-[40px] md:text-lg text-base px-6">Áp dụng</Button>
-
             </div>
 
             <div
@@ -540,7 +495,12 @@ export default function CheckoutPage() {
                   <p>Quay về giỏ hàng</p>
                 </Link>
 
-                <Button className="h-[48px] px-8 text-lg">Đặt hàng</Button>
+                <Button
+                  className="h-[48px] px-8 text-lg"
+                  disabled={!isEmpty(errors)}
+                  type="submit"
+                >Đặt hàng
+                </Button>
               </div>
             </div>
           </div>
