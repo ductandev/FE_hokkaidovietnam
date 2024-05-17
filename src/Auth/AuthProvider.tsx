@@ -1,4 +1,5 @@
 import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 import { useLocalStorage } from "@/Hooks/useLocalStorage";
 
@@ -38,6 +39,10 @@ export const AuthProvider = function (props: AppProviderProps) {
     const { mutateAsync: mutateAsyncLogin }: any = useMutation({
         mutationFn: (body: UserLogin) => {
             return loginUser(body)
+        },
+        onError: (error: any) => {
+            const mgs = error.response.data.message
+            toast.error(mgs);
         }
     })
 
@@ -56,6 +61,7 @@ export const AuthProvider = function (props: AppProviderProps) {
             setIsLogin(true);
             setIsAdmin(response.data.content.vai_tro_id === 1);
 
+            toast.success("Đăng nhập thành công!");
             // * Redirect sang admin page
         } catch (error) {
             console.log(error);
@@ -73,6 +79,7 @@ export const AuthProvider = function (props: AppProviderProps) {
 
     const signOut = () => {
         // ! Clear token
+        removeItem(HK_ROLE);
         removeItem(ACCESS_TOKEN_KEY);
         setIsLogin(false)
         setIsAdmin(false)

@@ -147,9 +147,6 @@ export default function CheckoutPage() {
           don_gia: product.gia_ban
         }
       }),
-      quan_id: parseInt(values.quan_id),
-      phuong_id: parseInt(values.phuong_id),
-      tinh_thanh_id: parseInt(values.tinh_thanh_id),
     };
 
     mutateAsync(payload);
