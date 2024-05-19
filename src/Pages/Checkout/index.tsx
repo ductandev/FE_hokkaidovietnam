@@ -92,12 +92,12 @@ export default function CheckoutPage() {
   });
 
   const totalPrice: any = cartState.reduce((accumulator: number, product: Product | any) => {
-    return accumulator + (product.quantity * product.gia_ban);
+    return accumulator + (product.so_luong * product.gia_ban);
   }, 0);
 
   const renderData = (): JSX.Element[] => {
     return cartState.map((item: Product | any, index) => {
-      let { quantity, ten_san_pham, gia_ban, hinh_anh } = item;
+      let { so_luong, ten_san_pham, gia_ban, hinh_anh } = item;
 
       return (
         <div
@@ -124,7 +124,7 @@ export default function CheckoutPage() {
 
           <div className="w-full">
             <p className="text-base md:text-lg mb-1">{ten_san_pham}</p>
-            <p className="text-sm md:text-base text-[#777171]">Số lượng: {quantity}</p>
+            <p className="text-sm md:text-base text-[#777171]">Số lượng: {so_luong}</p>
           </div>
 
           <span className="text-base md:text-lg text-[#777171]">
@@ -143,7 +143,7 @@ export default function CheckoutPage() {
       san_pham: cartState.map((product: any) => {
         return {
           san_pham_id: product.san_pham_id,
-          so_luong: product.quantity,
+          so_luong: product.so_luong,
           don_gia: product.gia_ban
         }
       }),

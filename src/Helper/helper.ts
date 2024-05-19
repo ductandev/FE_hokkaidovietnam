@@ -22,7 +22,7 @@ export const HandleAddCart = (newProduct: Product | any) => {
         const existingProductIndex = oldCart.findIndex((product: Product) => product.san_pham_id === newProduct.san_pham_id);
 
         if (existingProductIndex !== -1) {
-            updatedCart[existingProductIndex].quantity += newProduct.quantity;
+            updatedCart[existingProductIndex].so_luong += newProduct.so_luong;
         } else {
             updatedCart.push({ ...newProduct });
         }
@@ -36,7 +36,7 @@ export const HandleAddCart = (newProduct: Product | any) => {
 
 export const summaryPriceInCart = (cart: Product[]) => {
     const totalPrice: number = cart.reduce((accumulator: number, product: Product | any) => {
-        return accumulator + (product.quantity * product.gia_ban);
+        return accumulator + (product.so_luong * product.gia_ban);
     }, 0);
 
     return formatCurrency(totalPrice)

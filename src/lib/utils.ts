@@ -3,7 +3,7 @@ import { twMerge } from "tailwind-merge";
 import axios, { AxiosInstance } from 'axios';
 import { ACCESS_TOKEN_KEY } from "@/Auth/AuthProvider";
 
-const TOKEN = localStorage.getItem(ACCESS_TOKEN_KEY);
+const TOKEN = localStorage.getItem(ACCESS_TOKEN_KEY) || "";
 
 export function cn(...inputs: ClassValue[]) {
     return twMerge(clsx(inputs))
@@ -23,8 +23,10 @@ class Http {
         })
     }
 }
+
 class HttpGuard {
-    instance: AxiosInstance
+    instance: AxiosInstance;
+
     constructor() {
         this.instance = axios.create({
             baseURL: URL,
