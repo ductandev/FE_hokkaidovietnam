@@ -81,19 +81,21 @@ export default function Header() {
         `}
     >
       <div className="header-menu">
-        <ul className="header-menu-container">
-          {memorizeMenu.map((menu, idx) => {
-            return (
-              <Link
-                className="header-menu-link transition-transform transform hover:scale-105 hover:font-bold"
-                to={menu.path}
-                key={idx}
-              >
-                {menu.name}
-              </Link>
-            );
-          })}
-        </ul>
+        <>
+          <ul className="header-menu-container">
+            {memorizeMenu.map((menu, idx) => {
+              return (
+                <Link
+                  className="header-menu-link font-semibold text-sm transition-transform transform hover:scale-105 hover:font-extrabold"
+                  to={menu.path}
+                  key={idx}
+                >
+                  {menu.name}
+                </Link>
+              );
+            })}
+          </ul>
+        </>
 
         {!isOpenMenu && (
           <Menu
@@ -123,7 +125,9 @@ export default function Header() {
 
       <div className="header-actions">
         <div className="flex flex-row">
-          <Search className="mr-10 cursor-pointer header-actions-search" />
+          <Link to="/search">
+            <Search className="mr-10 cursor-pointer header-actions-search" />
+          </Link>
 
           <Link to="/login" >
             <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
@@ -153,7 +157,7 @@ export default function Header() {
       </div>
 
       <nav
-        className="header-navMenu"
+        className="header-navMenu flex flex-col justify-between"
         style={{
           width: isOpenMenu ? "100%" : "0px",
         }}
@@ -164,7 +168,7 @@ export default function Header() {
               {memorizeMenu.map((menu, idx) => {
                 return (
                   <Link
-                    className="header-navMenu-link"
+                    className="header-navMenu-link font-bold hover:font-extrabold"
                     to={menu.path}
                     key={idx}
                     onClick={() => {
@@ -176,6 +180,13 @@ export default function Header() {
                 );
               })}
             </ul>
+
+            <div className="h-[100px] border-t-2  flex items-center justify-start pl-[15px]">
+              <Link to="/login" className="flex items-center space-x-2">
+                <CircleUserRound size={35} />
+                <h3 className="font-semibold text-lg">LOGIN</h3>
+              </Link>
+            </div>
           </>
         )}
       </nav>
