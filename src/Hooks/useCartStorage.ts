@@ -1,6 +1,6 @@
 import { useLocalStorage } from "./useLocalStorage";
 
-const PREFIX = `pl_cart`;
+export const PREFIX = `pl_cart`;
 
 export const useCartStorage = () => {
     const { getItem, setItem } = useLocalStorage();

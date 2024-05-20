@@ -1,6 +1,9 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useCartStorage } from "@/Hooks/useCartStorage";
+import useWindowDimensions from "@/Hooks/useWindowDimension";
+import { useMutation } from "react-query";
+import { useAuth } from "@/Auth/AuthProvider";
 
 import { Divider } from "@/Components/Divider"
 import Quantity from "@/Components/Quantity/Quantity"
@@ -11,9 +14,9 @@ import { actions } from "@/Redux/actions/cart.action";
 
 import { Product } from "@/Types/Product.type";
 import { toast } from "react-toastify";
+import { addtoCart } from "@/Apis/Cart/Cart.api";
 
 import "./styles.scss"
-import useWindowDimensions from "@/Hooks/useWindowDimension";
 
 const DEFAULT_QUANTITY = 1;
 
@@ -27,16 +30,19 @@ const ProductInformation: React.FC<Product> = (props: Product) => {
     } = props;
 
     const { saveCartStorage } = useCartStorage();
+    const { isLogin } = useAuth();
     const dispatch: any = useDispatch();
     const { width } = useWindowDimensions();
     const [quantityState, setQuantityState] = useState<number>(DEFAULT_QUANTITY);
 
-    const handleAddCart = () => {
-        const payload = {
-            ...props,
-            quantity: quantityState
-        }
+    const addProductMutation = useMutation({
+        mutationFn: (body: any) => addtoCart(body),
+        onSuccess: (_) => {
+            setQuantityState(DEFAULT_QUANTITY)
+        },
+    });
 
+    const onMutateCartSuccess = (payload: any) => {
         const resolveCart = HandleAddCart(payload)
 
         // * convert JSON string để lưu xuống local storage
@@ -44,9 +50,28 @@ const ProductInformation: React.FC<Product> = (props: Product) => {
 
         // * Thao tác với state cart trong reducer
         dispatch(actions.setCart(resolveCart));
+
         toast.success("Thêm giỏ hàng thành công", {
             position: "bottom-center"
         })
+    }
+
+    const handleAddCart = () => {
+        const payload = {
+            ...props,
+            so_luong: quantityState
+        };
+
+        if (isLogin) {
+            let newPayload: any = {
+                san_pham_id: payload.san_pham_id,
+                so_luong: quantityState
+            };
+
+            addProductMutation.mutate(newPayload);
+        }
+
+        onMutateCartSuccess(payload);
     };
 
     const handleQuantityChanged = (quantity: number) => {

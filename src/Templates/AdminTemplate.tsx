@@ -5,7 +5,6 @@ import HeaderAdmin from '@/Components/HeaderAdmin';
 import SidebarAdmin from '@/Components/SideBarAdmin';
 import { useAuth } from '@/Auth/AuthProvider';
 
-
 const SIDEBAR_WITDH = `230px`;
 
 const AdminTemplate: React.FC = (): JSX.Element => {

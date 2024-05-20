@@ -22,7 +22,7 @@ export const HandleAddCart = (newProduct: Product | any) => {
         const existingProductIndex = oldCart.findIndex((product: Product) => product.san_pham_id === newProduct.san_pham_id);
 
         if (existingProductIndex !== -1) {
-            updatedCart[existingProductIndex].quantity += newProduct.quantity;
+            updatedCart[existingProductIndex].so_luong += newProduct.so_luong;
         } else {
             updatedCart.push({ ...newProduct });
         }
@@ -36,7 +36,7 @@ export const HandleAddCart = (newProduct: Product | any) => {
 
 export const summaryPriceInCart = (cart: Product[]) => {
     const totalPrice: number = cart.reduce((accumulator: number, product: Product | any) => {
-        return accumulator + (product.quantity * product.gia_ban);
+        return accumulator + (product.so_luong * product.gia_ban);
     }, 0);
 
     return formatCurrency(totalPrice)
@@ -58,3 +58,34 @@ export function formatTime(utcTime: any, format: string) {
     format = format.replace("mm", minutes);
     return format;
 }
+
+export function isNumberKey(e: any) {
+    var evt = e || window.event;
+
+    if (evt) {
+        var charCode = evt.keyCode || evt.which;
+    } else {
+        return true;
+    }
+
+    if ((charCode > 47 && charCode < 58) || charCode === 9 || charCode === 8 || charCode === 46 || charCode === 37 || charCode === 39) {
+        return true;
+    }
+
+    return false;
+}
+
+export function isNumberMobile(e: any) {
+    e.target.value = e.target.value.replace(/[^\d]/g, '');
+    return false;
+}
+
+export const isEmpty = (obj: Record<string, any>) => {
+    for (var prop in obj) {
+        if (Object.prototype.hasOwnProperty.call(obj, prop)) {
+            return false;
+        }
+    }
+
+    return JSON.stringify(obj) === JSON.stringify({});
+};

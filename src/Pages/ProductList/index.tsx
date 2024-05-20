@@ -1,6 +1,6 @@
 // ! React Library
 import { Fragment, useCallback, useDeferredValue, useState } from "react"
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useCartStorage } from "@/Hooks/useCartStorage";
 import { useDispatch } from "react-redux";
 import { actions } from "@/Redux/actions/cart.action";
@@ -25,6 +25,8 @@ import { getProducts } from "@/Apis/Product/Product.api";
 import { getProductTypes } from "@/Apis/Product/ProductType.api";
 import { Product } from "@/Types/Product.type";
 import { toast } from "react-toastify";
+import { useAuth } from "@/Auth/AuthProvider";
+import { addtoCart } from "@/Apis/Cart/Cart.api";
 
 const PAGE_SIZE = 8;
 
@@ -45,6 +47,8 @@ export default function Products() {
     const [page, setPage] = useState(1);
     const [quantityState, setQuantityState] = useState<number>(DEFAULT_QUANTITY);
     const { saveCartStorage } = useCartStorage();
+    const { isLogin } = useAuth();
+
 
     const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
         queryKey: ['products', page, typeId],
@@ -81,6 +85,13 @@ export default function Products() {
             setQuantityState(DEFAULT_QUANTITY)
         }
     };
+
+    const addProductMutation = useMutation({
+        mutationFn: (body: any) => addtoCart(body),
+        onSuccess: (_) => {
+            setQuantityState(DEFAULT_QUANTITY);
+        },
+    });
 
     const renderXMLBody = () => {
         return <div className="grid grid-cols-1 md:grid-cols-2 mt-12">
@@ -142,24 +153,36 @@ export default function Products() {
         setQuantityState(quantity);
     }
 
-    const handleCart = () => {
-        const payload = {
-            ...detailProduct,
-            quantity: quantityState
-        }
-
+    const onMutateCartSuccess = (payload: any) => {
         const resolveCart = HandleAddCart(payload)
 
         // * convert JSON string để lưu xuống local storage
         saveCartStorage(resolveCart);
 
         // * Thao tác với state cart trong reducer
-        dispatch(actions.setCart(resolveCart))
+        dispatch(actions.setCart(resolveCart));
 
-        handleToggleModal(false);
-        toast.success('Thêm giỏ hàng thành công', {
-            position: 'bottom-center'
+        toast.success("Thêm giỏ hàng thành công", {
+            position: "bottom-center"
         });
+    }
+
+    const handleCart = () => {
+        const payload = {
+            ...detailProduct,
+            so_luong: quantityState
+        };
+
+        if (isLogin) {
+            let payloadPost: any = {
+                san_pham_id: payload.san_pham_id,
+                so_luong: quantityState
+            };
+
+            addProductMutation.mutate(payloadPost);
+        };
+
+        onMutateCartSuccess(payload);
     }
 
     const handleShowDetailProduct = useCallback(
@@ -208,7 +231,7 @@ export default function Products() {
                     />
                 })}
             </div> : <>
-                {deferredProductList.length ? <div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-5">
+                {deferredProductList.length ? <div className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     {deferredProductList.map((product: Product, idx: any) => {
                         return <Fragment key={`${product.san_pham_id}_${idx}`}>
                             <ProductCard

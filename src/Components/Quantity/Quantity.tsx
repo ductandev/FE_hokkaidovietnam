@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 import "./styles.scss";
+import { isNumberKey, isNumberMobile } from '@/Helper/helper';
 
 type PropTypes = {
     defaultValue: number;
@@ -54,11 +55,15 @@ function Quantity(props: PropTypes) {
 
             <input
                 className="quantity-input__screen"
-                type="text" value={value}
+                type="text"
+                value={value}
                 onKeyPress={(e) => {
-                    if (!/[0-9]/.test(e.key)) {
+                    if (!isNumberKey(e)) {
                         e.preventDefault();
                     }
+                }}
+                onKeyUp={(e) => {
+                    isNumberMobile(e)
                 }}
                 onChange={(e: any) => {
                     onChangeInput(e.target.value)

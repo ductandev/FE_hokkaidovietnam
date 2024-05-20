@@ -17,12 +17,12 @@ function PageSize(props: any) {
         <div className={`flex items-center ${className}`} style={{
             minWidth: 130
         }}>
-            <span className="mr-4 flex inline-block">Hiển thị</span>
+            <span className="mr-4 flex block">Hiển thị</span>
 
             <div>
                 <Selection
                     options={reOptions}
-                    value="value"
+                    valueKey="value"
                     name="Hiển thị"
                     displayKey="label"
                     title="Hiển thị"

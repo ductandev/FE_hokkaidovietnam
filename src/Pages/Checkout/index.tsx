@@ -1,20 +1,43 @@
+// ! Hooks and Library
+import { useAddress } from "@/Hooks/useAddress/useAddress";
+import { useDispatch, useSelector } from "react-redux";
+import { Controller, useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useMutation } from "react-query";
+import { useAuth } from "@/Auth/AuthProvider";
+import { actions } from "@/Redux/actions/cart.action";
+
+// ! Components
+import { Input } from "@/Components/ui/input";
+import Selection from "@/Components/Selection";
+import { Label } from "@/Components/ui/label"
+import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group"
+import { Textarea } from "@/Components/ui/textarea";
+import { Button } from "@/Components/ui/button";
+import { toast } from "react-toastify";
+
+// ! Redux and Helpers
+import { selectCart } from "@/Redux/selectors/cart.selector";
+import { selectUser } from "@/Redux/selectors/user.selector";
+import { formatCurrency, isEmpty, summaryPriceInCart } from "@/Helper/helper";
+
+import { Product } from "@/Types/Product.type";
+import { OrderCreate } from "@/Types/Order.type";
+
+// ! Assets
 import { PiUserCircleFill } from "react-icons/pi";
 import { FaAngleLeft } from "react-icons/fa6";
 import { FaRegIdCard } from "react-icons/fa";
 import { BsCreditCard } from "react-icons/bs";
 
-import { useFormik } from "formik";
-import * as yup from "yup";
+// ! Schema validation
+import { checkoutValidationSchema } from "./checkout.validation";
 
-import Input from "@/Components/Input/Input";
-import Selection from "@/Components/Selection";
-
-import { useSelector } from "react-redux";
-import { selectCart } from "@/Redux/selectors/cart.selector";
-import { Product } from "@/Types/Product.type";
-import { formatCurrency, summaryPriceInCart } from "@/Helper/helper";
-import { useAddress } from "@/Hooks/useAddress/useAddress";
-import { useReducer } from "react";
+import { postOrder } from "@/Apis/Order/Order.api";
+import { useEffect } from "react";
+import { useLocalStorage } from "@/Hooks/useLocalStorage";
+import { PREFIX } from "@/Hooks/useCartStorage";
 
 export interface UserPaymentFrm {
   email: string;
@@ -25,99 +48,95 @@ export interface UserPaymentFrm {
   notePayment: string;
 }
 
-type AddressState = {
-  provinceId: number | string;
-  districtId: number | string;
-  wardId: number | string;
-}
-
 export default function CheckoutPage() {
-  // * State to handle Address
-  const [state, setState] = useReducer(
-    (data: AddressState, partialData: Partial<AddressState>): AddressState => {
-      return { ...data, ...partialData };
-    },
-    {
-      provinceId: "",
-      districtId: "",
-      wardId: ""
-    },
-  );
   const { getProvince, getDistrict, getWard }: any = useAddress();
 
   const cartState = useSelector(selectCart);
+  const userState = useSelector(selectUser);
 
-  const paymentFrm = useFormik<UserPaymentFrm>({
-    initialValues: {
-      email: "",
-      name: "",
-      phone: "",
-      address: "",
-      province: "",
-      notePayment: "",
+  const dispatch: any = useDispatch();
+  const navigate = useNavigate();
+  const { removeItem } = useLocalStorage()
+  const { isLogin } = useAuth();
+
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+    watch,
+    setValue,
+    reset
+  } = useForm<any>({
+    mode: "onChange",
+    resolver: yupResolver(checkoutValidationSchema),
+    defaultValues: {
+      ...userState,
+      ghi_chu: "",
+      hinh_thuc_thanh_toan_id: "2"
     },
-    validationSchema: yup.object().shape({
-      name: yup
-        .string()
-        .required("Họ và tên không được bỏ trống!")
-        .matches(
-          /^[a-z A-Z\s áàảạãăắằẳẵặâấầẩẫậéèẻẽẹêếềểễệiíìỉĩịóòỏõọôốồổỗộơớờởỡợúùủũụưứừửữựýỳỷỹỵđ ÁÀẢẠÃĂẮẰẲẴẶÂẤẦẨẪẬÉÈẺẼẸÊẾỀỂỄỆIÍÌỈĨỊÓÒỎÕỌÔỐỒỔỖỘƠỚỜỞỠỢÚÙỦŨỤƯỨỪỬỮỰÝỲỶỸỴĐ]+$/,
-          "Tên chỉ được chứa chữ cái."
-        ),
-      email: yup
-        .string()
-        .required("Email không được bỏ trống!")
-        .email("Email không hợp lệ!"),
-      phone: yup
-        .string()
-        .required("Số điện thoại không được bỏ trống!")
-        .matches(/\d$/, "Vui lòng chỉ điền số!")
-        .min(10, "Số điện tối thiểu là 10 số!")
-        .max(10, "Số điện tối đa là 10 số!"),
-      address: yup.string().required("Địa chỉ không được bỏ trống!"),
-      province: yup.string().required("Tỉnh thành không được bỏ trống!"),
-      notePayment: yup.string(),
-    }),
-    onSubmit: async (values: UserPaymentFrm) => {
-      console.log(values);
-      // const actionApi = contactAsyncAction(values);
-      // dispatch(actionApi);
+  });
+
+  const watchDistrict = getDistrict(watch("tinh_thanh_id"));
+  const watchWard = getWard(watch("quan_id"));
+
+  useEffect(() => {
+    if (userState.ho_ten.length) {
+      let payload = {
+        email: "",
+        ho_ten: "",
+        so_dien_thoai: "",
+        dia_chi: "",
+        tinh_thanh_id: "",
+        quan_id: "",
+        phuong_id: "",
+        ghi_chu: "",
+        hinh_thuc_thanh_toan_id: "2",
+        nguoi_dung_id: ''
+      };
+
+      payload.email = userState.email
+      payload.ho_ten = userState.ho_ten
+      payload.so_dien_thoai = userState.so_dien_thoai
+      payload.dia_chi = userState.dia_chi
+      payload.tinh_thanh_id = userState.tinh_thanh_id
+      payload.nguoi_dung_id = userState.nguoi_dung_id
+      payload.quan_id = userState.quan_id
+      payload.phuong_id = userState.phuong_id
+
+      reset(payload)
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userState])
+
+  const { mutateAsync }: any = useMutation({
+    mutationFn: (body: OrderCreate) => {
+      return postOrder(body)
+    },
+    onSuccess: () => {
+      toast.success(`Bạn đã đặt hàng thành công`, {
+        position: "bottom-center",
+      });
+
+      // * Clear Current Cart
+      // ! if user login call api clear cart
+      // ! if user not login clear cart in local
+      dispatch(actions.setCart([]));
+      removeItem(PREFIX);
+    },
+    onError: () => {
+      toast.error(`Đã xảy ra lỗi`, {
+        position: "bottom-center",
+      });
     },
   });
 
   const totalPrice: any = cartState.reduce((accumulator: number, product: Product | any) => {
-    return accumulator + (product.quantity * product.gia_ban);
+    return accumulator + (product.so_luong * product.gia_ban);
   }, 0);
-
-  const handleChangeAddress = (name: string, value: string) => {
-    let updatedState: any = {};
-
-    // Set the value for the input field
-    updatedState[name] = value;
-
-    // Additional logic for specific fields
-    if (name === "provinceId") {
-      // If provinceId is changed, reset districtId and wardId
-      updatedState["districtId"] = "";
-      updatedState["wardId"] = "";
-    } else if (name === "districtId") {
-      // If districtId is changed, reset wardId
-      updatedState["wardId"] = "";
-    }
-
-    setState({
-      ...updatedState
-    });
-  };
-
-  console.log({
-    state
-  })
-
 
   const renderData = (): JSX.Element[] => {
     return cartState.map((item: Product | any, index) => {
-      let { quantity, ten_san_pham, gia_ban } = item;
+      let { so_luong, ten_san_pham, gia_ban, hinh_anh } = item;
 
       return (
         <div
@@ -125,6 +144,7 @@ export default function CheckoutPage() {
             flex 
             flex-row 
             justify-between 
+            items-center
             text-[10px] 
             lg:text-xl
             font-light
@@ -135,22 +155,49 @@ export default function CheckoutPage() {
             `}
           key={index}
         >
-          {/* <img
+          <img
             className="w-[50px] h-[50px] lg:w-[80px] lg:h-[80px]"
-            src={require(`assets/image/${image}`)}
-            alt={image}
-          /> */}
+            src={hinh_anh[0]}
+            alt={hinh_anh[0]}
+          />
+
           <div className="w-full">
-            <p className="">{ten_san_pham}</p>
-            <p className="text-[#777171]">Số lượng: {quantity}</p>
+            <p className="text-base md:text-lg mb-1">{ten_san_pham}</p>
+            <p className="text-sm md:text-base text-[#777171]">Số lượng: {so_luong}</p>
           </div>
-          <span className="text-[#777171]">
+
+          <span className="text-base md:text-lg text-[#777171]">
             {formatCurrency(gia_ban)}
           </span>
         </div>
       );
     });
   };
+
+  const handleOnSubmitForm = (values: any) => {
+    const payload = {
+      ...values,
+      tong_tien: totalPrice,
+      ma_giam_gia: "",
+      san_pham: cartState.map((product: any) => {
+        return {
+          san_pham_id: product.san_pham_id,
+          so_luong: product.so_luong,
+          don_gia: product.gia_ban
+        }
+      }),
+    };
+
+    delete payload['anh_dai_dien'];
+    delete payload['gioi_tinh'];
+    delete payload['isDelete'];
+    delete payload['mat_khau'];
+    delete payload['vai_tro_id'];
+
+    mutateAsync(payload);
+  }
+
+  const SErrors: any = errors
 
   return (
     <div className={`container mx-aut`}>
@@ -165,184 +212,190 @@ export default function CheckoutPage() {
             text-center
             sm:border-b-[1.5px]
             sm:border-b-black
-        `}
-        >
+        `}>
           Thanh toán
         </h1>
       </div>
 
-      <form onSubmit={paymentFrm.handleSubmit}>
+      <form onSubmit={handleSubmit((values) => handleOnSubmitForm(values))}>
         <div className="flex flex-col-reverse lg:flex-row lg:mt-16">
-
           <div className="lg:w-[45%] lg:pe-[50px]">
             <div className="flex flex-row justify-between mb-[14px] lg:mb-5">
               <h1 className="text-[13px] lg:text-2xl leading-6 font-bold">
                 <span className="lg:hidden">
                   <FaRegIdCard className="inline-block me-1" />
                 </span>
+
                 Thông tin mua hàng
               </h1>
-              <div className="text-[13px] lg:text-base flex items-center">
+
+              {!isLogin && <div className="text-[13px] lg:text-base flex items-center" onClick={() => {
+                navigate('/login')
+              }}>
                 <PiUserCircleFill className="inline w-[18px] h-[18px]" />
                 <span className="ms-1 lg:ms-[10px]">Đăng nhập</span>
-              </div>
+              </div>}
             </div>
 
 
-            <div className="relative">
-              <Input
-                id="email"
-                name="email"
-                placeholder="Email"
-                onInput={paymentFrm.handleChange}
-                onBlur={paymentFrm.handleChange}
-              />
+            <Controller
+              name="email"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <div className="mb-4">
+                    <Input
+                      placeholder="Email"
+                      error={SErrors?.email?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-              {paymentFrm.errors.email && (
-                <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
-                  {paymentFrm.errors.email}
-                </p>
-              )}
-            </div>
+            <Controller
+              name="ho_ten"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <div className="mb-4">
+                    <Input
+                      placeholder="Họ và tên"
+                      error={SErrors?.ho_ten?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-            <div className="relative">
-              <Input
-                id="name"
-                name="name"
-                placeholder="Họ và tên"
-                onInput={paymentFrm.handleChange}
-                onBlur={paymentFrm.handleChange}
-              />
+            <Controller
+              name="so_dien_thoai"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <div className="mb-4">
+                    <Input
+                      startIcon={"+84"}
+                      placeholder="Số điện thoại"
+                      error={SErrors?.so_dien_thoai?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-              {paymentFrm.errors.name && (
-                <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
-                  {paymentFrm.errors.name}
-                </p>
-              )}
-            </div>
+            <Controller
+              name="dia_chi"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <div className="mb-4">
+                    <Input
+                      placeholder="Địa chỉ"
+                      error={SErrors?.dia_chi?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-            <div className="relative">
-              <div className="flex">
-                <Input
-                  id="phone"
-                  name="phone"
-                  placeholder="Số điện thoại"
-                  onInput={paymentFrm.handleChange}
-                  onBlur={paymentFrm.handleChange}
-                />
+            <Controller
+              name="tinh_thanh_id"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <div className="mb-4">
+                    <Selection
+                      title="Tỉnh thành"
+                      placeholder="Chọn tỉnh thành"
+                      options={getProvince()}
+                      displayKey={"name"}
+                      onChanged={(_: any, value: any) => {
+                        field.onChange(value);
+                        setValue("quan_id", "")
+                        setValue("phuong_id", "")
+                      }}
+                      defaultValue={field.value}
+                      valueKey={"id"}
+                      error={SErrors?.tinh_thanh_id?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-                <p
-                  className={`
-                  flex
-                  items-center
-                  justify-center
-                  font-light
-                  text-[#777171] 
-                  w-12
-                  mb-4 
-                  sm:mb-6 
-                  border 
-                  border-s-0
-                  border-[#777171] 
-                  h-6 
-                  sm:h-9
-                  `}
-                >
-                  +84
-                </p>
-              </div>
+            <Controller
+              name="quan_id"
+              control={control}
+              render={({ field }: any) => {
 
-              {paymentFrm.errors.phone && (
-                <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
-                  {paymentFrm.errors.phone}
-                </p>
-              )}
-            </div>
-            <div className="relative">
-              <Input
-                id="address"
-                name="address"
-                placeholder="Địa chỉ"
-                onInput={paymentFrm.handleChange}
-                onBlur={paymentFrm.handleChange}
-              />
-              {paymentFrm.errors.address && (
-                <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
-                  {paymentFrm.errors.address}
-                </p>
-              )}
-            </div>
+                return (
+                  <div className="mb-4">
+                    <Selection
+                      title="Quận huyện"
+                      placeholder="Chọn quận huyện"
+                      options={watchDistrict}
+                      displayKey={"name"}
+                      disabled={!watch("tinh_thanh_id")}
+                      onChanged={(_: any, value: any) => {
+                        field.onChange(value);
+                        setValue("phuong_id", "")
+                      }}
+                      defaultValue={field.value}
+                      valueKey={"id"}
+                      error={SErrors?.quan_id?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-            <div className="relative">
-              <Selection
-                title="Tỉnh thành"
-                placeholder="Chọn tỉnh thành"
-                options={getProvince()}
-                displayKey={"name"}
-                value={"id"}
-                name="provinceId"
-                onChanged={handleChangeAddress}
-                defaultValue={state.provinceId}
-                customClassTrigger="mb-4"
-              />
+            <Controller
+              name="phuong_id"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <div className="mb-4">
+                    <Selection
+                      title="Phường xã"
+                      placeholder="Chọn phường/xã"
+                      options={watchWard}
+                      displayKey={"name"}
+                      onChanged={(_: any, value: any) => {
+                        field.onChange(value);
+                      }}
+                      disabled={!watch("quan_id")}
+                      defaultValue={field.value}
+                      valueKey={"id"}
+                      error={SErrors?.phuong_id?.message || ""}
+                      {...field}
+                    />
+                  </div>
+                );
+              }}
+            />
 
-              <Selection
-                title="Quận huyện"
-                placeholder="Chọn quận/huyện"
-                options={getDistrict(state.provinceId)}
-                displayKey={"name"}
-                value={"id"}
-                name="districtId"
-                onChanged={handleChangeAddress}
-                disabled={!state.provinceId}
-                defaultValue={state.districtId}
-                customClassTrigger="mb-4"
-              />
-
-              <Selection
-                title="Phường xã"
-                placeholder="Chọn phường/xã"
-                options={getWard(state.districtId)}
-                displayKey={"name"}
-                value={"id"}
-                name="wardId"
-                onChanged={handleChangeAddress}
-                disabled={!state.provinceId || !state.districtId}
-                defaultValue={state.wardId}
-                customClassTrigger="mb-4"
-              />
-
-              {paymentFrm.errors.province && (
-                <p className="text-rose-500 text-[9px] sm:text-sm indent-3 sm:indent-5 absolute bottom-0">
-                  {paymentFrm.errors.province}
-                </p>
-              )}
-            </div>
-            <div className="flex items-center mb-1 lg:mb-2">
-              <input
-                className="w-[10px] h-[10px] lg:w-[25px] lg:h-[25px] me-1 lg:me-3"
-                type="checkbox"
-                name="diffientAddress"
-                id="diffientAddress"
-                value=""
-              />
-              <label
-                className="text-[#777171] font-light leading-6 text-[10px] lg:text-base"
-                htmlFor="diffientAddress"
-              >
-                {" "}
-                Giao hàng đến địa chỉ khác
-              </label>
-            </div>
-            <textarea
-              id="notePayment"
-              name="notePayment"
-              className={`indent-3 sm:indent-5 h-[69px] sm:h-[104px] w-full mb-5 pt-1 text-[10px] sm:text-base`}
-              placeholder="Ghi chú (tùy chọn)"
-              style={{ border: "0.5px solid #777171" }}
-              onInput={paymentFrm.handleChange}
-              onBlur={paymentFrm.handleChange}
-            ></textarea>
+            <Controller
+              name="ghi_chu"
+              control={control}
+              render={({ field }: any) => {
+                return (
+                  <>
+                    <Textarea
+                      className={`h-[69px] sm:h-[104px] w-full mb-5 pt-1 text-sm`}
+                      placeholder="Ghi chú (tùy chọn)"
+                      {...field}
+                    />
+                  </>
+                );
+              }}
+            />
 
             <h1 className="text-[13px] lg:text-2xl leading-6 font-bold">
               <span className="lg:hidden">
@@ -351,55 +404,37 @@ export default function CheckoutPage() {
               Thanh toán
             </h1>
 
-            <div className="py-2 lg:py-9 border-b-[1px] border-[#777171] ">
-              <div className="flex items-center lg:mb-2">
-                <input
-                  className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] me-3 lg:me-4"
-                  type="radio"
-                  name="payMethod"
-                  id="COD"
-                  value=""
-                />
-                <label
-                  className="text-[#777171] font-light leading-6 text-[10px] lg:text-base"
-                  htmlFor="COD"
-                >
-                  Thanh toán khi nhận hàng(COD)
-                </label>
-              </div>
-              <div className="flex items-center mb-2 lg:mt-5">
-                <input
-                  className="w-[15px] h-[15px] lg:w-[25px] lg:h-[25px] me-3 lg:me-4"
-                  type="radio"
-                  name="payMethod"
-                  id="CARD"
-                  value=""
-                />
-                <label
-                  className="text-[#777171] font-light leading-6 text-[10px] lg:text-base"
-                  htmlFor="CARD"
-                >
-                  Chuyển khoản qua ngân hàng
-                </label>
-              </div>
+            <div className="py-4 border-b-[1px] border-[#777171]">
+              <Controller
+                name="hinh_thuc_thanh_toan_id"
+                control={control}
+                render={({ field }: any) => {
+                  return (
+                    <RadioGroup defaultValue={field.value} onChange={(event: any) => {
+                      field.onChange(event.target.value)
+                    }} >
+                      <div className="flex items-center space-x-2">
+                        <RadioGroupItem value="2" id="2" />
+
+                        <Label htmlFor="2" className="text-base">Chuyển khoản qua ngân hàng</Label>
+                      </div>
+
+                      <div className="flex items-center space-x-2 mt-2">
+                        <RadioGroupItem value="1" id="1" />
+                        <Label htmlFor="1" className="text-base">Thanh toán khi nhận hàng (COD)</Label>
+                      </div>
+                    </RadioGroup>
+                  );
+                }}
+              />
 
               <div className="lg:hidden text-xl border-t-[1px] border-[#777171]">
-                <button
-                  className={`
-                  w-full
-                  py-[8px] 
-                  sm:py-[10px] 
-                  bg-[#1E1E1E] 
-                  text-white
-                  mt-5
-                  mb-4
-                  lg:mb-0 
-                  text-base`}
-                  disabled={!paymentFrm.isValid}
+                <Button
+                  disabled={!isEmpty(errors)}
                   type="submit"
                 >
                   ĐẶT HÀNG
-                </button>
+                </Button>
 
                 <div className="flex justify-center mb-9">
                   <a href="/cart" className="flex items-center text-xs text-[#777171]">
@@ -408,14 +443,12 @@ export default function CheckoutPage() {
                   </a>
                 </div>
               </div>
-
-
             </div>
 
-            <div className="flex justify-end leading-6 text-[10px] lg:text-[13px] text-[#2B5C82] lg:text-black gap-4">
-              <p>Chính sách đổi trả</p>
-              <p>Chính sách bảo mật</p>
-              <p>Điểu khoản sử dụng</p>
+            <div className="flex mt-2 justify-end leading-6 text-[10px] lg:text-[13px] text-[#2B5C82] lg:text-black gap-4">
+              <p className="cursor-pointer">Chính sách đổi trả</p>
+              <p className="cursor-pointer">Chính sách bảo mật</p>
+              <p className="cursor-pointer">Điểu khoản sử dụng</p>
             </div>
           </div>
 
@@ -423,11 +456,9 @@ export default function CheckoutPage() {
             className={`
             lg:w-[55%] 
             lg:bg-[#E0E0E0]
-            lg:ps-[46px]
-            lg:pe-[78px]
-            pt-3
-            lg:pt-[24px]
-            lg:pb-[52px]`}
+            lg:px-8
+            lg:py-8
+            `}
           >
             <h1
               className={`
@@ -435,7 +466,7 @@ export default function CheckoutPage() {
               sm:text-2xl
               font-medium
               mb-3
-              lg:mb-[68px]
+              lg:mb-[24px]
           `}
             >
               Đơn hàng ({cartState.length} sản phẩm)
@@ -445,46 +476,17 @@ export default function CheckoutPage() {
 
             <div className={`
             flex 
-            flex-row 
+            md:flex-row 
+            flex-col
             justify-between 
             gap-5 
             py-5 
             lg:py-8 
             border-y-[0.5px] 
             border-[#777171]`}>
-              <input
-                id="voucher"
-                name="voucher"
-                placeholder="Nhập mã giảm giá"
-                onInput={paymentFrm.handleChange}
-                onBlur={paymentFrm.handleChange}
-                style={{ border: "0.5px solid #777171" }}
-                className={`
-                w-[80%] 
-                indent-3 
-                sm:indent-5 
-                text-[10px] 
-                sm:text-base 
-                font-light 
-                leading-6 
-                text-[#777171] 
-                text-center 
-                lg:text-left`}
-              />
-              <button
-                className={`
-                w-[20%] 
-                px-[15px] 
-                py-[7px] 
-                lg:py-[10px] 
-                bg-[#1E1E1E] 
-                text-white 
-                text-xs 
-                sm:text-base 
-                whitespace-nowrap`}
-              >
-                Áp dụng
-              </button>
+              <Input name="discount_code" placeholder="Nhập mã giảm giá" />
+
+              <Button className="h-[40px] md:text-lg text-base px-6">Áp dụng</Button>
             </div>
 
             <div
@@ -498,13 +500,15 @@ export default function CheckoutPage() {
               lg:text-xl
               font-light 
               leading-6`}>
-              <div className="flex justify-between mb-1 lg:mb-5">
-                <p>Tạm tính</p>
-                <p>{summaryPriceInCart(cartState)}</p>
+
+              <div className="flex justify-between mb-1 lg:mb-2">
+                <p className="text-base md:text-lg text-[#777171]">Tạm tính</p>
+                <p className="text-base md:text-lg text-primary font-medium">{summaryPriceInCart(cartState)}</p>
               </div>
+
               <div className="flex justify-between">
-                <p>Phí vận chuyển</p>
-                <p>{formatCurrency(30000)}</p>
+                <p className="text-base md:text-lg text-[#777171]">Phí vận chuyển</p>
+                <p className="text-base md:text-lg text-primary font-medium">{formatCurrency(30000)}</p>
               </div>
             </div>
 
@@ -513,40 +517,33 @@ export default function CheckoutPage() {
                   flex 
                   justify-between
                   text-[13px]
-                  lg:text-xl 
+                  lg:text-2xl 
+                  text-xl 
                   mt-2 
                   lg:mt-3
                   mb-5
-                  lg:mb-9`}>
+                  lg:mb-9
+                  font-medium
+                  `}>
                 <p>Tổng cộng</p>
-                <p>{formatCurrency(totalPrice + 30000)}</p>
+                <p className="font-medium">{formatCurrency(totalPrice + 30000)}</p>
               </div>
 
-              <div className="hidden lg:flex justify-between text-xl">
-                <a href="/cart" className="flex items-center text-[#777171]">
+              <div className="hidden lg:flex justify-between ">
+                <Link className="text-base flex items-center text-[#777171]" to="/cart">
                   <FaAngleLeft className="inline me-1" />
+
                   <p>Quay về giỏ hàng</p>
-                </a>
-                <button
-                  className={`
-                  px-[22px] 
-                  py-[7px] 
-                  sm:py-[10px] 
-                  bg-[#1E1E1E] 
-                  text-white 
-                  mb-8 
-                  lg:mb-0 
-                  text-xs 
-                  sm:text-base`}
-                  disabled={!paymentFrm.isValid}
+                </Link>
+
+                <Button
+                  className="h-[48px] px-8 text-lg"
+                  disabled={!isEmpty(errors)}
                   type="submit"
-                >
-                  ĐẶT HÀNG
-                </button>
+                >Đặt hàng
+                </Button>
               </div>
             </div>
-
-
           </div>
         </div>
       </form>

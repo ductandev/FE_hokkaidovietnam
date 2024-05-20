@@ -28,6 +28,7 @@ import { Privacy } from "@/Components/Privacy/Privacy";
 
 // ! Admin Pages
 import { AdminContact, AdminCustomer, AdminOrder, AdminProduct } from "@/Pages/Admin";
+import Search from "@/Pages/Search";
 
 const router = createBrowserRouter([
   {
@@ -125,6 +126,10 @@ const router = createBrowserRouter([
   {
     path: "/register",
     Component: Register
+  },
+  {
+    path: "/search",
+    Component: Search,
   },
 ]);
 

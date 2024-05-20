@@ -7,6 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select";
+import { useEffect, useState } from "react";
 
 type PropTypes = {
     options: Array<any>;
@@ -14,11 +15,12 @@ type PropTypes = {
     title?: string;
     onChanged?: Function;
     displayKey: string;
-    value: string;
+    valueKey: string;
     name: string;
     disabled?: boolean;
     defaultValue: any;
     customClassTrigger?: string;
+    error?: string
 }
 
 export default function Selection(props: PropTypes) {
@@ -28,25 +30,39 @@ export default function Selection(props: PropTypes) {
         onChanged,
         placeholder,
         displayKey,
-        value,
+        valueKey,
         name,
         disabled = false,
         defaultValue,
-        customClassTrigger
+        customClassTrigger,
+        error
     } = props;
+
+    const [value, setValue] = useState(defaultValue)
+
+    useEffect(() => {
+        setValue(defaultValue)
+    }, [defaultValue])
 
     return (
         <Select
             disabled={disabled}
             onValueChange={(value) => {
                 onChanged && onChanged(name, value)
-
             }}
-            value={defaultValue}
+            value={value}
         >
-            <SelectTrigger className={`w-full ${customClassTrigger}`}>
+            <SelectTrigger error={error} className={`w-full ${customClassTrigger}`}>
                 <SelectValue placeholder={placeholder} />
             </SelectTrigger>
+
+            {
+                error && (
+                    <p className="my-1 text-red-700 text-sm" >
+                        {error}
+                    </p>
+                )
+            }
 
             <SelectContent>
                 <SelectGroup>
@@ -54,7 +70,7 @@ export default function Selection(props: PropTypes) {
 
                     {options.map((option, index) => {
                         return <SelectItem
-                            value={option[value]}
+                            value={option[valueKey]}
                             key={index}
                         >
                             {option[displayKey]}

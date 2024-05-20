@@ -1,5 +1,7 @@
 import { useQuery } from 'react-query';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useDeferredValue } from 'react';
+import { Fragment } from 'react/jsx-runtime';
 
 import Banner from '@/Components/Banner'
 import { ImageGallery } from "@/Components/ImageGallery/ImageGallery"
@@ -8,12 +10,10 @@ import ProductInformation from './components/ProductInformation/ProductInformati
 import { ProductDetailSkeleton } from './components/Skeleton';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/Components/ui/tabs"
 import { Divider } from '@/Components/Divider';
-
-import { getProduct, getProducts } from '@/Apis/Product/Product.api';
 import BlankPage from '@/Components/BlankPage/BlankPage';
 import { ProductCard } from '@/Components/ProductCard';
-import { Fragment } from 'react/jsx-runtime';
-import { useDeferredValue } from 'react';
+
+import { getProduct, getProducts } from '@/Apis/Product/Product.api';
 
 export default function ProductDetail() {
     const OPTIONS: EmblaOptionsType = {};
@@ -60,10 +60,6 @@ export default function ProductDetail() {
 
     const handleClickDetail = (_id: number | string) => {
         navigate(`/product/${_id}`);
-        window.scrollTo({
-            top: 0,
-            behavior: "smooth"
-        })
     };
 
     return (
