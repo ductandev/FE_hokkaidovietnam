@@ -8,8 +8,10 @@ import Header from '@/Components/Header'
 import Footer from '@/Components/Footer'
 
 import { actions } from '@/Redux/actions/cart.action'
+import { actions as userActions } from '@/Redux/actions/user.action'
 import { useAuth } from '@/Auth/AuthProvider'
 import { getCartByUser } from '@/Apis/Cart/Cart.api'
+import { getInfo } from '@/Apis/Auth/Auth.api'
 
 const HomeTemplate: React.FC = (): JSX.Element => {
     const { getCartStorage } = useCartStorage();
@@ -37,6 +39,23 @@ const HomeTemplate: React.FC = (): JSX.Element => {
         enabled: Boolean(isLogin)
     });
 
+    const { isLoading: isLoadingUser, data: dataUser }: any = useQuery({
+        queryKey: ['user'],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000);
+
+            return getInfo(controller.signal)
+        },
+        keepPreviousData: false,
+        retry: 0,
+        enabled: Boolean(isLogin)
+    });
+
+
     // * Should be set All default state in here such as: cart, token and something like trigger function in App 
     useEffect(() => {
         let currentCart = [];
@@ -54,6 +73,20 @@ const HomeTemplate: React.FC = (): JSX.Element => {
         dispatch(actions.setCart(currentCart))
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isLoading]);
+
+    // * Viết login lấy thông tin user qua token tại đây
+    useEffect(() => {
+        if (isLogin) {
+            if (!isLoadingUser) {
+                // ! logic for api user
+                let currentUser = dataUser?.data?.content;
+
+                dispatch(userActions.setUser(currentUser))
+            };
+        }
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [isLoadingUser, isLogin]);
 
     return (
         <>

@@ -23,3 +23,5 @@ export const deleteProductInCart = (product_id: any) =>
 
 export const putProductInCart = (payload: any) =>
     httpGuard.put<any>(`${Models.put}`, payload);
+
+

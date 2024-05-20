@@ -7,6 +7,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/Components/ui/select";
+import { useEffect, useState } from "react";
 
 type PropTypes = {
     options: Array<any>;
@@ -37,15 +38,19 @@ export default function Selection(props: PropTypes) {
         error
     } = props;
 
+    const [value, setValue] = useState(defaultValue)
+
+    useEffect(() => {
+        setValue(defaultValue)
+    }, [defaultValue])
+
     return (
         <Select
             disabled={disabled}
             onValueChange={(value) => {
                 onChanged && onChanged(name, value)
-
             }}
-            value={defaultValue}
-
+            value={value}
         >
             <SelectTrigger error={error} className={`w-full ${customClassTrigger}`}>
                 <SelectValue placeholder={placeholder} />

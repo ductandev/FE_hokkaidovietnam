@@ -2,9 +2,10 @@
 import { useAddress } from "@/Hooks/useAddress/useAddress";
 import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useMutation } from "react-query";
+import { useAuth } from "@/Auth/AuthProvider";
 import { actions } from "@/Redux/actions/cart.action";
 
 // ! Components
@@ -14,11 +15,15 @@ import { Label } from "@/Components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/Components/ui/radio-group"
 import { Textarea } from "@/Components/ui/textarea";
 import { Button } from "@/Components/ui/button";
+import { toast } from "react-toastify";
 
 // ! Redux and Helpers
 import { selectCart } from "@/Redux/selectors/cart.selector";
-import { Product } from "@/Types/Product.type";
+import { selectUser } from "@/Redux/selectors/user.selector";
 import { formatCurrency, isEmpty, summaryPriceInCart } from "@/Helper/helper";
+
+import { Product } from "@/Types/Product.type";
+import { OrderCreate } from "@/Types/Order.type";
 
 // ! Assets
 import { PiUserCircleFill } from "react-icons/pi";
@@ -29,9 +34,10 @@ import { BsCreditCard } from "react-icons/bs";
 // ! Schema validation
 import { checkoutValidationSchema } from "./checkout.validation";
 
-import { OrderCreate } from "@/Types/Order.type";
 import { postOrder } from "@/Apis/Order/Order.api";
-import { toast } from "react-toastify";
+import { useEffect } from "react";
+import { useLocalStorage } from "@/Hooks/useLocalStorage";
+import { PREFIX } from "@/Hooks/useCartStorage";
 
 export interface UserPaymentFrm {
   email: string;
@@ -46,29 +52,61 @@ export default function CheckoutPage() {
   const { getProvince, getDistrict, getWard }: any = useAddress();
 
   const cartState = useSelector(selectCart);
+  const userState = useSelector(selectUser);
+
   const dispatch: any = useDispatch();
+  const navigate = useNavigate();
+  const { removeItem } = useLocalStorage()
+  const { isLogin } = useAuth();
 
   const {
     handleSubmit,
     control,
     formState: { errors },
     watch,
-    setValue
+    setValue,
+    reset
   } = useForm<any>({
     mode: "onChange",
     resolver: yupResolver(checkoutValidationSchema),
     defaultValues: {
-      email: "",
-      ho_ten: "",
-      so_dien_thoai: "",
-      dia_chi: "",
+      ...userState,
       ghi_chu: "",
-      tinh_thanh_id: "",
-      quan_id: "",
-      phuong_id: "",
       hinh_thuc_thanh_toan_id: "2"
     },
   });
+
+  const watchDistrict = getDistrict(watch("tinh_thanh_id"));
+  const watchWard = getWard(watch("quan_id"));
+
+  useEffect(() => {
+    if (userState.ho_ten.length) {
+      let payload = {
+        email: "",
+        ho_ten: "",
+        so_dien_thoai: "",
+        dia_chi: "",
+        tinh_thanh_id: "",
+        quan_id: "",
+        phuong_id: "",
+        ghi_chu: "",
+        hinh_thuc_thanh_toan_id: "2",
+        nguoi_dung_id: ''
+      };
+
+      payload.email = userState.email
+      payload.ho_ten = userState.ho_ten
+      payload.so_dien_thoai = userState.so_dien_thoai
+      payload.dia_chi = userState.dia_chi
+      payload.tinh_thanh_id = userState.tinh_thanh_id
+      payload.nguoi_dung_id = userState.nguoi_dung_id
+      payload.quan_id = userState.quan_id
+      payload.phuong_id = userState.phuong_id
+
+      reset(payload)
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [userState])
 
   const { mutateAsync }: any = useMutation({
     mutationFn: (body: OrderCreate) => {
@@ -83,6 +121,7 @@ export default function CheckoutPage() {
       // ! if user login call api clear cart
       // ! if user not login clear cart in local
       dispatch(actions.setCart([]));
+      removeItem(PREFIX);
     },
     onError: () => {
       toast.error(`Đã xảy ra lỗi`, {
@@ -149,6 +188,12 @@ export default function CheckoutPage() {
       }),
     };
 
+    delete payload['anh_dai_dien'];
+    delete payload['gioi_tinh'];
+    delete payload['isDelete'];
+    delete payload['mat_khau'];
+    delete payload['vai_tro_id'];
+
     mutateAsync(payload);
   }
 
@@ -184,10 +229,12 @@ export default function CheckoutPage() {
                 Thông tin mua hàng
               </h1>
 
-              <div className="text-[13px] lg:text-base flex items-center">
+              {!isLogin && <div className="text-[13px] lg:text-base flex items-center" onClick={() => {
+                navigate('/login')
+              }}>
                 <PiUserCircleFill className="inline w-[18px] h-[18px]" />
                 <span className="ms-1 lg:ms-[10px]">Đăng nhập</span>
-              </div>
+              </div>}
             </div>
 
 
@@ -286,12 +333,13 @@ export default function CheckoutPage() {
               name="quan_id"
               control={control}
               render={({ field }: any) => {
+
                 return (
                   <div className="mb-4">
                     <Selection
                       title="Quận huyện"
                       placeholder="Chọn quận huyện"
-                      options={getDistrict(watch("tinh_thanh_id"))}
+                      options={watchDistrict}
                       displayKey={"name"}
                       disabled={!watch("tinh_thanh_id")}
                       onChanged={(_: any, value: any) => {
@@ -317,7 +365,7 @@ export default function CheckoutPage() {
                     <Selection
                       title="Phường xã"
                       placeholder="Chọn phường/xã"
-                      options={getWard(watch("quan_id"))}
+                      options={watchWard}
                       displayKey={"name"}
                       onChanged={(_: any, value: any) => {
                         field.onChange(value);
