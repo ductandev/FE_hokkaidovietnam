@@ -1,13 +1,14 @@
 import {
-    // Order,
+    OrderCreate,
     Orders
 } from '@/Types/Order.type';
 
-import { httpGuard } from "@/lib/utils";
+import { http, httpGuard } from "@/lib/utils";
 
 const Models = {
     list: 'order',
-    summary: "order/summary"
+    summary: "order/summary",
+    create: 'order',
 };
 
 export const getOrders = (
@@ -29,5 +30,11 @@ export const getOrderSummary = (
     httpGuard.get(`${Models.summary}`, {
         signal
     });
+
+
+export const postOrder = (payload: OrderCreate) => {
+    return http.post<OrderCreate>(`${Models.create}`, payload)
+}
+
 
 // export const getOrder = (orderID: number | string) => http.get<Order>(`${Models.item}/${orderID}`)

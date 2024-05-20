@@ -13,13 +13,14 @@ import { LuPackageSearch } from "react-icons/lu";
 import { LiaBoxSolid } from "react-icons/lia";
 import { useQuery } from "react-query";
 import { getProductTypes } from "@/Apis/Product/ProductType.api";
+import { DrawerDialog } from "../Form";
 
 function AdminProduct() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
-
+    const [isVisibleAdd, setIsVisibleAdd] = useState(false);
     const {
         isLoading,
         data
@@ -83,7 +84,7 @@ function AdminProduct() {
                 <div className="flex justify-between items-center">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-6"
+                        className="mr-3 w-full"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
@@ -91,12 +92,14 @@ function AdminProduct() {
                         }}
                     />
 
-                    <Input placeholder="Tìm kiếm"
+                    <Input
+                        placeholder="Tìm kiếm"
                         value={search}
                         onChange={(event) => {
                             debouncedCallback(event.target.value);
                             setSearch(event.target.value)
                         }}
+                        className="w-[230px]"
                     />
                 </div>
 
@@ -116,6 +119,10 @@ function AdminProduct() {
                 }}>
                     Tạo sản phẩm
                 </Button>
+
+                <DrawerDialog label={'Tạo sản phẩm'} isVisible={isVisibleAdd} onHandleToogleVisible={(visible: boolean) => {
+                    setIsVisibleAdd(visible)
+                }} />
 
                 {/* <Button onClick={() => {
                     // * 2 tham số: 1 là sanphamid , 2 là body
@@ -160,6 +167,8 @@ function AdminProduct() {
                     setPage(page)
                 }}
             />
+
+
         </div >
     )
 }

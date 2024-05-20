@@ -1,9 +1,12 @@
 import React, { useContext, useState } from "react";
+import { toast } from "react-toastify";
 import { useMutation } from "react-query";
 import { useLocalStorage } from "@/Hooks/useLocalStorage";
 
 import { UserLogin, UserRegister } from "@/Types/Auth.type";
 import { loginUser, registerUser } from "@/Apis/Auth/Auth.api";
+import { PREFIX } from "@/Hooks/useCartStorage";
+import { httpGuard } from "@/lib/utils";
 
 export interface authContextState {
     signIn: Function,
@@ -38,6 +41,10 @@ export const AuthProvider = function (props: AppProviderProps) {
     const { mutateAsync: mutateAsyncLogin }: any = useMutation({
         mutationFn: (body: UserLogin) => {
             return loginUser(body)
+        },
+        onError: (error: any) => {
+            const mgs = error.response.data.message
+            toast.error(mgs);
         }
     })
 
@@ -51,11 +58,21 @@ export const AuthProvider = function (props: AppProviderProps) {
         try {
             const response = await mutateAsyncLogin(payload);
             const token = response.data.token;
+
             setItem(ACCESS_TOKEN_KEY, token);
             setItem(HK_ROLE, response.data.content.vai_tro_id);
             setIsLogin(true);
             setIsAdmin(response.data.content.vai_tro_id === 1);
 
+            // Xoá giỏ hàng local
+            removeItem(PREFIX);
+
+
+            // Thay đổi header instance của httpGuard 
+            httpGuard.defaults.headers["authorization"] = `bearer ${token}`
+
+            // Show message
+            toast.success("Đăng nhập thành công!");
             // * Redirect sang admin page
         } catch (error) {
             console.log(error);
@@ -72,8 +89,10 @@ export const AuthProvider = function (props: AppProviderProps) {
     }
 
     const signOut = () => {
-        // ! Clear token
-        removeItem(ACCESS_TOKEN_KEY);
+        removeItem(HK_ROLE);  // ! Clear role
+        removeItem(ACCESS_TOKEN_KEY); // ! Clear token
+        removeItem(PREFIX); // ! Clear cart
+
         setIsLogin(false)
         setIsAdmin(false)
     }

@@ -167,6 +167,9 @@ export default function Header() {
                     className="header-navMenu-link"
                     to={menu.path}
                     key={idx}
+                    onClick={() => {
+                      setIsOpenMenu(false);
+                    }}
                   >
                     {menu.name}
                   </Link>

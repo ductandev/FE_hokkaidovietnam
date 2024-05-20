@@ -9,47 +9,100 @@ import { selectCart } from "@/Redux/selectors/cart.selector";
 
 // ! hooks & helpers
 import { useCartStorage } from "@/Hooks/useCartStorage";
+import { useNavigate } from "react-router-dom";
+import useWindowDimensions from "@/Hooks/useWindowDimension";
 import { formatCurrency, summaryPriceInCart } from "@/Helper/helper";
 
 import { Product } from "@/Types/Product.type";
 import { Button } from "@/Components/ui/button";
-import { useNavigate } from "react-router-dom";
-import useWindowDimensions from "@/Hooks/useWindowDimension";
+import { useMutation } from "react-query";
+import { deleteProductInCart, putProductInCart } from "@/Apis/Cart/Cart.api";
+import { useAuth } from "@/Auth/AuthProvider";
+import { toast } from "react-toastify";
 
 export default function Cart() {
     const { saveCartStorage } = useCartStorage();
     const cartState = useSelector(selectCart);
+
     const dispatch: any = useDispatch();
     const navigate = useNavigate();
     const { width } = useWindowDimensions();
+    const { isLogin } = useAuth();
 
-    const handleChangedQuantity = (san_pham_id: number, quantity: number) => {
-        const findIndexItem = cartState.findIndex(product => product.san_pham_id === san_pham_id);
-        let result: Array<any> = [...cartState];
+    const deleteProductMutation = useMutation({
+        mutationFn: (san_pham_id: any) => deleteProductInCart(san_pham_id),
+        onSuccess: (response) => {
+            const { san_pham_id } = response.data.content;
 
-        result[findIndexItem] = {
-            ...result[findIndexItem],
-            quantity
-        }
+            deleteProduct(san_pham_id);
+        },
+    });
 
-        dispatch(actions.setCart(result));
-        saveCartStorage(result)
-    }
+    const putProductMutation = useMutation({
+        mutationFn: (payload: any) => putProductInCart(payload),
+        onSuccess: (response) => {
+            const {
+                san_pham_id,
+                so_luong
+            } = response.data.content;
 
-    const handleDeleteProduct = (san_pham_id: number) => {
+            changeProduct(san_pham_id,
+                so_luong)
+        },
+    });
+
+    const deleteProduct = (san_pham_id: any) => {
         const findIndexItem = cartState.findIndex(product => product.san_pham_id === san_pham_id);
         let result: Array<any> = [...cartState];
 
         result.splice(findIndexItem, 1);
 
         dispatch(actions.setCart(result))
-        saveCartStorage(result)
+        saveCartStorage(result);
+
+        toast.success("Xoá thành công", {
+            position: "bottom-center"
+        });
+    }
+
+    const changeProduct = (san_pham_id: any, quantity: any) => {
+        const findIndexItem = cartState.findIndex(product => product.san_pham_id === san_pham_id);
+        let result: Array<any> = [...cartState];
+
+        result[findIndexItem] = {
+            ...result[findIndexItem],
+            so_luong: quantity
+        }
+
+        dispatch(actions.setCart(result));
+        saveCartStorage(result);
+    }
+
+    const handleChangedQuantity = (san_pham_id: number, quantity: number) => {
+        if (isLogin) {
+            putProductMutation.mutate({
+                san_pham_id,
+                so_luong: quantity
+            })
+        } else {
+            changeProduct(san_pham_id, quantity)
+        }
+
+    }
+
+
+    const handleDeleteProduct = (san_pham_id: number) => {
+        if (isLogin) {
+            deleteProductMutation.mutate(san_pham_id)
+        } else {
+            deleteProduct(san_pham_id)
+        }
     }
 
     const renderData = (): JSX.Element[] => {
         return cartState.map((item: Product, index) => {
             let {
-                quantity,
+                so_luong,
                 ten_san_pham,
                 gia_ban,
                 so_luong_trong_kho,
@@ -85,7 +138,7 @@ export default function Cart() {
                         <Quantity
                             hasPreventByLimit
                             limit={so_luong_trong_kho}
-                            defaultValue={+quantity}
+                            defaultValue={+so_luong}
                             onChanged={(quantity: number) => {
                                 handleChangedQuantity(san_pham_id, quantity)
                             }}
@@ -95,7 +148,7 @@ export default function Cart() {
 
                     <div className={`col-span-2 sm:col-span-4 flex justify-end sm:justify-around items-center gap-4 text-[#777171]`}>
                         <p className="hidden sm:block text-xs lg:text-base">Tổng tiền:
-                            <span className="pl-2 md:pl-4 text-xs lg:text-base font-semibold text-black">{formatCurrency(gia_ban * quantity)}</span>
+                            <span className="pl-2 md:pl-4 text-xs lg:text-base font-semibold text-black">{formatCurrency(gia_ban * so_luong)}</span>
                         </p>
 
                         <p

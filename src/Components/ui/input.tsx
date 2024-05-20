@@ -1,25 +1,60 @@
-import * as React from "react"
+import * as React from "react";
 
-import { cn } from "@/lib/utils"
+import { cn } from "@/lib/utils";
 
 export interface InputProps
-  extends React.InputHTMLAttributes<HTMLInputElement> {}
+  extends React.InputHTMLAttributes<HTMLInputElement> {
+  startIcon?: any;
+  endIcon?: any;
+  error?: string;
+}
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({ className, type, ...props }, ref) => {
-    return (
-      <input
-        type={type}
-        className={cn(
-          "flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50",
-          className
-        )}
-        ref={ref}
-        {...props}
-      />
-    )
-  }
-)
-Input.displayName = "Input"
+  ({ className, type, startIcon, endIcon, error, ...props }, ref) => {
+    const StartIcon = startIcon;
+    const EndIcon = endIcon;
 
-export { Input }
+    return (
+      <>
+        <div className="w-full relative">
+          {StartIcon && (
+            <div className="absolute text-xs md:text-sm left-1.5 top-1/2 transform -translate-y-1/2">
+              {StartIcon}
+            </div>
+          )}
+
+          <input
+            type={type}
+            className={cn(
+              `flex md:h-10 w-full border border-black bg-background py-1 md:py-2 px-4 text-xs md:text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring focus-visible:ring-offset-0 disabled:cursor-not-allowed disabled:opacity-50
+               ${error ? "border-red-700" : ""}
+               `,
+              startIcon ? "pl-10" : "",
+              endIcon ? "pr-10" : "",
+              className
+            )}
+            ref={ref}
+            {...props}
+          />
+
+          {EndIcon && (
+            <div className="text-xs md:text-sm absolute right-3 top-1/2 transform -translate-y-1/2">
+              {EndIcon}
+            </div>
+          )}
+        </div>
+
+        {
+          error && (
+            <p className="my-1 text-red-700 text-sm" >
+              {error}
+            </p>
+          )
+        }
+      </>
+    );
+  }
+);
+Input.displayName = "Input";
+
+export { Input };
