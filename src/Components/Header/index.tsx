@@ -125,7 +125,9 @@ export default function Header() {
 
       <div className="header-actions">
         <div className="flex flex-row">
-          <Search className="mr-10 cursor-pointer header-actions-search" />
+          <Link to="/search">
+            <Search className="mr-10 cursor-pointer header-actions-search" />
+          </Link>
 
           <Link to="/login" >
             <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />

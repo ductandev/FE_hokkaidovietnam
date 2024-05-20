@@ -131,7 +131,7 @@ export const ProductCard: React.FC<PropTypes | MergedType | any> = (props: PropT
 
             <div className="text-center">
                 <h3
-                    className="text-sm md:text-base my-4 font-light"
+                    className="text-[13px] md:text-base my-4 font-light"
                     onClick={() => {
                         handleClickDetail(san_pham_id);
                     }}
