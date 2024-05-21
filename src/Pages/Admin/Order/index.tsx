@@ -23,6 +23,7 @@ function AdminOrder() {
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
 
     const handleChangeDebounced = (value: string) => {
+        setPage(1);
         setDebouncedValue(value);
     };
 
