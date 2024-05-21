@@ -1,6 +1,6 @@
 import { useDeferredValue, useEffect, useState } from "react";
 
-import { columnsContact, columnsCustomer, columnsOrder, columnsProduct } from "./columns";
+import { columnsContact, columnsCustomer, columnsNews, columnsOrder, columnsProduct } from "./columns";
 import { DataTable } from "./data-table";
 import ProductStatus from "../ProductStatus";
 
@@ -10,6 +10,7 @@ enum EnumTableDefine {
     product = 'product',
     order = 'order',
     customer = 'customer',
+    news = 'news',
 };
 
 type PropsType = {
@@ -81,7 +82,8 @@ export default function DataGrid(props: PropsType) {
         product: columnsProduct,
         order: columnsOrder,
         customer: columnsCustomer,
-        contact: columnsContact
+        contact: columnsContact,
+        news: columnsNews
     }
 
     return (
