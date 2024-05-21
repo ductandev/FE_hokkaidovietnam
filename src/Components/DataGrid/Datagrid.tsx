@@ -10,6 +10,7 @@ enum EnumTableDefine {
     product = 'product',
     order = 'order',
     customer = 'customer',
+    contact = 'contact',
     news = 'news',
 };
 
