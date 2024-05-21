@@ -20,6 +20,10 @@ function SidebarAdmin() {
             name: "Liên hệ",
             to: "contact"
         },
+        {
+            name: "Tạo tin tức",
+            to: "news"
+        },
     ]
     return (
         <nav className='sidebar-admin'>

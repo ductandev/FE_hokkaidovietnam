@@ -27,7 +27,7 @@ import { Return } from "@/Components/Return/Return";
 import { Privacy } from "@/Components/Privacy/Privacy";
 
 // ! Admin Pages
-import { AdminContact, AdminCustomer, AdminOrder, AdminProduct } from "@/Pages/Admin";
+import { AdminContact, AdminCustomer, AdminNews, AdminOrder, AdminProduct } from "@/Pages/Admin";
 import Search from "@/Pages/Search";
 
 const router = createBrowserRouter([
@@ -116,6 +116,10 @@ const router = createBrowserRouter([
       {
         path: "contact",
         element: <AdminContact />
+      },
+      {
+        path: "news",
+        element: <AdminNews />
       }
     ]
   },

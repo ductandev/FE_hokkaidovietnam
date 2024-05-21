@@ -2,6 +2,7 @@
 
 import { formatCurrency, formatTime } from "@/Helper/helper"
 import { Customer } from "@/Types/Customer.type";
+import { News } from "@/Types/News.type";
 import { Product } from "@/Types/Product.type"
 import { ColumnDef } from "@tanstack/react-table"
 
@@ -235,6 +236,50 @@ export const columnsContact: ColumnDef<Customer>[] = [
     {
         accessorKey: "email",
         header: "email",
+    },
+    {
+        accessorKey: "hanh_dong",
+        header: "Hành động",
+        cell: ({ row }) => {
+            return <div className="flex items-center justify-start">
+                <span className="mr-4" >{svgEdit}</span>
+                <span >{svgDelete}</span>
+            </div>
+        },
+    },
+];
+
+export const columnsNews: ColumnDef<News>[] = [
+    {
+        accessorKey: "index",
+        header: "Số thứ tự",
+    },
+    {
+        accessorKey: "hinh_anh",
+        header: "Hình ảnh",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span className="mr-4" style={{
+                    maxWidth: 50,
+                    maxHeight: 50,
+                }}>
+                    <img src={row.original.hinh_anh} alt={'hinh anh render'} />
+                </span>
+            </div>
+        },
+    },
+    {
+        accessorKey: "tieu_de",
+        header: "Tiêu đề",
+    },
+    {
+        accessorKey: "mo_ta",
+        header: "Mô tả",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <p> {row.original.mo_ta.length > 150 ? row.original.mo_ta.substr(0, 50) + ' ...' : row.original.mo_ta} </p>
+            </div>
+        },
     },
     {
         accessorKey: "hanh_dong",
