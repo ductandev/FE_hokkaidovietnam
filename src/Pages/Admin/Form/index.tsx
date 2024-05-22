@@ -1,6 +1,7 @@
 import * as React from "react"
 
-import useMediaQuery from "@/Hooks/useMediaQuery"
+import useMediaQuery from "@/Hooks/useMediaQuery";
+
 import { Button } from "@/Components/ui/button"
 import {
     Dialog,
@@ -9,7 +10,8 @@ import {
     DialogHeader,
     DialogTitle,
     DialogTrigger,
-} from "@/Components/ui/dialog"
+} from "@/Components/ui/dialog";
+
 import {
     Drawer,
     DrawerClose,
@@ -49,7 +51,7 @@ export function DrawerDialog(props: IProps) {
 
     const {
         handleSubmit,
-        formState: { errors, isDirty },
+        formState: { errors },
         ...formProps
     } = useForm<any>({
         mode: "onChange",
@@ -100,6 +102,10 @@ export function DrawerDialog(props: IProps) {
 
     const handleOnSubmitForm = async (values: any) => {
         const dataBuild = { ...values };
+
+        console.log({
+            dataBuild
+        })
     };
 
     return (

@@ -15,7 +15,7 @@ function FormOrder(props: any) {
     const watchWard = getWard(watch("quan_id"));
 
     return (
-        <div className='mx-3 '>
+        <div className='mx-3'>
             <Controller
                 name="email"
                 control={control}
@@ -174,13 +174,6 @@ function FormOrder(props: any) {
                     );
                 }}
             />
-
-            <h1 className="text-[13px] lg:text-2xl leading-6 font-bold">
-                <span className="lg:hidden">
-                    <BsCreditCard className="inline-block me-2 w-[25px] h-[25px]" />
-                </span>
-                Thanh toán
-            </h1>
         </div>
     )
 }

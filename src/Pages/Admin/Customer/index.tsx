@@ -59,7 +59,7 @@ function AdminCustomer() {
                 <div className="flex justify-between items-center">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-6"
+                        className="mr-3 w-full"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
@@ -67,17 +67,19 @@ function AdminCustomer() {
                         }}
                     />
 
-                    <Input placeholder="Tìm kiếm"
+                    <Input
+                        placeholder="Tìm kiếm"
                         value={search}
                         onChange={(event) => {
                             debouncedCallback(event.target.value);
                             setSearch(event.target.value)
                         }}
+                        className="w-[230px]"
                     />
                 </div>
 
                 <Button>
-                    Tạo sản phẩm
+                    Tạo khách hàng
                 </Button>
             </div>
 

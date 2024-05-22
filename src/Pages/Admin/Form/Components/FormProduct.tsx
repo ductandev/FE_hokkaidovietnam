@@ -69,51 +69,53 @@ function FormProduct(props: any) {
             />}
 
 
-            <Controller
-                control={control}
-                name='gia_ban'
-                render={({ field }) => {
-                    return <div className='mx-3 my-2'>
-                        <Input
-                            {...field}
-                            onKeyPress={(e) => {
-                                if (!isNumberKey(e)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                            onKeyUp={(e) => {
-                                isNumberMobile(e)
-                            }}
-                            endIcon='đ'
-                            placeholder='Nhập giá bán'
-                            error={errorsMgs?.gia_ban?.message || ""}
-                        />
-                    </div>
-                }}
-            />
+            <div className='grid grid-cols-2'>
+                <Controller
+                    control={control}
+                    name='gia_ban'
+                    render={({ field }) => {
+                        return <div className='mx-3 my-2'>
+                            <Input
+                                {...field}
+                                onKeyPress={(e) => {
+                                    if (!isNumberKey(e)) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                onKeyUp={(e) => {
+                                    isNumberMobile(e)
+                                }}
+                                endIcon='đ'
+                                placeholder='Nhập giá bán'
+                                error={errorsMgs?.gia_ban?.message || ""}
+                            />
+                        </div>
+                    }}
+                />
 
-            <Controller
-                control={control}
-                name='gia_giam'
-                render={({ field }) => {
-                    return <div className='mx-3 my-2'>
-                        <Input
-                            {...field}
-                            onKeyPress={(e) => {
-                                if (!isNumberKey(e)) {
-                                    e.preventDefault();
-                                }
-                            }}
-                            onKeyUp={(e) => {
-                                isNumberMobile(e)
-                            }}
-                            endIcon='đ'
-                            placeholder='Nhập giá giảm'
-                            error={errorsMgs?.gia_giam?.message || ""}
-                        />
-                    </div>
-                }}
-            />
+                <Controller
+                    control={control}
+                    name='gia_giam'
+                    render={({ field }) => {
+                        return <div className='mx-3 my-2'>
+                            <Input
+                                {...field}
+                                onKeyPress={(e) => {
+                                    if (!isNumberKey(e)) {
+                                        e.preventDefault();
+                                    }
+                                }}
+                                onKeyUp={(e) => {
+                                    isNumberMobile(e)
+                                }}
+                                endIcon='đ'
+                                placeholder='Nhập giá giảm'
+                                error={errorsMgs?.gia_giam?.message || ""}
+                            />
+                        </div>
+                    }}
+                />
+            </div>
 
             <Controller
                 control={control}
