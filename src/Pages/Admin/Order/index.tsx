@@ -4,7 +4,6 @@ import { useOrderList, useOrderSummary } from "@/Hooks/useOrder";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
-import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
 import PageSize from "@/Components/PageSize";
 import { Input } from "@/Components/ui/input"
@@ -12,12 +11,14 @@ import { Input } from "@/Components/ui/input"
 import { IoCartOutline } from "react-icons/io5";
 import { BsWallet2 } from "react-icons/bs";
 import { BsBoxSeam } from "react-icons/bs";
+import { DrawerDialog } from "../Form";
 
 function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
+    const [isVisibleAdd, setIsVisibleAdd] = useState(false);
 
     const { isLoading, data } = useOrderList({ page, pageSize, search: debouncedValue });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
@@ -69,7 +70,7 @@ function AdminOrder() {
                 <div className="flex justify-between items-center">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-6"
+                        className="mr-3 w-full"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
@@ -77,18 +78,25 @@ function AdminOrder() {
                         }}
                     />
 
-                    <Input placeholder="Tìm kiếm"
+                    <Input
+                        placeholder="Tìm kiếm"
                         value={search}
                         onChange={(event) => {
                             debouncedCallback(event.target.value);
                             setSearch(event.target.value)
                         }}
+                        className="w-[230px]"
                     />
                 </div>
 
-                <Button>
-                    Tạo sản phẩm
-                </Button>
+                <DrawerDialog
+                    label={'Tạo đơn hàng'}
+                    isVisible={isVisibleAdd}
+                    onHandleToogleVisible={(visible: boolean) => {
+                        setIsVisibleAdd(visible)
+                    }}
+                    context='order'
+                />
             </div>
 
             {isLoading ? <>

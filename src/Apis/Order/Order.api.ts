@@ -6,7 +6,7 @@ import {
 import { http, httpGuard } from "@/lib/utils";
 
 const Models = {
-    list: 'order',
+    list: 'order/pagination',
     summary: "order/summary",
     create: 'order',
 };

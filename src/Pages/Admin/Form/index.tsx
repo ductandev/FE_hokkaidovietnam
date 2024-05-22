@@ -1,6 +1,5 @@
 import * as React from "react"
 
-import { cn } from "@/lib/utils"
 import useMediaQuery from "@/Hooks/useMediaQuery"
 import { Button } from "@/Components/ui/button"
 import {
@@ -20,24 +19,52 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-} from "@/Components/ui/drawer"
-import { Input } from "@/Components/ui/input"
-import { Label } from "@/Components/ui/label"
+} from "@/Components/ui/drawer";
 
+import FormProduct from "./Components/FormProduct"
+import FormContact from "./Components/FormContact"
+import FormOrder from "./Components/FormOrder"
+
+import { useForm } from "react-hook-form";
 
 interface IProps {
     isVisible: boolean;
     onHandleToogleVisible?: Function;
     label?: string;
-    drawerTriggerEle?: any
+    drawerTriggerEle?: any;
+    context: string
 }
 
 export function DrawerDialog(props: IProps) {
-    const { isVisible = false, onHandleToogleVisible, label = 'Open Drawer', drawerTriggerEle } = props;
+    const {
+        isVisible = false,
+        onHandleToogleVisible,
+        label = 'Open Drawer',
+        drawerTriggerEle,
+        context } = props;
 
     const [open, setOpen] = React.useState(isVisible);
 
-    const isDesktop = useMediaQuery("(max-width: 768px)")
+    const isMobile = useMediaQuery("(max-width: 768px)");
+
+    const {
+        handleSubmit,
+        formState: { errors, isDirty },
+        ...formProps
+    } = useForm<any>({
+        mode: "onChange",
+        defaultValues: {
+            name: ''
+        },
+    });
+
+    const errorsMgs: any = errors;
+
+    const renderForm: any = {
+        'product': <FormProduct {...formProps} errorsMgs={errorsMgs} />,
+        'contact': <FormContact />,
+        'order': <FormOrder {...formProps} errorsMgs={errorsMgs} />,
+    }
 
     const handleToogleVisible = (isOpen: boolean) => {
         onHandleToogleVisible && onHandleToogleVisible(isOpen);
@@ -45,13 +72,13 @@ export function DrawerDialog(props: IProps) {
         setOpen(isOpen);
     }
 
-    if (isDesktop) {
+    if (isMobile) {
         return (
             <Dialog open={open} onOpenChange={handleToogleVisible} >
                 <DialogTrigger asChild>
                     {
                         drawerTriggerEle ?
-                            drawerTriggerEle : <Button variant="outline">
+                            drawerTriggerEle : <Button>
                                 {label}
                             </Button>
                     }
@@ -65,58 +92,46 @@ export function DrawerDialog(props: IProps) {
                             Make changes to your profile here. Click save when you're done.
                         </DialogDescription>
                     </DialogHeader>
-                    <ProfileForm />
                 </DialogContent>
             </Dialog>
         )
-    }
+    };
 
+
+    const handleOnSubmitForm = async (values: any) => {
+        const dataBuild = { ...values };
+    };
 
     return (
-        <Drawer open={open} onOpenChange={handleToogleVisible}>
+        <Drawer open={open} onOpenChange={handleToogleVisible} direction="right" >
             <DrawerTrigger asChild>
                 {
                     drawerTriggerEle ?
-                        drawerTriggerEle : <Button variant="outline">
+                        drawerTriggerEle : <Button>
                             {label}
                         </Button>
                 }
             </DrawerTrigger>
 
-            <DrawerContent>
-                <DrawerHeader className="text-left">
-                    <DrawerTitle>Edit profile</DrawerTitle>
+            <DrawerContent className="h-[100vh] w-[30vw]" >
+                <DrawerHeader className="max-w-[300px] text-left">
+                    <DrawerTitle>{label}</DrawerTitle>
+
                     <DrawerDescription>
-                        Make changes to your profile here. Click save when you're done.
+                        Bạn đang {label} mới
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <ProfileForm className="px-4" />
+                <form onSubmit={handleSubmit((values) => handleOnSubmitForm(values))}>
+                    {renderForm[context]}
+                </form>
 
-                <DrawerFooter className="pt-2">
+                <DrawerFooter className="pt-2 w-full">
                     <DrawerClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline">Huỷ bỏ</Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>
         </Drawer>
-    )
-}
-
-function ProfileForm({ className }: React.ComponentProps<"form">) {
-    return (
-        <form className={cn("grid items-start gap-4", className)}>
-            <div className="grid gap-2">
-                <Label htmlFor="email">Email</Label>
-                <Input type="email" id="email" defaultValue="shadcn@example.com" />
-            </div>
-
-            <div className="grid gap-2">
-                <Label htmlFor="username">Username</Label>
-                <Input id="username" defaultValue="@shadcn" />
-            </div>
-
-            <Button type="submit">Save changes</Button>
-        </form>
     )
 }
