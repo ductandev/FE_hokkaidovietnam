@@ -4,7 +4,6 @@ import { useAddress } from '@/Hooks/useAddress/useAddress'
 import Selection from "@/Components/Selection";
 import { Textarea } from '@/Components/ui/textarea';
 
-import { BsCreditCard } from "react-icons/bs";
 import { Input } from '@/Components/ui/input';
 
 function FormOrder(props: any) {

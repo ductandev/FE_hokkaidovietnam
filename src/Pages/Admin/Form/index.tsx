@@ -25,7 +25,7 @@ import {
 
 import FormProduct from "./Components/FormProduct"
 import FormContact from "./Components/FormContact"
-import FormOrder from "./Components/FormOrder"
+import FormOrderFilter from "./Components/FormOrderFilter";
 
 import { useForm } from "react-hook-form";
 
@@ -34,7 +34,9 @@ interface IProps {
     onHandleToogleVisible?: Function;
     label?: string;
     drawerTriggerEle?: any;
-    context: string
+    context: string;
+    onHandleSubmit?: any;
+    defaultValues?: any
 }
 
 export function DrawerDialog(props: IProps) {
@@ -43,7 +45,10 @@ export function DrawerDialog(props: IProps) {
         onHandleToogleVisible,
         label = 'Open Drawer',
         drawerTriggerEle,
-        context } = props;
+        onHandleSubmit,
+        context,
+        defaultValues
+    } = props;
 
     const [open, setOpen] = React.useState(isVisible);
 
@@ -55,9 +60,7 @@ export function DrawerDialog(props: IProps) {
         ...formProps
     } = useForm<any>({
         mode: "onChange",
-        defaultValues: {
-            name: ''
-        },
+        defaultValues
     });
 
     const errorsMgs: any = errors;
@@ -65,7 +68,7 @@ export function DrawerDialog(props: IProps) {
     const renderForm: any = {
         'product': <FormProduct {...formProps} errorsMgs={errorsMgs} />,
         'contact': <FormContact />,
-        'order': <FormOrder {...formProps} errorsMgs={errorsMgs} />,
+        'orderFilter': <FormOrderFilter {...formProps} />,
     }
 
     const handleToogleVisible = (isOpen: boolean) => {
@@ -103,9 +106,7 @@ export function DrawerDialog(props: IProps) {
     const handleOnSubmitForm = async (values: any) => {
         const dataBuild = { ...values };
 
-        console.log({
-            dataBuild
-        })
+        onHandleSubmit && onHandleSubmit(dataBuild)
     };
 
     return (
