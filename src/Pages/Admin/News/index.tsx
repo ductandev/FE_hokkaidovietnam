@@ -1,18 +1,18 @@
 import { useMemo, useState } from "react";
-
-// import DataGrid from "@/Components/DataGrid/Datagrid";
-import MetricCard from "@/Components/Metrics/MetricCard";
-import { Button } from "@/Components/ui/button";
-import { HPagination } from "@/Components/Pagination";
-import PageSize from "@/Components/PageSize";
-import { Input } from "@/Components/ui/input"
-
-import { FaRegUser } from "react-icons/fa";
 import useDebouncedCallback from "@/Hooks/useDebounceCallback";
-import { useCustomerList, useCustomerSummary } from "@/Hooks/useCustomer";
-import DataGrid from "@/Components/DataGrid/Datagrid";
 
-function AdminCustomer() {
+import DataGrid from "@/Components/DataGrid/Datagrid";
+import MetricCard from "@/Components/Metrics/MetricCard";
+import { HPagination } from "@/Components/Pagination";
+import { Input } from "@/Components/ui/input";
+import PageSize from "@/Components/PageSize";
+
+import { LuPackageSearch } from "react-icons/lu";
+import { useNewsList, useNewsSummary } from "@/Hooks/useNews";
+import { Button } from "@/Components/ui/button";
+// import { LiaBoxSolid } from "react-icons/lia";
+
+function AdminNews() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
@@ -21,16 +21,16 @@ function AdminCustomer() {
     const {
         isLoading,
         data
-    } = useCustomerList({ page, pageSize, search: debouncedValue });
-    const { isLoading: isLoadingSummary, data: dataSummary } = useCustomerSummary();
+    } = useNewsList({ page, pageSize, search: debouncedValue });
+    const { isLoading: isLoadingSummary, data: dataSummary } = useNewsSummary();
 
     const Metrics = useMemo(() => {
         return [
             {
-                icon: <FaRegUser />,
-                label: "Khách hàng",
-                index: dataSummary?.content?.totalUser,
-                format: "khách"
+                icon: <LuPackageSearch />,
+                label: "Tổng số tin tức",
+                index: dataSummary?.content?.totalNews,
+                format: "tin tức"
             },
         ];
         // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -52,14 +52,14 @@ function AdminCustomer() {
             </div>
 
             <h2 className="text-center uppercase text-xl font-semibold">
-                Khách hàng
+                Tin tức
             </h2>
 
             <div className="p-4 mt-8 flex justify-between items-center">
                 <div className="flex justify-between items-center">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-3 w-full"
+                        className="mr-6"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
@@ -67,16 +67,18 @@ function AdminCustomer() {
                         }}
                     />
 
-                    <Input
-                        placeholder="Tìm kiếm"
+                    <Input placeholder="Tìm kiếm"
                         value={search}
                         onChange={(event) => {
                             debouncedCallback(event.target.value);
                             setSearch(event.target.value)
                         }}
-                        className="w-[230px]"
                     />
                 </div>
+
+                <Button>
+                    Tạo tin mới
+                </Button>
             </div>
 
             {isLoading ? <>
@@ -84,7 +86,7 @@ function AdminCustomer() {
             </> :
                 <DataGrid
                     data={data?.content}
-                    type={'customer'}
+                    type={'news'}
                     page={page}
                     pageSize={pageSize}
                 />
@@ -103,4 +105,4 @@ function AdminCustomer() {
     )
 }
 
-export default AdminCustomer;
+export default AdminNews;
