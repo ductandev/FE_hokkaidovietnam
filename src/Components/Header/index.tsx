@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import useWindowDimensions from "@/Hooks/useWindowDimension";
 import { useSelector } from "react-redux";
 
@@ -9,6 +9,18 @@ import { CircleUserRound, ShoppingCart, Search, Menu, X } from "lucide-react";
 import logo from "assets/image/logo.png";
 
 import "./styles.scss";
+import { useAuth } from "@/Auth/AuthProvider";
+import { Button } from "../ui/button";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/Components/ui/dropdown-menu"
+import { selectUser } from "@/Redux/selectors/user.selector";
 
 const MENU_REDIRECT = [
   {
@@ -39,6 +51,9 @@ export default function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isOpenMenu, setIsOpenMenu] = useState(false);
   const cartState = useSelector(selectCart);
+  const userState = useSelector(selectUser);
+  const navigate = useNavigate();
+  const { isLogin, signOut, isAdmin } = useAuth();
 
   const isUseTransition = location.pathname === "/";
 
@@ -129,9 +144,32 @@ export default function Header() {
             <Search className="mr-10 cursor-pointer header-actions-search" />
           </Link>
 
-          <Link to="/login" >
-            <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
-          </Link>
+          {isLogin ? <DropdownMenu>
+            <DropdownMenuTrigger>
+              <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
+            </DropdownMenuTrigger>
+
+            <DropdownMenuContent>
+              <DropdownMenuLabel>Xin chào, {userState.ho_ten}</DropdownMenuLabel>
+
+              <DropdownMenuSeparator />
+
+              {isAdmin && <DropdownMenuItem onClick={() => {
+                navigate('/admin/customer')
+              }}>Vào admin</DropdownMenuItem>}
+              <DropdownMenuItem>Xem đơn hàng</DropdownMenuItem>
+              <DropdownMenuItem>Đổi mật khẩu</DropdownMenuItem>
+
+              <DropdownMenuItem onClick={() => {
+                signOut()
+              }}>Đăng xuất</DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+
+            : <Link to="/login" >
+              <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
+            </Link>
+          }
 
           <Link to="/cart" >
             <div className="relative">
@@ -150,7 +188,6 @@ export default function Header() {
                   {cartState.length}
                 </p>
               </div>
-
             </div>
           </Link>
         </div>
@@ -182,10 +219,16 @@ export default function Header() {
             </ul>
 
             <div className="h-[100px] border-t-2  flex items-center justify-start pl-[15px]">
-              <Link to="/login" className="flex items-center space-x-2">
+              {!isLogin ? <Link to="/login" className="flex items-center space-x-2">
                 <CircleUserRound size={35} />
                 <h3 className="font-semibold text-lg">LOGIN</h3>
-              </Link>
+              </Link> : <Button onClick={() => {
+                signOut();
+              }}>
+                Đăng xuất
+              </Button>
+              }
+
             </div>
           </>
         )}

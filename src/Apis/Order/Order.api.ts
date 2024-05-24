@@ -6,7 +6,7 @@ import {
 import { http, httpGuard } from "@/lib/utils";
 
 const Models = {
-    list: 'order',
+    list: 'order/pagination',
     summary: "order/summary",
     create: 'order',
 };
@@ -14,13 +14,12 @@ const Models = {
 export const getOrders = (
     page: number | string,
     limit: number | string,
-    search: string,
+    queryFilter: string,
     signal?: AbortSignal) =>
-    httpGuard.get<Orders>(`${Models.list}`, {
+    httpGuard.get<Orders>(`${Models.list}${queryFilter}`, {
         params: {
             page,
             limit,
-            ...(search && { search }),
         },
         signal
     });

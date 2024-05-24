@@ -4,30 +4,23 @@ import { useOrderList, useOrderSummary } from "@/Hooks/useOrder";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
-import { Button } from "@/Components/ui/button";
 import { HPagination } from "@/Components/Pagination";
 import PageSize from "@/Components/PageSize";
-import { Input } from "@/Components/ui/input"
 
 import { IoCartOutline } from "react-icons/io5";
 import { BsWallet2 } from "react-icons/bs";
 import { BsBoxSeam } from "react-icons/bs";
+import { DrawerDialog } from "../Form";
+import { DEFAULT_ORDER_FILTER_FORM } from "../Form/constants";
+import { buildQueryString } from "@/Helper/helper";
 
 function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
-    const [search, setSearch] = useState("");
-    const [debouncedValue, setDebouncedValue] = useState("");
-
-    const { isLoading, data } = useOrderList({ page, pageSize, search: debouncedValue });
+    const [isVisibleAdd, setIsVisibleAdd] = useState(false);
+    const [queryFilter, setQueryFilter] = useState("");
+    const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
-
-    const handleChangeDebounced = (value: string) => {
-        setPage(1);
-        setDebouncedValue(value);
-    };
-
-    const [debouncedCallback] = useDebouncedCallback(handleChangeDebounced, 500, [search]);
 
     const Metrics = useMemo(() => {
         return [
@@ -70,26 +63,27 @@ function AdminOrder() {
                 <div className="flex justify-between items-center">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-6"
+                        className="mr-3 w-full"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
                             setPageSize(size)
                         }}
                     />
-
-                    <Input placeholder="Tìm kiếm"
-                        value={search}
-                        onChange={(event) => {
-                            debouncedCallback(event.target.value);
-                            setSearch(event.target.value)
-                        }}
-                    />
                 </div>
 
-                <Button>
-                    Tạo sản phẩm
-                </Button>
+                <DrawerDialog
+                    label={'Bộ lọc'}
+                    isVisible={isVisibleAdd}
+                    onHandleToogleVisible={(visible: boolean) => {
+                        setIsVisibleAdd(visible)
+                    }}
+                    context='orderFilter'
+                    onHandleSubmit={(values: any) => {
+                        setQueryFilter(buildQueryString(values))
+                    }}
+                    defaultValues={DEFAULT_ORDER_FILTER_FORM}
+                />
             </div>
 
             {isLoading ? <>
