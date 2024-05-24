@@ -107,6 +107,8 @@ export function DrawerDialog(props: IProps) {
         const dataBuild = { ...values };
 
         onHandleSubmit && onHandleSubmit(dataBuild)
+
+        setOpen(false);
     };
 
     return (

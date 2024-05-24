@@ -77,10 +77,6 @@ function AdminCustomer() {
                         className="w-[230px]"
                     />
                 </div>
-
-                <Button>
-                    Tạo khách hàng
-                </Button>
             </div>
 
             {isLoading ? <>
