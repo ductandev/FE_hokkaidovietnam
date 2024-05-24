@@ -84,6 +84,11 @@ export default function Header() {
     }
   }, [width]);
 
+  useEffect(() => {
+    // Cuộn lên đầu trang khi thay đổi đường dẫn
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   return (
     <header
       className={`header ${isUseTransition ? "header__transparent" : "header__whitebox"
