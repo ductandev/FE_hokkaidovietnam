@@ -9,55 +9,44 @@ import SidebarAdmin from '@/Components/SideBarAdmin';
 import { useAuth } from '@/Auth/AuthProvider';
 import { getInfo } from '@/Apis/Auth/Auth.api'
 
-const SIDEBAR_WITDH = `230px`;
+const SIDEBAR_WIDTH = `230px`;
 
 const AdminTemplate: React.FC = (): JSX.Element => {
     const { isLogin, isAdmin } = useAuth();
-    console.log(typeof (isLogin));
     const dispatch: any = useDispatch();
-
-    // TODO: If user haven't login and not admin (do later) before, redirect to homepage "/"
-    if (!isLogin || !isAdmin) {
-        return <Navigate to="/" />;
-    }
-
-    const isDesktop = {
-        width: `calc(100vw - ${SIDEBAR_WITDH})`,
-        marginLeft: `${SIDEBAR_WITDH}`,
-        padding: 24
-    };
-
 
     const { isLoading: isLoadingUser, data: dataUser }: any = useQuery({
         queryKey: ['user'],
         queryFn: () => {
             const controller = new AbortController();
-
             setTimeout(() => {
-                controller.abort()
+                controller.abort();
             }, 5000);
-
-            return getInfo(controller.signal)
+            return getInfo(controller.signal);
         },
         keepPreviousData: false,
         retry: 0,
         enabled: Boolean(isLogin)
     });
 
-    // * Viết login lấy thông tin user qua token tại đây
     useEffect(() => {
-        if (isLogin) {
-            if (!isLoadingUser) {
-                // ! logic for api user
-                let currentUser = dataUser?.data?.content;
-
-                dispatch(userActions.setUser(currentUser))
-            };
+        if (isLogin && !isLoadingUser && dataUser) {
+            const currentUser = dataUser.data.content;
+            dispatch(userActions.setUser(currentUser));
         }
-
         // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [isLoadingUser, isLogin]);
+    }, [isLoadingUser, isLogin, dataUser]);
 
+    const isDesktop = {
+        width: `calc(100vw - ${SIDEBAR_WIDTH})`,
+        marginLeft: `${SIDEBAR_WIDTH}`,
+        padding: 24
+    };
+
+    // Chuyển hướng đến trang chủ nếu người dùng chưa đăng nhập hoặc không phải là admin
+    if (!isLogin || !isAdmin) {
+        return <Navigate to="/" />;
+    }
 
     return (
         <div className='relative'>
@@ -65,14 +54,11 @@ const AdminTemplate: React.FC = (): JSX.Element => {
 
             <SidebarAdmin />
 
-            <div style={{
-                ...isDesktop
-            }}>
+            <div style={isDesktop}>
                 <Outlet />
             </div>
-
         </div>
-    )
+    );
 }
 
 export default AdminTemplate;
