@@ -14,7 +14,6 @@ import { Label } from "@/Components/ui/label";
 import { isEmpty } from "@/Helper/helper";
 import { Button } from "@/Components/ui/button";
 import { Input } from "@/Components/ui/input";
-import { toast } from "react-toastify";
 
 export interface UserRegisterFrm {
     ho_ten: string,
@@ -57,16 +56,16 @@ export default function Register() {
         return <Navigate to="/" />;
     }
 
-    const handleOnSubmitForm = (values: any) => {
-        signUp(values);
 
-        toast.success("Đăng kí thành công", {
-            position: "bottom-center"
-        });
-
-        setTimeout(() => {
-            navigate("/login")
-        }, 1000);
+    const handleOnSubmitForm = async (values: any) => {
+        try {
+            await signUp(values);
+            setTimeout(() => {
+                navigate("/login");
+            }, 1000);
+        } catch (error) {
+            console.error("Đăng ký thất bại:", error);
+        }
     }
 
     return (
