@@ -62,6 +62,10 @@ export const AuthProvider = function (props: AppProviderProps) {
     const { mutateAsync: mutateAsyncRegister }: any = useMutation({
         mutationFn: (body: UserRegister) => {
             return registerUser(body)
+        },
+        onError: (error: any) => {
+            const mgs = error.response.data.message
+            toast.error(mgs);
         }
     })
 
@@ -93,9 +97,14 @@ export const AuthProvider = function (props: AppProviderProps) {
 
     const signUp = async (payload: UserRegister) => {
         try {
-            await mutateAsyncRegister(payload);
+            const response = await mutateAsyncRegister(payload);
+
+            // Show message
+            toast.success("Đăng ký tài khoản thành công!");
+            return response;
         } catch (error) {
             console.log(error);
+            throw error;
         }
     }
 

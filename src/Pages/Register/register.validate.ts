@@ -35,7 +35,7 @@ export const registerValidationSchema = yup.object().shape(
             .required("Số điện thoại không được để trống")
             .matches(phoneRegExp, "Vui lòng nhập đúng số điện thoại")
             .min(10, "Có ít nhất 10 số")
-            .max(12, "Có tối đa 12 số"),
+            .max(10, "Có tối đa 10 số"),
 
         tinh_thanh_id: yup
             .string()
