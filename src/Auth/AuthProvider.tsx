@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import { toast } from "react-toastify";
+import { ToastOptions, toast } from "react-toastify";
 import { useMutation } from "react-query";
 import { useLocalStorage } from "@/Hooks/useLocalStorage";
 
@@ -7,6 +7,17 @@ import { UserLogin, UserRegister } from "@/Types/Auth.type";
 import { loginUser, registerUser } from "@/Apis/Auth/Auth.api";
 import { PREFIX } from "@/Hooks/useCartStorage";
 import { httpGuard } from "@/lib/utils";
+
+const toastOptions: ToastOptions<{}> = {
+    position: "top-center",
+    autoClose: 400,
+    hideProgressBar: false,
+    closeOnClick: true,
+    pauseOnHover: true,
+    draggable: true,
+    progress: undefined,
+    theme: "light",
+};
 
 export interface authContextState {
     signIn: Function,
@@ -72,7 +83,7 @@ export const AuthProvider = function (props: AppProviderProps) {
             httpGuard.defaults.headers["authorization"] = `bearer ${token}`
 
             // Show message
-            toast.success("Đăng nhập thành công!");
+            toast.success("Đăng nhập thành công!", toastOptions);
             // * Redirect sang admin page
         } catch (error) {
             console.log(error);
@@ -95,6 +106,9 @@ export const AuthProvider = function (props: AppProviderProps) {
 
         setIsLogin(false)
         setIsAdmin(false)
+
+        toast.success('Đăng xuất thành công !', toastOptions);
+
     }
 
     const authContextState = {

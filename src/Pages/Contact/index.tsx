@@ -42,7 +42,6 @@ export default function Contact() {
       noi_dung: yup.string(),
     }),
     onSubmit: async (values: UserContactFrm) => {
-      console.log(values);
       const actionApi = contactAsyncAction(values);
       dispatch(actionApi);
     },
