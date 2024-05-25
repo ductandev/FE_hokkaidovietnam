@@ -8,7 +8,7 @@ import { loginUser, registerUser } from "@/Apis/Auth/Auth.api";
 import { PREFIX } from "@/Hooks/useCartStorage";
 import { httpGuard } from "@/lib/utils";
 
-const toastOptions: ToastOptions<{}> = {
+export const toastOptions: ToastOptions<{}> = {
     position: "top-center",
     autoClose: 400,
     hideProgressBar: false,

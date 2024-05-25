@@ -114,8 +114,12 @@ export default function CheckoutPage() {
     },
     onSuccess: () => {
       toast.success(`Bạn đã đặt hàng thành công`, {
-        position: "bottom-center",
+        position: "top-center",
       });
+
+      setTimeout(() => {
+        navigate('/products')
+      }, 1000)
 
       // * Clear Current Cart
       // ! if user login call api clear cart
@@ -125,7 +129,7 @@ export default function CheckoutPage() {
     },
     onError: () => {
       toast.error(`Đã xảy ra lỗi`, {
-        position: "bottom-center",
+        position: "top-center",
       });
     },
   });
@@ -277,7 +281,6 @@ export default function CheckoutPage() {
                 return (
                   <div className="mb-4">
                     <Input
-                      startIcon={"+84"}
                       placeholder="Số điện thoại"
                       error={SErrors?.so_dien_thoai?.message || ""}
                       {...field}
