@@ -216,6 +216,7 @@ export default function ImageUpload(props: any) {
         } catch (error) {
             console.error("Error uploading files: ", error);
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
