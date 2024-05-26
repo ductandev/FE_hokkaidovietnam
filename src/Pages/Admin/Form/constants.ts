@@ -8,6 +8,17 @@ export const DEFAULT_ORDER_FILTER_FORM = {
     so_dien_thoai: ""
 }
 
+export const DEFAULT_PRODUCT_ADD_FORM = {
+    loai_san_pham_id: "",
+    ten_san_pham: "",
+    gia_ban: "",
+    so_luong_trong_kho: "",
+    gia_giam: "",
+    mo_ta: "",
+    thong_tin_chi_tiet: "",
+    hinh_anh: [],
+}
+
 export const ORDER_STATUS: any = [
     {
         label: 'Tất cả',

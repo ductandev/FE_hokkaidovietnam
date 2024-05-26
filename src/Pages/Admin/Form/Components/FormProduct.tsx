@@ -1,11 +1,16 @@
 import { Controller } from 'react-hook-form';
+import { useQuery } from 'react-query';
+import { useDeferredValue } from 'react';
+
 import { Input } from '@/Components/ui/input';
 import { Textarea } from '@/Components/ui/textarea';
-import { isNumberKey, isNumberMobile } from '@/Helper/helper';
-import { useQuery } from 'react-query';
-import { getProductTypes } from '@/Apis/Product/ProductType.api';
+import { Button } from '@/Components/ui/button';
 import Selection from "@/Components/Selection";
-import { useDeferredValue } from 'react';
+import ImageUpload from '@/Components/ImageUpload';
+import { ScrollArea } from '@/Components/ui/scroll-area';
+
+import { getProductTypes } from '@/Apis/Product/ProductType.api';
+import { isEmpty, isNumberKey, isNumberMobile } from '@/Helper/helper';
 
 function FormProduct(props: any) {
     const { control, errorsMgs } = props;
@@ -27,7 +32,7 @@ function FormProduct(props: any) {
     const productTypeDeffered = useDeferredValue(productType?.data?.content)
 
     return (
-        <div>
+        <ScrollArea className="h-[76vh]">
             <Controller
                 control={control}
                 name='ten_san_pham'
@@ -46,10 +51,6 @@ function FormProduct(props: any) {
                 control={control}
                 name='loai_san_pham_id'
                 render={({ field }) => {
-                    console.log({
-                        lod: field.value,
-                        productTypeDeffered
-                    })
                     return <div className='mx-3 my-2'>
                         <Selection
                             title="Loại sản phẩm"
@@ -147,8 +148,16 @@ function FormProduct(props: any) {
                     return <div className='mx-3 my-2'>
                         <Textarea
                             {...field}
-                            placeholder='Nhập thông tin chi tiết'
+                            placeholder='Nhập mô tả sản phẩm'
                         />
+
+                        {
+                            errorsMgs?.mo_ta?.message?.length && (
+                                <p className="my-1 text-red-700 text-sm" >
+                                    {errorsMgs?.mo_ta?.message}
+                                </p>
+                            )
+                        }
                     </div>
                 }}
             />
@@ -160,12 +169,45 @@ function FormProduct(props: any) {
                     return <div className='mx-3 my-2'>
                         <Textarea
                             {...field}
-                            placeholder='Nhập mô tả sản phẩm'
+                            placeholder='Nhập thông tin chi tiết'
                         />
+
+                        {
+                            errorsMgs?.thong_tin_chi_tiet?.message?.length && (
+                                <p className="my-1 text-red-700 text-sm" >
+                                    {errorsMgs?.thong_tin_chi_tiet?.message}
+                                </p>
+                            )
+                        }
                     </div>
                 }}
             />
-        </div>
+
+            <Controller
+                control={control}
+                name='hinh_anh'
+                render={({ field }) => {
+                    return <div className='mx-3 mt-6'>
+                        <ImageUpload
+                            value={field.value}
+                            onChange={(urls: any) => {
+                                field.onChange(urls)
+                            }}
+                        />
+
+                        {
+                            errorsMgs?.hinh_anh?.message?.length && (
+                                <p className="my-1 text-red-700 text-sm" >
+                                    {errorsMgs?.hinh_anh?.message}
+                                </p>
+                            )
+                        }
+                    </div>
+                }}
+            />
+
+            <Button disabled={!isEmpty(errorsMgs)} type='submit' className='fixed bottom-[80px] mx-3 mt-6 w-full'>Tạo sản phẩm</Button>
+        </ScrollArea>
     )
 }
 

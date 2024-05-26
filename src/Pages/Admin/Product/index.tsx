@@ -13,6 +13,8 @@ import { DrawerDialog } from "../Form";
 import { LuPackageSearch } from "react-icons/lu";
 import { LiaBoxSolid } from "react-icons/lia";
 import { getProductTypes } from "@/Apis/Product/ProductType.api";
+import { DEFAULT_PRODUCT_ADD_FORM } from "../Form/constants";
+import { productCreateValidationSchema } from "../Form/Components/schema.validate";
 
 function AdminProduct() {
     const [page, setPage] = useState(1);
@@ -28,7 +30,7 @@ function AdminProduct() {
     const { isLoading: isLoadingSummary, data: dataSummary } = useProductSummary();
 
 
-    const { edit, remove } = useProduct({ page, pageSize, search: debouncedValue });
+    const { add, edit, remove } = useProduct({ page, pageSize, search: debouncedValue });
 
     const { isLoading: isLoadingProductType, data: productType }: any = useQuery({
         queryKey: ['productType'],
@@ -112,6 +114,9 @@ function AdminProduct() {
                         setIsVisibleAdd(visible)
                     }}
                     context='product'
+                    defaultValues={DEFAULT_PRODUCT_ADD_FORM}
+                    onHandleSubmit={(values: any) => add(values)}
+                    validateSchema={productCreateValidationSchema}
                 />
             </div>
 

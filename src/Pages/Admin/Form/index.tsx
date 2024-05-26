@@ -28,6 +28,7 @@ import FormContact from "./Components/FormContact"
 import FormOrderFilter from "./Components/FormOrderFilter";
 
 import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 interface IProps {
     isVisible: boolean;
@@ -36,7 +37,8 @@ interface IProps {
     drawerTriggerEle?: any;
     context: string;
     onHandleSubmit?: any;
-    defaultValues?: any
+    defaultValues?: any;
+    validateSchema?: any
 }
 
 export function DrawerDialog(props: IProps) {
@@ -47,7 +49,8 @@ export function DrawerDialog(props: IProps) {
         drawerTriggerEle,
         onHandleSubmit,
         context,
-        defaultValues
+        defaultValues,
+        validateSchema
     } = props;
 
     const [open, setOpen] = React.useState(isVisible);
@@ -60,7 +63,8 @@ export function DrawerDialog(props: IProps) {
         ...formProps
     } = useForm<any>({
         mode: "onChange",
-        defaultValues
+        defaultValues,
+        ...(validateSchema && { resolver: yupResolver(validateSchema), })
     });
 
     const errorsMgs: any = errors;
@@ -104,7 +108,12 @@ export function DrawerDialog(props: IProps) {
 
 
     const handleOnSubmitForm = async (values: any) => {
-        const dataBuild = { ...values };
+        let dataBuild = { ...values };
+
+        if (context === 'product') {
+            dataBuild['gia_ban'] = parseInt(dataBuild.gia_ban);
+            dataBuild['gia_giam'] = parseInt(dataBuild.gia_giam);
+        }
 
         onHandleSubmit && onHandleSubmit(dataBuild)
 
