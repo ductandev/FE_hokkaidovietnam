@@ -53,23 +53,23 @@ export const columnsOrder: ColumnDef<Order>[] = [
         },
     },
     {
-        accessorKey: "HinhThucThanhToan",
+        accessorKey: "hinh_thuc_thanh_toan_id",
         header: "Thanh toán",
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
-                    {row.original.HinhThucThanhToan.ten_hinh_thuc_thanh_toan}
+                    {row.original.hinh_thuc_thanh_toan_id}
                 </span>
             </div>
         },
     },
     {
-        accessorKey: "TrangThaiDonHang",
+        accessorKey: "trang_thai_don_hang_id",
         header: "Trạng thái",
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
-                    {row.original.TrangThaiDonHang.ten_trang_thai_don_hang}
+                    {row.original.trang_thai_don_hang_id}
                 </span>
             </div>
         },

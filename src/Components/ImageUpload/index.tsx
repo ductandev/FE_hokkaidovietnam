@@ -10,7 +10,7 @@ import {
     Video,
     X,
 } from "lucide-react";
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useDropzone } from "react-dropzone";
 import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
@@ -55,9 +55,16 @@ const OtherColor = {
     fillColor: "fill-gray-400",
 };
 
-export default function ImageUpload() {
+export default function ImageUpload(props: any) {
+    const { onChange, value } = props;
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const [filesToUpload, setFilesToUpload] = useState<FileUploadProgress[]>([]);
+    const [defaultImage, setDefaultImage] = useState(value);
+
+    useEffect(() => {
+        setDefaultImage(value)
+    }, [value])
+
 
     const getFileIconAndColor = (file: File) => {
         if (file.type.includes(FileTypes.Image)) {
@@ -107,6 +114,7 @@ export default function ImageUpload() {
 
         if (progress === 100) {
             setUploadedFiles((prevUploadedFiles) => {
+                onChange && onChange([...prevUploadedFiles, file])
                 return [...prevUploadedFiles, file];
             });
 
@@ -138,7 +146,7 @@ export default function ImageUpload() {
         cancelSource: CancelTokenSource
     ) => {
         return axios.post(
-            `https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUD_NAME}/image/upload`,
+            `https://api.cloudinary.com/v1_1/${process.env.REACT_APP_PUBLIC_CLOUD_NAME}/image/upload`,
             formData,
             {
                 onUploadProgress,
@@ -147,7 +155,7 @@ export default function ImageUpload() {
         );
     };
 
-    const removeFile = (file: File) => {
+    const removeFile = (file: File, id: number) => {
         setFilesToUpload((prevUploadProgress) => {
             return prevUploadProgress.filter((item) => item.File !== file);
         });
@@ -155,6 +163,14 @@ export default function ImageUpload() {
         setUploadedFiles((prevUploadedFiles) => {
             return prevUploadedFiles.filter((item) => item !== file);
         });
+
+        let prevUploadedFiles = [...defaultImage];
+
+        prevUploadedFiles.splice(id, 1);
+        console.log({
+            prevUploadedFiles
+        })
+        onChange && onChange(prevUploadedFiles);
     };
 
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
@@ -173,28 +189,34 @@ export default function ImageUpload() {
 
         // cloudinary upload
 
-        // const fileUploadBatch = acceptedFiles.map((file) => {
-        //   const formData = new FormData();
-        //   formData.append("file", file);
-        //   formData.append(
-        //     "upload_preset",
-        //     process.env.NEXT_PUBLIC_UPLOAD_PRESET as string
-        //   );
+        const fileUploadBatch = acceptedFiles.map((file) => {
+            const formData = new FormData();
+            formData.append("file", file);
+            formData.append(
+                "upload_preset",
+                process.env.REACT_APP_PUBLIC_UPLOAD_PRESET as string
+            );
 
-        //   const cancelSource = axios.CancelToken.source();
-        //   return uploadImageToCloudinary(
-        //     formData,
-        //     (progressEvent) => onUploadProgress(progressEvent, file, cancelSource),
-        //     cancelSource
-        //   );
-        // });
+            const cancelSource = axios.CancelToken.source();
+            return uploadImageToCloudinary(
+                formData,
+                (progressEvent) => onUploadProgress(progressEvent, file, cancelSource),
+                cancelSource
+            );
+        });
 
-        // try {
-        //   await Promise.all(fileUploadBatch);
-        //   alert("All files uploaded successfully");
-        // } catch (error) {
-        //   console.error("Error uploading files: ", error);
-        // }
+        try {
+            const getAllPromiseRespone = await Promise.all(fileUploadBatch);
+
+            let url = await getAllPromiseRespone.map((y: any) => y.data.url);
+            const defaultUrl = [...defaultImage];
+
+            onChange && onChange(defaultUrl.concat(url));
+            alert("Upload hình ảnh thành công");
+        } catch (error) {
+            console.error("Error uploading files: ", error);
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const { getRootProps, getInputProps } = useDropzone({ onDrop });
@@ -212,10 +234,10 @@ export default function ImageUpload() {
                         </div>
 
                         <p className="mt-2 text-sm text-gray-600">
-                            <span className="font-semibold">Drag files</span>
+                            <span className="font-semibold">Upload files</span>
                         </p>
                         <p className="text-xs text-gray-500">
-                            Click to upload files &#40;files should be under 10 MB &#41;
+                            Click upload file &#40;File nên dưới 10 MB &#41;
                         </p>
                     </div>
                 </label>
@@ -233,10 +255,11 @@ export default function ImageUpload() {
                 <div>
                     <ScrollArea className="h-40">
                         <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
-                            Files to upload
+                            Files đang tải
                         </p>
+
                         <div className="space-y-2 pr-3">
-                            {filesToUpload.map((fileUploadProgress) => {
+                            {filesToUpload.map((fileUploadProgress, id) => {
                                 return (
                                     <div
                                         key={fileUploadProgress.File.lastModified}
@@ -256,19 +279,22 @@ export default function ImageUpload() {
                                                         {fileUploadProgress.progress}%
                                                     </span>
                                                 </div>
+
                                                 {/* <Progress
                                                     progress={fileUploadProgress.progress}
                                                     className={
                                                         getFileIconAndColor(fileUploadProgress.File).color
                                                     }
                                                 /> */}
+
                                             </div>
                                         </div>
                                         <button
+                                            type="button"
                                             onClick={() => {
                                                 if (fileUploadProgress.source)
                                                     fileUploadProgress.source.cancel("Upload cancelled");
-                                                removeFile(fileUploadProgress.File);
+                                                removeFile(fileUploadProgress.File, id);
                                             }}
                                             className="bg-red-500 text-white transition-all items-center justify-center cursor-pointer px-2 hidden group-hover:flex"
                                         >
@@ -285,13 +311,13 @@ export default function ImageUpload() {
             {uploadedFiles.length > 0 && (
                 <div>
                     <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
-                        Uploaded Files
+                        Files đã upload
                     </p>
                     <div className="space-y-2 pr-3">
-                        {uploadedFiles.map((file) => {
+                        {uploadedFiles.map((file, idx) => {
                             return (
                                 <div
-                                    key={file.lastModified}
+                                    key={idx}
                                     className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group hover:pr-0 pr-2 hover:border-slate-300 transition-all"
                                 >
                                     <div className="flex items-center flex-1 p-2">
@@ -307,8 +333,9 @@ export default function ImageUpload() {
                                         </div>
                                     </div>
                                     <button
-                                        onClick={() => removeFile(file)}
+                                        onClick={() => removeFile(file, idx)}
                                         className="bg-red-500 text-white transition-all items-center justify-center px-2 hidden group-hover:flex"
+                                        type="button"
                                     >
                                         <X size={20} />
                                     </button>
