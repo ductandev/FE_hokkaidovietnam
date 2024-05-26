@@ -17,7 +17,7 @@ function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isVisibleAdd, setIsVisibleAdd] = useState(false);
-    const [queryFilter, setQueryFilter] = useState("");
+    const [queryFilter, setQueryFilter] = useState("?status=0");
     const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
 

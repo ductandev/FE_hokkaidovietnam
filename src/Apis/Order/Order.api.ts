@@ -20,7 +20,6 @@ export const getOrders = (
         params: {
             page,
             limit,
-            status: 0
         },
         signal
     });
