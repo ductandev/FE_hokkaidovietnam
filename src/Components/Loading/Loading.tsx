@@ -1,11 +1,7 @@
-import { useSelector } from "react-redux";
-import { RootState } from "../../Redux/configStore";
 import { SyncLoader } from "react-spinners";
 
-type Props = {};
-
-export default function Loading({ }: Props) {
-  const { isLoadingContact } = useSelector((state: RootState) => state.contactReducer);
+// eslint-disable-next-line no-empty-pattern
+export default function Loading() {
 
   return (
     <div
@@ -15,10 +11,7 @@ export default function Loading({ }: Props) {
         height: "100%",
         zIndex: 10,
         background: "#e8e8e8",
-        display:
-          isLoadingContact
-            ? "flex"
-            : "none",
+        display: "flex",
         justifyContent: "center",
         alignItems: "center",
         left: 0,

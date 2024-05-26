@@ -1,11 +1,14 @@
 import { http, httpGuard } from "@/lib/utils";
 
 import { UserLogin, UserRegister } from '@/Types/Auth.type';
+import axios from "axios";
 
 const Models = {
     signin: "auth/sign-in",
     signup: 'auth/sign-up',
-    getInfo: 'auth/reload'
+    getInfo: 'auth/reload',
+    forgotPassword: 'auth/forgot-password',
+    resetPassword: 'auth/reset-password'
 };
 
 export const loginUser = (body: UserLogin) => {
@@ -22,3 +25,21 @@ export const getInfo = (
         signal
     });
 
+
+export const postForgotPassword = (email: string) => {
+    return http.post<string>(`${Models.forgotPassword}`, email)
+}
+
+
+export const postChangePassword = async (token: string, newPassword: string) => {
+    const instance = axios.create({
+        baseURL: process.env.REACT_APP_API_URL, // URL của API
+        timeout: 10000,
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+    });
+
+    return instance.put(`${Models.resetPassword}`, newPassword);
+}
