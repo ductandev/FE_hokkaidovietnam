@@ -5,7 +5,8 @@ import { UserLogin, UserRegister } from '@/Types/Auth.type';
 const Models = {
     signin: "auth/sign-in",
     signup: 'auth/sign-up',
-    getInfo: 'auth/reload'
+    getInfo: 'auth/reload',
+    forgotPassword: 'auth/forgot-password'
 };
 
 export const loginUser = (body: UserLogin) => {
@@ -22,3 +23,7 @@ export const getInfo = (
         signal
     });
 
+
+export const postForgotPassword = (email: string) => {
+    return http.post<string>(`${Models.forgotPassword}`, email)
+}
