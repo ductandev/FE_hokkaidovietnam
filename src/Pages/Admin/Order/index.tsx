@@ -17,12 +17,13 @@ function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isVisibleAdd, setIsVisibleAdd] = useState(false);
-
+    const [isVisibleDetail, setIsVisibleDetail] = useState(false);
+    const [detialOfOrder, setDetailOfOrder] = useState({})
     const [queryFilter, setQueryFilter] = useState("?status=0");
 
+    const { editStatusOrder } = useOrder({ page, pageSize, queryFilter });
     const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
-    const { editStatusOrder } = useOrder({ page, pageSize, queryFilter });
 
     const Metrics = useMemo(() => {
         return [
@@ -53,6 +54,11 @@ function AdminOrder() {
         editStatusOrder.mutateAsync({
             id, status
         })
+    }
+
+    const handleClickDetail = (id: any) => {
+        setDetailOfOrder(id)
+        setIsVisibleDetail(true)
     }
 
     return (
@@ -92,6 +98,8 @@ function AdminOrder() {
                     }}
                     defaultValues={DEFAULT_ORDER_FILTER_FORM}
                 />
+
+
             </div>
 
             {isLoading ? <>
@@ -103,6 +111,7 @@ function AdminOrder() {
                     page={page}
                     pageSize={pageSize}
                     onChangeStatus={handleChangeStatusOrder}
+                    onHandleEdit={handleClickDetail}
                 />
             }
 
@@ -113,6 +122,17 @@ function AdminOrder() {
                 onChangePage={(page: number) => {
                     setPage(page)
                 }}
+            />
+
+            <DrawerDialog
+                isShowButton={false}
+                isVisible={isVisibleDetail}
+                onHandleToogleVisible={(visible: boolean) => {
+                    setIsVisibleDetail(visible)
+                }}
+                label="Chi tiết đơn hàng"
+                context='orderDetail'
+                defaultValues={detialOfOrder}
             />
         </div>
     )

@@ -73,6 +73,9 @@ export default function DataGrid(props: PropsType) {
                     onChangeStatus: (id: any, status: any) => {
                         onChangeStatus && onChangeStatus(id, status)
                     },
+                    onEdit: (id: any, order: any) => {
+                        onHandleEdit && onHandleEdit(id, order)
+                    },
                 }
             }
             else {

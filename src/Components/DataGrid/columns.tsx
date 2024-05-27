@@ -10,13 +10,14 @@ import Selection from "@/Components/Selection";
 
 export type Order = {
     index: number
+    don_hang_id: number
     ma_don_hang: string | number
     ten_khach_hang: string
     ngay_tao: string
     thanh_tien: number
-    thanh_toan: "cod" | "cash"
+    thanh_toan: 1 | 2
     trang_thai: "done" | "undeliver" | "cancel"
-    hanh_dong: any
+    onEdit: any
 };
 
 export const STATUS_ORDER = [
@@ -115,7 +116,9 @@ export const columnsOrder: ColumnDef<Order>[] = [
         header: "Hành động",
         cell: ({ row }) => {
             return <div className="flex items-center justify-start">
-                <span className="mr-4" >{svgEdit}</span>
+                <span className="mr-4" onClick={() => {
+                    row.original.onEdit(row.original.don_hang_id, row.original)
+                }}>{svgEdit}</span>
                 <span >{svgDelete}</span>
             </div>
         },
@@ -242,19 +245,6 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
         },
     },
 ];
-
-
-// "lien_he_id": 25,
-// "trang_thai_lien_he_id": 1,
-// "ho_ten": "Tấn",
-// "email": "admin@example.com",
-// "noi_dung": "TESSSSSSSSSSSSSSSSs",
-// "isDelete": false,
-// "TrangThaiLienHe": {
-//   "trang_thai_lien_he_id": 1,
-//   "ten_trang_thai_lien_he": "Chưa gọi",
-//   "isDelete": false
-// }
 
 export const columnsContact: ColumnDef<Customer>[] = [
     {

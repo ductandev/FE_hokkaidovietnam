@@ -29,6 +29,7 @@ import FormOrderFilter from "./Components/FormOrderFilter";
 
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import FormOrderDetail from "./Components/FormOrderDetail";
 
 interface IProps {
     isVisible: boolean;
@@ -38,7 +39,8 @@ interface IProps {
     context: string;
     onHandleSubmit?: any;
     defaultValues?: any;
-    validateSchema?: any
+    validateSchema?: any;
+    isShowButton?: boolean;
 }
 
 export function DrawerDialog(props: IProps) {
@@ -50,10 +52,16 @@ export function DrawerDialog(props: IProps) {
         onHandleSubmit,
         context,
         defaultValues,
-        validateSchema
-    } = props;
+        validateSchema,
+        isShowButton = true
+    }: any = props;
 
     const [open, setOpen] = React.useState(isVisible);
+
+    React.useEffect(() => {
+        setOpen(isVisible)
+    }, [isVisible])
+
 
     const isMobile = useMediaQuery("(max-width: 768px)");
 
@@ -73,6 +81,7 @@ export function DrawerDialog(props: IProps) {
         'product': <FormProduct {...formProps} errorsMgs={errorsMgs} />,
         'contact': <FormContact />,
         'orderFilter': <FormOrderFilter {...formProps} />,
+        "orderDetail": <FormOrderDetail id={defaultValues} />
     }
 
     const handleToogleVisible = (isOpen: boolean) => {
@@ -122,14 +131,15 @@ export function DrawerDialog(props: IProps) {
 
     return (
         <Drawer open={open} onOpenChange={handleToogleVisible} direction="right" >
-            <DrawerTrigger asChild>
+            {isShowButton && <DrawerTrigger asChild>
                 {
                     drawerTriggerEle ?
                         drawerTriggerEle : <Button>
                             {label}
                         </Button>
                 }
-            </DrawerTrigger>
+            </DrawerTrigger>}
+
 
             <DrawerContent className="h-[100vh] w-[30vw]" >
                 <DrawerHeader className="max-w-[300px] text-left">

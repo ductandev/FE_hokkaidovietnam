@@ -17,8 +17,12 @@ export const useAddress = () => {
     return JSONLocation.province
   }
 
-  const buildAddressFromId = () => {
-    return ""
+  const buildAddressFromId = (payload: any) => {
+    const phuong: any = getWard(payload.quan_id).find(y => y.id === payload.phuong_id)?.name || "chưa xác định";
+    const quan: any = getDistrict(payload.tinh_thanh_id).find(y => y.id === payload.tinh_thanh_id)?.name || "chưa xác định";
+    const thanhPho: any = getProvince().find(y => y.id === payload.tinh_thanh_id)?.name || "chưa xác định";
+
+    return payload.dia_chi + ", " + phuong + ", " + quan + ", " + thanhPho
   }
 
   return { getDistrict, getWard, getProvince, buildAddressFromId };

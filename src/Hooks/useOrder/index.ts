@@ -80,6 +80,8 @@ export const useOrder = ({ page, pageSize = DEFAULT_PAGE_SIZE, queryFilter = "" 
                 }
             };
             queryClient.setQueryData(key, existingOrders);
+
+            toast.success("Chỉnh sửa trạng thái thành công");
         }
     });
 
