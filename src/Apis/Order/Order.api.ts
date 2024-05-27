@@ -35,5 +35,8 @@ export const postOrder = (payload: OrderCreate) => {
     return http.post<OrderCreate>(`${Models.create}`, payload)
 }
 
+export const editStatus = (id: any, payload: any) => {
+    return httpGuard.patch<any>(`${Models.create}/${id}`, payload)
+}
 
 // export const getOrder = (orderID: number | string) => http.get<Order>(`${Models.item}/${orderID}`)

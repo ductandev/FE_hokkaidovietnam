@@ -7,7 +7,7 @@ import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
 import { ScrollArea } from '@/Components/ui/scroll-area';
 
-import { ORDER_STATUS } from '../constants';
+import { STATUS_ORDER } from '@/Components/DataGrid/columns';
 
 function FormOrderFilter(props: any) {
     const { control, errorsMgs, setValue, watch, reset } = props;
@@ -60,7 +60,13 @@ function FormOrderFilter(props: any) {
                             <Selection
                                 title="Trạng thái"
                                 placeholder="Chọn trạng thái cần tìm"
-                                options={ORDER_STATUS}
+                                options={[
+                                    {
+                                        value: 0,
+                                        label: "Tất cả trạng thái"
+                                    },
+                                    ...STATUS_ORDER
+                                ]}
                                 displayKey={"label"}
                                 onChanged={(_: any, value: any) => {
                                     field.onChange(parseInt(value));

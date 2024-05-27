@@ -1,5 +1,5 @@
 import { useMemo, useState } from "react";
-import { useOrderList, useOrderSummary } from "@/Hooks/useOrder";
+import { useOrder, useOrderList, useOrderSummary } from "@/Hooks/useOrder";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
@@ -17,9 +17,12 @@ function AdminOrder() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isVisibleAdd, setIsVisibleAdd] = useState(false);
+
     const [queryFilter, setQueryFilter] = useState("?status=0");
+
     const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
+    const { editStatusOrder } = useOrder({ page, pageSize, queryFilter });
 
     const Metrics = useMemo(() => {
         return [
@@ -45,6 +48,12 @@ function AdminOrder() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSummary]);
+
+    const handleChangeStatusOrder = (id: any, status: any) => {
+        editStatusOrder.mutateAsync({
+            id, status
+        })
+    }
 
     return (
         <div>
@@ -93,6 +102,7 @@ function AdminOrder() {
                     type={'order'}
                     page={page}
                     pageSize={pageSize}
+                    onChangeStatus={handleChangeStatusOrder}
                 />
             }
 

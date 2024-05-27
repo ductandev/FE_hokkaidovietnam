@@ -5,7 +5,8 @@ function PageSize(props: any) {
         defaultValue,
         options,
         onChange,
-        className } = props;
+        className
+    } = props;
 
     const reOptions = options.map((option: any) => {
         return {

@@ -127,3 +127,34 @@ export const urlencode = (str: any) => {
         .replace(/\*/g, "%2A")
         .replace(/%20/g, "+");
 };
+
+
+export const paymentTransform = (id: number) => {
+    const transform: any = {
+        1: "Chuyển khoản",
+        2: 'COD'
+    }
+
+    return transform[id] || "unknown"
+}
+
+
+export const badgeTagStatusTransform = (value: number, name: string) => {
+    const statusOrder: any = {
+        1: "outline",
+        2: 'info',
+        3: 'warning',
+        4: "success",
+        5: 'error',
+    };
+
+    switch (name) {
+        case 'trang_thai_don_hang_id':
+            return statusOrder[value];
+
+        default:
+            return "unknown"
+    }
+
+
+}
