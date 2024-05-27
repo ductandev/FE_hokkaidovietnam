@@ -21,7 +21,8 @@ type PropsType = {
     page: number;
     addon?: any;
     onHandleRemove?: Function;
-    onHandleEdit?: Function
+    onHandleEdit?: Function;
+    onChangeStatus?: Function;
 }
 
 export default function DataGrid(props: PropsType) {
@@ -32,7 +33,8 @@ export default function DataGrid(props: PropsType) {
         page,
         addon,
         onHandleRemove,
-        onHandleEdit
+        onHandleEdit,
+        onChangeStatus
     } = props;
 
     const [defaultDataTable, setDefaultDataTable] = useState(data);
@@ -63,7 +65,17 @@ export default function DataGrid(props: PropsType) {
                         onHandleRemove && onHandleRemove(id)
                     }
                 }
-            } else {
+            }
+            else if (type === 'order') {
+                return {
+                    ...object,
+                    index: position + paged,
+                    onChangeStatus: (id: any, status: any) => {
+                        onChangeStatus && onChangeStatus(id, status)
+                    },
+                }
+            }
+            else {
                 return {
                     ...object, index: position + paged
                 }

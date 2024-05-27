@@ -1,10 +1,12 @@
 "use client"
 
-import { formatCurrency, formatTime } from "@/Helper/helper"
+import { formatCurrency, formatTime, paymentTransform } from "@/Helper/helper"
 import { Customer } from "@/Types/Customer.type";
 import { News } from "@/Types/News.type";
 import { Product } from "@/Types/Product.type"
 import { ColumnDef } from "@tanstack/react-table"
+import { Badge } from "../ui/badge";
+import Selection from "@/Components/Selection";
 
 export type Order = {
     index: number
@@ -16,6 +18,29 @@ export type Order = {
     trang_thai: "done" | "undeliver" | "cancel"
     hanh_dong: any
 };
+
+export const STATUS_ORDER = [
+    {
+        label: "Chưa xác nhận",
+        value: 1
+    },
+    {
+        label: "Chưa giao",
+        value: 2
+    },
+    {
+        label: "Đang giao",
+        value: 3
+    },
+    {
+        label: "Hoàn thành",
+        value: 4
+    },
+    {
+        label: "Huỷ",
+        value: 5
+    }
+]
 
 export const columnsOrder: ColumnDef<Order>[] = [
     {
@@ -58,7 +83,9 @@ export const columnsOrder: ColumnDef<Order>[] = [
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
-                    {row.original.hinh_thuc_thanh_toan_id}
+                    <Badge variant="default">
+                        {paymentTransform(row.original.hinh_thuc_thanh_toan_id)}
+                    </Badge>
                 </span>
             </div>
         },
@@ -67,10 +94,19 @@ export const columnsOrder: ColumnDef<Order>[] = [
         accessorKey: "trang_thai_don_hang_id",
         header: "Trạng thái",
         cell: ({ row }: any) => {
-            return <div className="flex items-center justify-start">
-                <span>
-                    {row.original.trang_thai_don_hang_id}
-                </span>
+            return <div className="max-w-[140px] flex items-center justify-start">
+                <Selection
+                    type="tag"
+                    defaultValue={row.original.trang_thai_don_hang_id}
+                    options={STATUS_ORDER}
+                    valueKey="value"
+                    displayKey="label"
+                    name='trang_thai_don_hang_id'
+                    title='Trạng thái đơn hàng'
+                    onChanged={(_: any, value: any) => {
+                        row.original.onChangeStatus(row.original.don_hang_id, value)
+                    }}
+                />
             </div>
         },
     },

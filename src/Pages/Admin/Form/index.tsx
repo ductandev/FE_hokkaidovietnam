@@ -146,7 +146,7 @@ export function DrawerDialog(props: IProps) {
 
                 <DrawerFooter className="pt-2 w-full">
                     <DrawerClose asChild>
-                        <Button variant="outline">Huỷ bỏ</Button>
+                        <Button variant="outline">Đóng</Button>
                     </DrawerClose>
                 </DrawerFooter>
             </DrawerContent>

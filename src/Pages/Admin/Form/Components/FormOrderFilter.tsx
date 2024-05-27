@@ -1,20 +1,23 @@
 import { Controller } from 'react-hook-form';
+import { useAddress } from '@/Hooks/useAddress/useAddress';
+
 import { Input } from '@/Components/ui/input';
 import Selection from "@/Components/Selection";
-import { useAddress } from '@/Hooks/useAddress/useAddress';
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
-import { ORDER_STATUS } from '../constants';
+import { ScrollArea } from '@/Components/ui/scroll-area';
+
+import { STATUS_ORDER } from '@/Components/DataGrid/columns';
 
 function FormOrderFilter(props: any) {
-    const { control, errorsMgs, setValue, watch } = props;
+    const { control, errorsMgs, setValue, watch, reset } = props;
     const { getProvince, getDistrict, getWard }: any = useAddress();
 
     const watchDistrict = getDistrict(watch("tinh_thanh_id"));
     const watchWard = getWard(watch("quan_id"));
 
     return (
-        <div>
+        <ScrollArea className='h-[80vh]'>
             <div>
                 <div className='grid grid-cols-2'>
                     <Controller
@@ -57,7 +60,13 @@ function FormOrderFilter(props: any) {
                             <Selection
                                 title="Trạng thái"
                                 placeholder="Chọn trạng thái cần tìm"
-                                options={ORDER_STATUS}
+                                options={[
+                                    {
+                                        value: 0,
+                                        label: "Tất cả trạng thái"
+                                    },
+                                    ...STATUS_ORDER
+                                ]}
                                 displayKey={"label"}
                                 onChanged={(_: any, value: any) => {
                                     field.onChange(parseInt(value));
@@ -175,10 +184,21 @@ function FormOrderFilter(props: any) {
                 </div>
             </div>
 
-            <div className='mx-3 w-full my-5'>
+            <div className='mx-3 my-5'>
+                <Button
+                    type="button"
+                    variant='outline'
+                    className='my-4 w-full'
+                    onClick={() => {
+                        reset()
+                    }}
+                >
+                    Làm mới
+                </Button>
+
                 <Button type='submit' className='w-full'>Xác nhận</Button>
             </div>
-        </div>
+        </ScrollArea>
     )
 }
 

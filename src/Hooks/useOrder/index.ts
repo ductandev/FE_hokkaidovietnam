@@ -1,7 +1,8 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 // * Custom Apis
-import { getOrderSummary, getOrders } from "@/Apis/Order/Order.api";
+import { editStatus, getOrderSummary, getOrders } from "@/Apis/Order/Order.api";
+import { toast } from "react-toastify";
 
 type TypeListOrder = {
     page: string | number;
@@ -48,12 +49,40 @@ export const useOrderSummary = () => {
     return { isLoading, data: data?.data }
 }
 
-export const useOrder = () => {
-    const editOrder = () => { } // * Sửa đơn hàng
+export const useOrder = ({ page, pageSize = DEFAULT_PAGE_SIZE, queryFilter = "" }: TypeListOrder) => {
+    const queryClient = useQueryClient();
 
-    const deleteOrder = () => { } // * Xoá đơn hàng
+    // * Sửa trạng thái đơn hàng
+    const editStatusOrder = useMutation({
+        mutationFn: (body: any) => editStatus(body.id, {
+            trang_thai_don_hang_id: body.status
+        }),
+        onSuccess: (data) => {
+            const key = ['orders', `${page}_${pageSize}_${queryFilter}`];
+            const id = data?.data?.content?.don_hang_id;
+            const newData = data?.data?.content;
 
-    const addOrder = () => { } // * Thêm đơn hàng
+            let existingOrders: any = queryClient.getQueryData(key);
 
-    return { editOrder, deleteOrder, addOrder }
+            const updatedOrders = existingOrders?.data?.content?.map((item: any) => {
+                if (+item.don_hang_id === +id) {
+                    return newData;
+                } else {
+                    return item;
+                }
+            });
+
+            existingOrders = {
+                ...existingOrders,
+                data: {
+                    ...existingOrders.data,
+                    content: updatedOrders
+                }
+            };
+            queryClient.setQueryData(key, existingOrders);
+        }
+    });
+
+
+    return { editStatusOrder }
 }
