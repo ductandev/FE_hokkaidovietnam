@@ -9,6 +9,7 @@ const Models = {
     list: 'order/pagination',
     summary: "order/summary",
     create: 'order',
+    item: 'order'
 };
 
 export const getOrders = (
@@ -39,4 +40,10 @@ export const editStatus = (id: any, payload: any) => {
     return httpGuard.patch<any>(`${Models.create}/${id}`, payload)
 }
 
-// export const getOrder = (orderID: number | string) => http.get<Order>(`${Models.item}/${orderID}`)
+
+export const removeOrder = (id: any) => {
+    return httpGuard.delete<any>(`${Models.create}/${id}`)
+}
+
+
+export const getOrderDetail = (orderID: number | string) => httpGuard.get<any>(`${Models.item}/${orderID}`)

@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "react-query";
 
 // * Custom Apis
-import { editStatus, getOrderSummary, getOrders } from "@/Apis/Order/Order.api";
+import { editStatus, getOrderSummary, getOrders, removeOrder } from "@/Apis/Order/Order.api";
 import { toast } from "react-toastify";
 
 type TypeListOrder = {
@@ -80,9 +80,19 @@ export const useOrder = ({ page, pageSize = DEFAULT_PAGE_SIZE, queryFilter = "" 
                 }
             };
             queryClient.setQueryData(key, existingOrders);
+
+            toast.success("Chỉnh sửa trạng thái thành công");
+        }
+    });
+    const removeOrderMutation = useMutation({
+        mutationFn: (id: number | string) => removeOrder(id),
+        onSuccess: (_, id) => {
+            const key = ['orders', `${page}_${pageSize}_${queryFilter}`];
+
+            toast.success(`Xóa thành công đơn hàng với id là ${id}`);
+            queryClient.invalidateQueries({ queryKey: key, exact: true })
         }
     });
 
-
-    return { editStatusOrder }
+    return { editStatusOrder, removeOrderMutation }
 }
