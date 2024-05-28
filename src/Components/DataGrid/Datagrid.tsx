@@ -76,6 +76,9 @@ export default function DataGrid(props: PropsType) {
                     onEdit: (id: any, order: any) => {
                         onHandleEdit && onHandleEdit(id, order)
                     },
+                    onRemove: (id: any) => {
+                        onHandleRemove && onHandleRemove(id)
+                    }
                 }
             }
             else {

@@ -41,4 +41,9 @@ export const editStatus = (id: any, payload: any) => {
 }
 
 
+export const removeOrder = (id: any) => {
+    return httpGuard.delete<any>(`${Models.create}/${id}`)
+}
+
+
 export const getOrderDetail = (orderID: number | string) => httpGuard.get<any>(`${Models.item}/${orderID}`)

@@ -21,7 +21,7 @@ function AdminOrder() {
     const [detialOfOrder, setDetailOfOrder] = useState({})
     const [queryFilter, setQueryFilter] = useState("?status=0");
 
-    const { editStatusOrder } = useOrder({ page, pageSize, queryFilter });
+    const { editStatusOrder, removeOrderMutation } = useOrder({ page, pageSize, queryFilter });
     const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
 
@@ -61,6 +61,10 @@ function AdminOrder() {
         setIsVisibleDetail(true)
     }
 
+    const handleClickRemove = (id: any) => {
+        removeOrderMutation.mutate(id)
+    }
+
     return (
         <div>
             <div className="flex items-center">
@@ -98,8 +102,6 @@ function AdminOrder() {
                     }}
                     defaultValues={DEFAULT_ORDER_FILTER_FORM}
                 />
-
-
             </div>
 
             {isLoading ? <>
@@ -112,6 +114,7 @@ function AdminOrder() {
                     pageSize={pageSize}
                     onChangeStatus={handleChangeStatusOrder}
                     onHandleEdit={handleClickDetail}
+                    onHandleRemove={handleClickRemove}
                 />
             }
 

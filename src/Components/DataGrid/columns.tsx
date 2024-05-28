@@ -17,7 +17,8 @@ export type Order = {
     thanh_tien: number
     thanh_toan: 1 | 2
     trang_thai: "done" | "undeliver" | "cancel"
-    onEdit: any
+    onEdit: any;
+    onRemove: any
 };
 
 export const STATUS_ORDER = [
@@ -119,7 +120,9 @@ export const columnsOrder: ColumnDef<Order>[] = [
                 <span className="mr-4" onClick={() => {
                     row.original.onEdit(row.original.don_hang_id, row.original)
                 }}>{svgEdit}</span>
-                <span >{svgDelete}</span>
+                <span onClick={() => {
+                    row.original.onRemove(row.original.don_hang_id)
+                }}>{svgDelete}</span>
             </div>
         },
     },
