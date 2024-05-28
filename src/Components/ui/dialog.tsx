@@ -21,7 +21,7 @@ const DialogOverlay = React.forwardRef<
   <DialogPrimitive.Overlay
     ref={ref}
     className={cn(
-      "fixed inset-0 z-10 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
+      "fixed inset-0 z-50 bg-black/80 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0",
       className
     )}
     {...props}
@@ -31,16 +31,16 @@ DialogOverlay.displayName = DialogPrimitive.Overlay.displayName
 
 // * container style
 const configSizeContent = {
-  width: "w-[90vw] sm:w-[70vw] md:w-[820px]",
+  width: "w-[90vw] lg:w-[70vw] xl:w-[58vw]",
   height: "",
-  boxSizing: "p-0 md:p-6 "
+  boxSizing: "p-0 md:px-6 md:pt-6 "
 };
 
 // * body style
 const configSizeDescription = {
-  width: "max-h-[70vh] md:max-h-full",
+  width: "max-h-[70vh] md:max-h-[89vh]",
   height: "",
-  boxSizing: "p-6 md-p-0 "
+  boxSizing: "px-6 md-p-0 "
 };
 
 const DialogContent = React.forwardRef<

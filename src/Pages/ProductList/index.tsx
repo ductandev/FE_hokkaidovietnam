@@ -94,7 +94,7 @@ export default function Products() {
     });
 
     const renderXMLBody = () => {
-        return <div className="grid grid-cols-1 md:grid-cols-2 mt-12">
+        return <div className="grid grid-cols-1 md:grid-cols-2 mt-12 sm:mt-0">
             <div>
                 <ImageGallery
                     slides={detailProduct?.hinh_anh || []}
