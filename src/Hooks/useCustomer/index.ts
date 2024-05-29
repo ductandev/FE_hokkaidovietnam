@@ -1,7 +1,8 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 // * Custom Apis
-import { getCustomerSummary, getCustomers } from "@/Apis/Customer/Customer.api";
+import { getCustomerSummary, getCustomers, removeCustomer } from "@/Apis/Customer/Customer.api";
+import { toast } from "react-toastify";
 
 type TypeListCustomer = {
     page: string | number;
@@ -50,10 +51,24 @@ export const useCustomerSummary = () => {
 }
 
 
-export const useCustomer = () => {
-    const editCustomer = () => { } // * Sửa đơn hàng
-    const deleteCustomer = () => { } // * Xoá đơn hàng
-    const addCustomer = () => { } // * Thêm đơn hàng
+export const useCustomer = ({ page, search, pageSize }: any) => {
+    const queryClient = useQueryClient();
 
-    return { editCustomer, deleteCustomer, addCustomer }
+    const removeCustomerMutation = useMutation({
+        mutationFn: (id: number | string) => removeCustomer(id),
+        onSuccess: (_, id) => {
+            const key = ['customer', `${page}_${search}_${pageSize}`];
+
+            toast.success(`Xóa thành công khách hàng với id là ${id}`);
+
+            queryClient.invalidateQueries({ queryKey: key, exact: true })
+        }
+    });
+
+    const remove = (id: string | number) => {
+        removeCustomerMutation.mutate(id)
+    };
+
+
+    return { remove }
 }
