@@ -1,0 +1,246 @@
+{
+    "message": "Thành công !",
+    "statusCode": 200,
+    "content": {
+        "nguoi_dung_id": 3,
+        "vai_tro_id": 2,
+        "ho_ten": "Mạnh Đạt",
+        "mat_khau": "$2b$10$OtmKKsc9SgWdwV1oCUPJNuPvNYpbdBFn7LV8G5oMt8hm144R5gzfy",
+        "dia_chi": "78 Hà Đông",
+        "phuong_id": "27028",
+        "quan_id": "767",
+        "so_dien_thoai": "0987654321",
+        "anh_dai_dien": "user.jpg",
+        "gioi_tinh": "nam",
+        "DonHang": [
+            {
+                "don_hang_id": 1,
+                "ho_ten": "Mạnh Đạt",
+                "so_dien_thoai": "0987654321",
+                "giao_dia_chi_khac": false,
+                "ghi_chu": "asdwqasdzxczcvbsadgfsdf",
+                "hinh_thuc_thanh_toan_id": 2,
+                "san_pham": [
+                    {
+                        "don_gia": 50000,
+                        "so_luong": 15,
+                        "san_pham_id": 3
+                    },
+                    {
+                        "don_gia": 27000,
+                        "so_luong": 8,
+                        "san_pham_id": 1
+                    },
+                    {
+                        "don_gia": 50000,
+                        "so_luong": 1,
+                        "san_pham_id": 2
+                    },
+                    {
+                        "don_gia": 50000,
+                        "so_luong": 1,
+                        "san_pham_id": 6
+                    }
+                ],
+                "tong_tien": 1066000,
+                "ma_giam_gia": "",
+                "thoi_gian_dat_hang": "2024-05-16T16:08:52.000Z",
+                "trang_thai_don_hang_id": 4,
+                "ChiTietDonHang": [
+                    {
+                        "id": 1,
+                        "don_hang_id": 1,
+                        "san_pham_id": 3,
+                        "so_luong": 15,
+                        "don_gia": 50000,
+                        "SanPham": {
+                            "san_pham_id": 3,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa chua vị táo 200ml",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 50000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    },
+                    {
+                        "id": 2,
+                        "don_hang_id": 1,
+                        "san_pham_id": 1,
+                        "so_luong": 8,
+                        "don_gia": 27000,
+                        "SanPham": {
+                            "san_pham_id": 1,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa tươi nguyên chất 1L",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 27000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    },
+                    {
+                        "id": 3,
+                        "don_hang_id": 1,
+                        "san_pham_id": 2,
+                        "so_luong": 1,
+                        "don_gia": 50000,
+                        "SanPham": {
+                            "san_pham_id": 2,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa chua vị quýt 200ml",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 50000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    },
+                    {
+                        "id": 4,
+                        "don_hang_id": 1,
+                        "san_pham_id": 6,
+                        "so_luong": 1,
+                        "don_gia": 50000,
+                        "SanPham": {
+                            "san_pham_id": 6,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa tươi vị Dâu 200ml",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 50000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    }
+                ]
+            },
+            {
+                "don_hang_id": 2,
+                "ho_ten": "Mạnh Đạt",
+                "so_dien_thoai": "0987654321",
+                "dia_chi": "ewqe asdm ",
+                "phuong_id": "03079",
+                "quan_id": "089",
+                "giao_dia_chi_khac": false,
+                "ghi_chu": "asdwqasdzxczcvbsadgfsdf",
+                "hinh_thuc_thanh_toan_id": 2,
+                "san_pham": [
+                    {
+                        "don_gia": 50000,
+                        "so_luong": 15,
+                        "san_pham_id": 3
+                    },
+                    {
+                        "don_gia": 27000,
+                        "so_luong": 8,
+                        "san_pham_id": 1
+                    },
+                    {
+                        "don_gia": 50000,
+                        "so_luong": 1,
+                        "san_pham_id": 2
+                    },
+                    {
+                        "don_gia": 50000,
+                        "so_luong": 1,
+                        "san_pham_id": 6
+                    }
+                ],
+                "tong_tien": 1066000,
+                "ma_giam_gia": "",
+                "thoi_gian_dat_hang": "2024-05-16T16:21:19.000Z",
+                "trang_thai_don_hang_id": 4,
+                "ChiTietDonHang": [
+                    {
+                        "id": 5,
+                        "don_hang_id": 2,
+                        "san_pham_id": 3,
+                        "so_luong": 15,
+                        "don_gia": 50000,
+                        "SanPham": {
+                            "san_pham_id": 3,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa chua vị táo 200ml",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 50000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    },
+                    {
+                        "id": 6,
+                        "don_hang_id": 2,
+                        "san_pham_id": 1,
+                        "so_luong": 8,
+                        "don_gia": 27000,
+                        "SanPham": {
+                            "san_pham_id": 1,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa tươi nguyên chất 1L",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 27000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    },
+                    {
+                        "id": 7,
+                        "don_hang_id": 2,
+                        "san_pham_id": 2,
+                        "so_luong": 1,
+                        "don_gia": 50000,
+                        "SanPham": {
+                            "san_pham_id": 2,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa chua vị quýt 200ml",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 50000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    },
+                    {
+                        "id": 8,
+                        "don_hang_id": 2,
+                        "san_pham_id": 6,
+                        "so_luong": 1,
+                        "don_gia": 50000,
+                        "SanPham": {
+                            "san_pham_id": 6,
+                            "loai_san_pham_id": 1,
+                            "ten_san_pham": "Sữa tươi vị Dâu 200ml",
+                            "hinh_anh": [
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917822/dm9ohch92ekgfwlbkzlo.jpg",
+                                "http://res.cloudinary.com/dodirc71p/image/upload/v1714917840/q2vdrjrffvw9ct0jbb3g.jpg"
+                            ],
+                            "gia_ban": 50000,
+                            "gia_giam": 0,
+                            "don_vi_tinh": null
+                        }
+                    }
+                ]
+            }
+        ]
+    },
+    "date": "2024-05-29T14:20:09.115Z"
+}

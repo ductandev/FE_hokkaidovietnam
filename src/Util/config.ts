@@ -3,7 +3,7 @@ import axios from "axios";
 //setup hằng số
 export const DOMAIN = "http://hokkaido.ductandev.io.vn";
 export const TOKEN = "accessToken";
-export const USER_LOGIN = "userLogin";
+export const USER_LOGIN = "hk_tk_access";
 
 export const { getStoreJson, setStoreJson, getStore, setStore, clearStorage } = {
   getStoreJson: (name: string): any => {
@@ -53,8 +53,8 @@ httpNonAuth.interceptors.request.use(
 http.interceptors.request.use(
   (config: any) => {
     config.headers = { ...config.headers };
-    let token = getStoreJson(USER_LOGIN)?.token;
-    config.headers.token = `${token}`;
+    let token = getStore(USER_LOGIN);
+    config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   (err: any) => {
@@ -73,7 +73,7 @@ http.interceptors.response.use(
     console.log(err.response?.status);
 
     if (err.response?.status === 401) {
-      alert("Đăng nhập để vào trang này !");
+      // alert("Đăng nhập để vào trang này !");
 
       return Promise.reject(err);
     }
