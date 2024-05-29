@@ -5,6 +5,9 @@ export interface Customer {
     dia_chi: string
     so_dien_thoai: string
     gioi_tinh: string
+    onRemove?: any
+    nguoi_dung_id: string | number
+    onEdit?: any
 }
 
 export type Customers = Array<Customer>

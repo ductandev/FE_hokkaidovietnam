@@ -111,6 +111,10 @@ const router = createBrowserRouter([
         element: <AdminOrder />
       },
       {
+        path: "order/:id",
+        element: <AdminOrder />
+      },
+      {
         path: "customer",
         element: <AdminCustomer />
       },

@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useOrder, useOrderList, useOrderSummary } from "@/Hooks/useOrder";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
@@ -12,18 +12,28 @@ import { BsBoxSeam } from "react-icons/bs";
 import { DrawerDialog } from "../Form";
 import { DEFAULT_ORDER_FILTER_FORM } from "../Form/constants";
 import { buildQueryString } from "@/Helper/helper";
+import { useParams } from "react-router-dom";
 
 function AdminOrder() {
+    const { id }: any = useParams();
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [isVisibleAdd, setIsVisibleAdd] = useState(false);
     const [isVisibleDetail, setIsVisibleDetail] = useState(false);
-    const [detialOfOrder, setDetailOfOrder] = useState({})
+    const [detialOfOrder, setDetailOfOrder] = useState(0)
     const [queryFilter, setQueryFilter] = useState("?status=0");
 
     const { editStatusOrder, removeOrderMutation } = useOrder({ page, pageSize, queryFilter });
     const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
+
+    useEffect(() => {
+        if (id) {
+            setIsVisibleDetail(true);
+            setDetailOfOrder(id)
+        }
+    }, [id])
+
 
     const Metrics = useMemo(() => {
         return [
@@ -133,7 +143,7 @@ function AdminOrder() {
                 onHandleToogleVisible={(visible: boolean) => {
                     setIsVisibleDetail(visible)
                 }}
-                label="Chi tiết đơn hàng"
+                label={`Chi tiết đơn hàng #${detialOfOrder}`}
                 context='orderDetail'
                 defaultValues={detialOfOrder}
             />
