@@ -9,7 +9,8 @@ import {
   CartPage,
   MediaPage,
   ForgotPasswordPage,
-  CheckoutPage
+  CheckoutPage,
+  HistoryOrderPage
   // ProfilePage,
   // SearchPage
 } from "../Pages";
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
       {
         path: "/checkout",
         element: <CheckoutPage />,
+      },
+      {
+        path: "/history",
+        element: <HistoryOrderPage />,
       },
     ],
   },

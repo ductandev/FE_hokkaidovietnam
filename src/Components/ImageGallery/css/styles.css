@@ -32,6 +32,34 @@
      object-fit: cover;
 }
 
+@media screen and (max-width: 768px) {
+  .imageGallery {
+    max-width: 80%;
+    height: 40vh;
+  }
+  .imageGallery img {
+    height: 40vh;
+    max-width: 100%;
+    -o-object-fit: cover;
+       object-fit: cover;
+  }
+  .imageGallery__slide {
+    max-height: 40vh;
+  }
+  .imageGallery__button {
+    display: none !important;
+  }
+  .imageGallery.imageGallery_detail {
+    max-width: 90%;
+    height: calc(60vh + 250px);
+  }
+  .imageGallery.imageGallery_detail .imageGallery__slide {
+    max-height: 60vh !important;
+  }
+  .imageGallery.imageGallery_detail .imageGallery__slide img {
+    height: 60vh;
+  }
+}
 .imageGallery-thumbs {
   --thumbs-slide-spacing: 10px;
   --thumbs-slide-height: 180px;

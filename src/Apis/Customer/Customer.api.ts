@@ -4,6 +4,7 @@ import { httpGuard } from "@/lib/utils"
 const Models = {
     list: 'user/pagination',
     summary: 'user/summary',
+    detail: 'user'
 };
 
 export const getCustomers = (
@@ -27,3 +28,7 @@ export const getCustomerSummary = (
         signal
     });
 
+
+export const getCustomerDetail = (id: any) => {
+    return httpGuard.get<any>(`${Models.detail}/${id}`)
+}
