@@ -1,6 +1,8 @@
 import * as React from "react"
 
 import useMediaQuery from "@/Hooks/useMediaQuery";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Button } from "@/Components/ui/button"
 import {
@@ -23,13 +25,13 @@ import {
     DrawerTrigger,
 } from "@/Components/ui/drawer";
 
+// ! Form Handler
 import FormProduct from "./Components/FormProduct"
 import FormContact from "./Components/FormContact"
 import FormOrderFilter from "./Components/FormOrderFilter";
-
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 import FormOrderDetail from "./Components/FormOrderDetail";
+import { FormCustomerDetail } from "./Components/FormCustomerDetail";
+
 
 interface IProps {
     isVisible: boolean;
@@ -81,7 +83,8 @@ export function DrawerDialog(props: IProps) {
         'product': <FormProduct {...formProps} errorsMgs={errorsMgs} />,
         'contact': <FormContact />,
         'orderFilter': <FormOrderFilter {...formProps} />,
-        "orderDetail": <FormOrderDetail id={defaultValues} />
+        "orderDetail": <FormOrderDetail id={defaultValues} />,
+        "customerDetail": <FormCustomerDetail id={defaultValues} />,
     }
 
     const handleToogleVisible = (isOpen: boolean) => {
@@ -130,7 +133,11 @@ export function DrawerDialog(props: IProps) {
     };
 
     return (
-        <Drawer open={open} onOpenChange={handleToogleVisible} direction="right" >
+        <Drawer
+            open={open}
+            onOpenChange={handleToogleVisible}
+            direction="right"
+        >
             {isShowButton && <DrawerTrigger asChild>
                 {
                     drawerTriggerEle ?

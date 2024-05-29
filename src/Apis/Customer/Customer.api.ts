@@ -4,6 +4,8 @@ import { httpGuard } from "@/lib/utils"
 const Models = {
     list: 'user/pagination',
     summary: 'user/summary',
+    remove: "user",
+    detail: "user"
 };
 
 export const getCustomers = (
@@ -27,3 +29,11 @@ export const getCustomerSummary = (
         signal
     });
 
+
+export const removeCustomer = (id: string | number) => {
+    return httpGuard.delete<any>(`${Models.remove}/${id}`)
+}
+
+export const getCustomerDetail = (id: string | number) => {
+    return httpGuard.get<any>(`${Models.detail}/${id}`)
+}

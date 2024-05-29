@@ -5,6 +5,7 @@ import { DataTable } from "./data-table";
 import ProductStatus from "../ProductStatus";
 
 import { ProductType } from "@/Types/ProductType.type";
+import { useAddress } from "@/Hooks/useAddress/useAddress";
 
 enum EnumTableDefine {
     product = 'product',
@@ -36,6 +37,8 @@ export default function DataGrid(props: PropsType) {
         onHandleEdit,
         onChangeStatus
     } = props;
+
+    const { buildAddressFromId } = useAddress();
 
     const [defaultDataTable, setDefaultDataTable] = useState(data);
 
@@ -80,8 +83,24 @@ export default function DataGrid(props: PropsType) {
                         onHandleRemove && onHandleRemove(id)
                     }
                 }
-            }
-            else {
+            } else if (type === "customer") {
+                return {
+                    ...object,
+                    index: position + paged,
+                    address: buildAddressFromId({
+                        dia_chi: object.dia_chi,
+                        phuong_id: object.phuong_id,
+                        quan_id: object.quan_id,
+                        tinh_thanh_id: object.tinh_thanh_id,
+                    }),
+                    onRemove: (id: any) => {
+                        onHandleRemove && onHandleRemove(id)
+                    },
+                    onEdit: (id: any) => {
+                        onHandleEdit && onHandleEdit(id)
+                    }
+                }
+            } else {
                 return {
                     ...object, index: position + paged
                 }
@@ -93,7 +112,6 @@ export default function DataGrid(props: PropsType) {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [data, page, pageSize]);
-
 
     const deferredValue = useDeferredValue(defaultDataTable);
 

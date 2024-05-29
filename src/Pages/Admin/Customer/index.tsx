@@ -8,20 +8,26 @@ import { Input } from "@/Components/ui/input"
 
 import { FaRegUser } from "react-icons/fa";
 import useDebouncedCallback from "@/Hooks/useDebounceCallback";
-import { useCustomerList, useCustomerSummary } from "@/Hooks/useCustomer";
+import { useCustomer, useCustomerList, useCustomerSummary } from "@/Hooks/useCustomer";
 import DataGrid from "@/Components/DataGrid/Datagrid";
+import { DrawerDialog } from "../Form";
 
 function AdminCustomer() {
     const [page, setPage] = useState(1);
     const [pageSize, setPageSize] = useState(10);
     const [search, setSearch] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
+    const [isVisibleDetail, setIsVisibleDetail] = useState(false);
+    const [detail, setDetail] = useState({});
 
     const {
         isLoading,
         data
     } = useCustomerList({ page, pageSize, search: debouncedValue });
     const { isLoading: isLoadingSummary, data: dataSummary } = useCustomerSummary();
+
+    const { remove } = useCustomer({ page, pageSize, search: debouncedValue });
+
 
     const Metrics = useMemo(() => {
         return [
@@ -39,6 +45,11 @@ function AdminCustomer() {
         setPage(1);
         setDebouncedValue(value);
     };
+
+    const handleClickDetail = (id: any) => {
+        setDetail(id)
+        setIsVisibleDetail(true)
+    }
 
     const [debouncedCallback] = useDebouncedCallback(handleChangeDebounced, 500, [search]);
 
@@ -86,9 +97,10 @@ function AdminCustomer() {
                     type={'customer'}
                     page={page}
                     pageSize={pageSize}
+                    onHandleRemove={remove}
+                    onHandleEdit={handleClickDetail}
                 />
             }
-
 
             <HPagination
                 total={data?.total || 0}
@@ -97,6 +109,18 @@ function AdminCustomer() {
                 onChangePage={(page: number) => {
                     setPage(page)
                 }}
+            />
+
+
+            <DrawerDialog
+                isShowButton={false}
+                isVisible={isVisibleDetail}
+                onHandleToogleVisible={(visible: boolean) => {
+                    setIsVisibleDetail(visible)
+                }}
+                label="Chi tiết khách hàng"
+                context='customerDetail'
+                defaultValues={detail}
             />
         </div>
     )

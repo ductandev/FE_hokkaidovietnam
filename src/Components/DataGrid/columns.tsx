@@ -228,6 +228,13 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
     {
         accessorKey: "dia_chi",
         header: "Địa chỉ",
+        cell: ({ row }: any) => {
+            return <div className="flex items-center justify-start">
+                <span >
+                    {row?.original?.address}
+                </span>
+            </div>
+        },
     },
     {
         accessorKey: "email",
@@ -242,8 +249,15 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
         header: "Hành động",
         cell: ({ row }) => {
             return <div className="flex items-center justify-start">
-                <span className="mr-4" >{svgEdit}</span>
-                <span >{svgDelete}</span>
+                <span className="mr-4"
+                    onClick={() => {
+                        row.original.onEdit(row.original.nguoi_dung_id)
+                    }}
+                >{svgEdit}</span>
+
+                <span onClick={() => {
+                    row.original.onRemove(row.original.nguoi_dung_id)
+                }}>{svgDelete}</span>
             </div>
         },
     },
