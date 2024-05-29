@@ -9,6 +9,7 @@ import SearchPage from "./Search";
 import CheckoutPage from "./Checkout"
 import MediaPage from "./Media";
 import ForgotPasswordPage from "./ForgotPassword";
+import HistoryOrderPage from "./HistoryOrder"
 
 export {
     BrandPage,
@@ -22,4 +23,5 @@ export {
     CheckoutPage,
     MediaPage,
     ForgotPasswordPage,
+    HistoryOrderPage,
 }

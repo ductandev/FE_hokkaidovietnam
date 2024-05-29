@@ -162,7 +162,9 @@ export default function Header() {
               {isAdmin && <DropdownMenuItem onClick={() => {
                 navigate('/admin/customer')
               }}>Vào admin</DropdownMenuItem>}
-              <DropdownMenuItem>Xem đơn hàng</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                navigate('/history')
+              }}>Xem đơn hàng</DropdownMenuItem>
               <DropdownMenuItem>Đổi mật khẩu</DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => {
