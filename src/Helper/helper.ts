@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-escape */
 import { useCartStorage } from "@/Hooks/useCartStorage";
 import { Product } from "@/Types/Product.type";
 
@@ -155,6 +156,19 @@ export const badgeTagStatusTransform = (value: number, name: string) => {
         default:
             return "unknown"
     }
+}
 
+export function getNestedError(name: string, errors: Record<string, any>) {
+    const nameParts = name.split(/[\[\].]+/).filter(Boolean);
 
+    let currentError = errors;
+
+    for (let part of nameParts) {
+        if (typeof currentError !== "object" || !currentError[part]) {
+            return null;
+        }
+        currentError = currentError[part];
+    }
+
+    return currentError.message ?? "";
 }

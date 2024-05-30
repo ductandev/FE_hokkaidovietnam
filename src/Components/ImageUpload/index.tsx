@@ -1,6 +1,9 @@
 "use client";
 
 import axios, { AxiosProgressEvent, CancelTokenSource } from "axios";
+import { useCallback, useState } from "react";
+import { useDropzone } from "react-dropzone";
+
 import {
     AudioWaveform,
     File,
@@ -10,11 +13,9 @@ import {
     Video,
     X,
 } from "lucide-react";
-import { useCallback, useEffect, useState } from "react";
-import { useDropzone } from "react-dropzone";
-import { Input } from "../ui/input";
 import { ScrollArea } from "../ui/scroll-area";
-// import { Progress } from "../ui/progress";
+import { Input } from "../ui/input";
+
 
 interface FileUploadProgress {
     progress: number;
@@ -56,15 +57,10 @@ const OtherColor = {
 };
 
 export default function ImageUpload(props: any) {
-    const { onChange, value } = props;
-    const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
+    const { watch, name, setValue } = props;
     const [filesToUpload, setFilesToUpload] = useState<FileUploadProgress[]>([]);
-    const [defaultImage, setDefaultImage] = useState(value);
-
-    useEffect(() => {
-        setDefaultImage(value)
-    }, [value])
-
+    const [isLoadingUpload, setIsLoadingUpload] = useState(false);
+    const watchImagesUploaded = watch(name);
 
     const getFileIconAndColor = (file: File) => {
         if (file.type.includes(FileTypes.Image)) {
@@ -113,11 +109,7 @@ export default function ImageUpload(props: any) {
         );
 
         if (progress === 100) {
-            setUploadedFiles((prevUploadedFiles) => {
-                onChange && onChange([...prevUploadedFiles, file])
-                return [...prevUploadedFiles, file];
-            });
-
+            // ! When process done remove files from file upload
             setFilesToUpload((prevUploadProgress) => {
                 return prevUploadProgress.filter((item) => item.File !== file);
             });
@@ -159,21 +151,19 @@ export default function ImageUpload(props: any) {
         setFilesToUpload((prevUploadProgress) => {
             return prevUploadProgress.filter((item) => item.File !== file);
         });
-
-        setUploadedFiles((prevUploadedFiles) => {
-            return prevUploadedFiles.filter((item) => item !== file);
-        });
-
-        let prevUploadedFiles = [...defaultImage];
-
-        prevUploadedFiles.splice(id, 1);
-        console.log({
-            prevUploadedFiles
-        })
-        onChange && onChange(prevUploadedFiles);
     };
 
+    const removeUrl = (position: number) => {
+        let prevUploadedFiles = [...watchImagesUploaded];
+
+        prevUploadedFiles.splice(position, 1);
+
+        setValue(name, prevUploadedFiles)
+    }
+
     const onDrop = useCallback(async (acceptedFiles: File[]) => {
+        setIsLoadingUpload(true);
+
         setFilesToUpload((prevUploadProgress) => {
             return [
                 ...prevUploadProgress,
@@ -198,6 +188,7 @@ export default function ImageUpload(props: any) {
             );
 
             const cancelSource = axios.CancelToken.source();
+
             return uploadImageToCloudinary(
                 formData,
                 (progressEvent) => onUploadProgress(progressEvent, file, cancelSource),
@@ -209,10 +200,12 @@ export default function ImageUpload(props: any) {
             const getAllPromiseRespone = await Promise.all(fileUploadBatch);
 
             let url = await getAllPromiseRespone.map((y: any) => y.data.url);
-            const defaultUrl = [...defaultImage];
 
-            onChange && onChange(defaultUrl.concat(url));
-            alert("Upload hình ảnh thành công");
+            setIsLoadingUpload(false);
+
+            const newList = [...watchImagesUploaded, ...url];
+
+            setValue(name, newList)
         } catch (error) {
             console.error("Error uploading files: ", error);
         }
@@ -308,43 +301,41 @@ export default function ImageUpload(props: any) {
                 </div>
             )}
 
-            {uploadedFiles.length > 0 && (
-                <div>
-                    <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
-                        Files đã upload
-                    </p>
-                    <div className="space-y-2 pr-3">
-                        {uploadedFiles.map((file, idx) => {
-                            return (
-                                <div
-                                    key={idx}
-                                    className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group hover:pr-0 pr-2 hover:border-slate-300 transition-all"
-                                >
-                                    <div className="flex items-center flex-1 p-2">
-                                        <div className="text-white">
-                                            {getFileIconAndColor(file).icon}
-                                        </div>
-                                        <div className="w-full ml-2 space-y-1">
-                                            <div className="text-sm flex justify-between">
-                                                <p className="text-muted-foreground ">
-                                                    {file.name.slice(0, 25)}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <button
-                                        onClick={() => removeFile(file, idx)}
-                                        className="bg-red-500 text-white transition-all items-center justify-center px-2 hidden group-hover:flex"
-                                        type="button"
+
+            {isLoadingUpload ? <p>Đang tải</p> : <>
+                {watchImagesUploaded.length > 0 && (
+                    <div>
+                        <p className="font-medium my-2 mt-6 text-muted-foreground text-sm">
+                            Files đã upload
+                        </p>
+                        <div className="space-y-2 pr-3">
+                            {watchImagesUploaded.map((url: any, idx: any) => {
+                                return (
+                                    <div
+                                        key={idx}
+                                        className="flex justify-between gap-2 rounded-lg overflow-hidden border border-slate-100 group hover:pr-0 pr-2 hover:border-slate-300 transition-all"
                                     >
-                                        <X size={20} />
-                                    </button>
-                                </div>
-                            );
-                        })}
+                                        <div className="flex items-center flex-1 p-2">
+                                            <img src={url} alt={url} style={{
+                                                maxWidth: "70px",
+                                                height: "70px"
+                                            }} />
+                                        </div>
+
+                                        <button
+                                            onClick={() => removeUrl(idx)}
+                                            className="bg-red-500 text-white transition-all items-center justify-center px-2 hidden group-hover:flex"
+                                            type="button"
+                                        >
+                                            <X size={20} />
+                                        </button>
+                                    </div>
+                                );
+                            })}
+                        </div>
                     </div>
-                </div>
-            )}
+                )}
+            </>}
         </div>
     );
 }

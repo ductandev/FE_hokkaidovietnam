@@ -1,4 +1,5 @@
 import * as React from "react"
+import { useEffect } from "react";
 
 import useMediaQuery from "@/Hooks/useMediaQuery";
 import { useForm } from "react-hook-form";
@@ -31,7 +32,6 @@ import FormContact from "./Components/FormContact"
 import FormOrderFilter from "./Components/FormOrderFilter";
 import FormOrderDetail from "./Components/FormOrderDetail";
 import { FormCustomerDetail } from "./Components/FormCustomerDetail";
-
 
 interface IProps {
     isVisible: boolean;
@@ -70,12 +70,19 @@ export function DrawerDialog(props: IProps) {
     const {
         handleSubmit,
         formState: { errors },
+        reset,
+        clearErrors,
         ...formProps
     } = useForm<any>({
         mode: "onChange",
         defaultValues,
         ...(validateSchema && { resolver: yupResolver(validateSchema), })
     });
+
+    useEffect(() => {
+        reset(defaultValues);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [defaultValues]);
 
     const errorsMgs: any = errors;
 
@@ -123,8 +130,16 @@ export function DrawerDialog(props: IProps) {
         let dataBuild = { ...values };
 
         if (context === 'product') {
-            dataBuild['gia_ban'] = parseInt(dataBuild.gia_ban);
-            dataBuild['gia_giam'] = parseInt(dataBuild.gia_giam);
+            dataBuild = {
+                gia_ban: parseInt(dataBuild.gia_ban),
+                gia_giam: parseInt(dataBuild.gia_giam),
+                hinh_anh: dataBuild.hinh_anh,
+                loai_san_pham_id: dataBuild.loai_san_pham_id,
+                mo_ta: dataBuild.mo_ta,
+                so_luong_trong_kho: dataBuild.so_luong_trong_kho,
+                thong_tin_chi_tiet: dataBuild.thong_tin_chi_tiet,
+                ten_san_pham: dataBuild.ten_san_pham
+            }
         }
 
         onHandleSubmit && onHandleSubmit(dataBuild)

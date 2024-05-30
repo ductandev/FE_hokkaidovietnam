@@ -193,7 +193,9 @@ export const columnsProduct: ColumnDef<Product>[] = [
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4"
-                // onClick={row.original.onEdit}
+                    onClick={() => {
+                        row.original.onEdit(row.original.san_pham_id, row.original)
+                    }}
                 >{svgEdit}</span>
                 <span
                     onClick={() => {
