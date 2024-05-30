@@ -10,10 +10,10 @@ import ImageUpload from '@/Components/ImageUpload';
 import { ScrollArea } from '@/Components/ui/scroll-area';
 
 import { getProductTypes } from '@/Apis/Product/ProductType.api';
-import { isEmpty, isNumberKey, isNumberMobile } from '@/Helper/helper';
+import { getNestedError, isEmpty, isNumberKey, isNumberMobile } from '@/Helper/helper';
 
 function FormProduct(props: any) {
-    const { control, errorsMgs } = props;
+    const { control, errorsMgs, watch, setValue } = props;
 
     const { isLoading, data: productType }: any = useQuery({
         queryKey: ['productType'],
@@ -29,7 +29,8 @@ function FormProduct(props: any) {
         retry: 0
     });
 
-    const productTypeDeffered = useDeferredValue(productType?.data?.content)
+
+    const productTypeDeffered = useDeferredValue(productType?.data?.content);
 
     return (
         <ScrollArea className="h-[76vh]">
@@ -41,7 +42,7 @@ function FormProduct(props: any) {
                         <Input
                             {...field}
                             placeholder='Nhập tên sản phẩm'
-                            error={errorsMgs?.ten_san_pham?.message || ""}
+                            error={getNestedError(field.name, errorsMgs)}
                         />
                     </div>
                 }}
@@ -62,7 +63,7 @@ function FormProduct(props: any) {
                             }}
                             defaultValue={field.value}
                             valueKey={"loai_san_pham_id"}
-                            error={errorsMgs?.loai_san_pham_id?.message || ""}
+                            error={getNestedError(field.name, errorsMgs)}
                             {...field}
                         />
                     </div>
@@ -88,7 +89,7 @@ function FormProduct(props: any) {
                                 }}
                                 endIcon='đ'
                                 placeholder='Nhập giá bán'
-                                error={errorsMgs?.gia_ban?.message || ""}
+                                error={getNestedError(field.name, errorsMgs)}
                             />
                         </div>
                     }}
@@ -111,7 +112,7 @@ function FormProduct(props: any) {
                                 }}
                                 endIcon='đ'
                                 placeholder='Nhập giá giảm'
-                                error={errorsMgs?.gia_giam?.message || ""}
+                                error={getNestedError(field.name, errorsMgs)}
                             />
                         </div>
                     }}
@@ -135,7 +136,7 @@ function FormProduct(props: any) {
                             }}
                             endIcon='Số lượng'
                             placeholder='Nhập số lượng'
-                            error={errorsMgs?.so_luong_trong_kho?.message || ""}
+                            error={getNestedError(field.name, errorsMgs)}
                         />
                     </div>
                 }}
@@ -152,9 +153,9 @@ function FormProduct(props: any) {
                         />
 
                         {
-                            errorsMgs?.mo_ta?.message?.length && (
+                            getNestedError(field.name, errorsMgs) && (
                                 <p className="my-1 text-red-700 text-sm" >
-                                    {errorsMgs?.mo_ta?.message}
+                                    {getNestedError(field.name, errorsMgs)}
                                 </p>
                             )
                         }
@@ -173,9 +174,9 @@ function FormProduct(props: any) {
                         />
 
                         {
-                            errorsMgs?.thong_tin_chi_tiet?.message?.length && (
+                            getNestedError(field.name, errorsMgs) && (
                                 <p className="my-1 text-red-700 text-sm" >
-                                    {errorsMgs?.thong_tin_chi_tiet?.message}
+                                    {getNestedError(field.name, errorsMgs)}
                                 </p>
                             )
                         }
@@ -189,16 +190,18 @@ function FormProduct(props: any) {
                 render={({ field }) => {
                     return <div className='mx-3 mt-6'>
                         <ImageUpload
-                            value={field.value}
                             onChange={(urls: any) => {
                                 field.onChange(urls)
                             }}
+                            watch={watch}
+                            name={field.name}
+                            setValue={setValue}
                         />
 
                         {
-                            errorsMgs?.hinh_anh?.message?.length && (
+                            getNestedError(field.name, errorsMgs) && (
                                 <p className="my-1 text-red-700 text-sm" >
-                                    {errorsMgs?.hinh_anh?.message}
+                                    {getNestedError(field.name, errorsMgs)}
                                 </p>
                             )
                         }
@@ -206,7 +209,7 @@ function FormProduct(props: any) {
                 }}
             />
 
-            <Button disabled={!isEmpty(errorsMgs)} type='submit' className='fixed bottom-[80px] mx-3 mt-6 w-full'>Tạo sản phẩm</Button>
+            <Button disabled={!isEmpty(errorsMgs)} type='submit' className='fixed bottom-[80px] mx-3 mt-6 w-full'>Lưu</Button>
         </ScrollArea>
     )
 }

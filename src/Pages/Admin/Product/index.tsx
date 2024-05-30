@@ -22,13 +22,14 @@ function AdminProduct() {
     const [search, setSearch] = useState("");
     const [debouncedValue, setDebouncedValue] = useState("");
     const [isVisibleAdd, setIsVisibleAdd] = useState(false);
+    const [isVisibleEdit, setIsVisibleEdit] = useState(false);
+    const [productEdit, setProductEdit] = useState<any>({})
 
     const {
         isLoading,
         data
     } = useProducts({ page, pageSize, search: debouncedValue });
     const { isLoading: isLoadingSummary, data: dataSummary } = useProductSummary();
-
 
     const { add, edit, remove } = useProduct({ page, pageSize, search: debouncedValue });
 
@@ -71,6 +72,11 @@ function AdminProduct() {
 
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [dataSummary]);
+
+    const handleClickEdit = (id: any, value: any) => {
+        setIsVisibleEdit(true);
+        setProductEdit(value);
+    }
 
     return (
         <div>
@@ -129,7 +135,7 @@ function AdminProduct() {
                 pageSize={pageSize}
                 addon={productType?.data?.content}
                 onHandleRemove={remove}
-                onHandleEdit={edit}
+                onHandleEdit={handleClickEdit}
             />}
 
             <HPagination
@@ -141,7 +147,20 @@ function AdminProduct() {
                 }}
             />
 
-
+            <DrawerDialog
+                label={'Sửa sản phẩm'}
+                isShowButton={false}
+                isVisible={isVisibleEdit}
+                onHandleToogleVisible={(visible: boolean) => {
+                    setIsVisibleEdit(visible)
+                }}
+                context='product'
+                defaultValues={productEdit}
+                onHandleSubmit={(values: any) => {
+                    edit(productEdit.san_pham_id, values)
+                }}
+                validateSchema={productCreateValidationSchema}
+            />
         </div >
     )
 }
