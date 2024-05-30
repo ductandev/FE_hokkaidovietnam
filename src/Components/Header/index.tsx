@@ -150,8 +150,8 @@ export default function Header() {
           </Link>
 
           {isLogin ? <DropdownMenu>
-            <DropdownMenuTrigger>
-              <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo outline-none" />
+            <DropdownMenuTrigger className="outline-none">
+              <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
             </DropdownMenuTrigger>
 
             <DropdownMenuContent>
