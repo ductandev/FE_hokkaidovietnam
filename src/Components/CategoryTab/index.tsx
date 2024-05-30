@@ -9,6 +9,10 @@ interface IProps {
     isShowSummary?: boolean;
     summaryIndex?: number;
     defaultTab: string | number;
+    className?: string;
+    display?: string;
+    margin?: string;
+    fontSize?: string;
 }
 
 export const CategoryTabs: React.FC<IProps> = (props: IProps) => {
@@ -18,6 +22,10 @@ export const CategoryTabs: React.FC<IProps> = (props: IProps) => {
         isShowSummary = false,
         summaryIndex = 0,
         defaultTab,
+        className = "border-b border-gray-400",
+        display,
+        margin,
+        fontSize,
     } = props;
     const [activeTab, setActiveTab] = useState(defaultTab);
     const [isMobileView, setIsMobileView] = useState(window.innerWidth <= 768);
@@ -47,7 +55,7 @@ export const CategoryTabs: React.FC<IProps> = (props: IProps) => {
     }, []);
 
     return (
-        <div className="categoryTabs flex justify-between items-center pb-4 border-b border-gray-400">
+        <div className={`categoryTabs flex justify-between items-center pb-4 ${className}`}>
             {isMobileView ? (
                 <div className="p-4">
                     <div className="flex items-start">
@@ -60,12 +68,12 @@ export const CategoryTabs: React.FC<IProps> = (props: IProps) => {
                     </div>
                 </div>
             ) : (
-                <div className="categoryTabs-menu">
+                <div className={`categoryTabs-menu ${margin}`}>
                     {options.map((tab: ProductType, index) => (
                         <div
-                            className={`categoryTabs-menuItem ${activeTab === tab.loai_san_pham_id
-                                    ? "categoryTabs-menuItem__active"
-                                    : ""
+                            className={`${fontSize} categoryTabs-menuItem ${activeTab === tab.loai_san_pham_id
+                                ? "categoryTabs-menuItem__active after:w-full"
+                                : "after:w-0"
                                 }`}
                             key={index}
                             onClick={() => {
@@ -79,7 +87,7 @@ export const CategoryTabs: React.FC<IProps> = (props: IProps) => {
             )}
 
             {isShowSummary && (
-                <div className="categoryTabs-summary mr-4">
+                <div className={`categoryTabs-summary mr-4 ${display}`}>
                     <p>{summaryIndex} Sản phẩm</p>
                 </div>
             )}

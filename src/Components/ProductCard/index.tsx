@@ -18,7 +18,8 @@ import "./styles.scss";
 
 export type PropTypes = {
     onShowDetail?: Function;
-    isSkeleton?: Boolean
+    isSkeleton?: Boolean;
+    className?: string;
 }
 
 export type MergedType = PropTypes & Product;
@@ -32,7 +33,8 @@ export const ProductCard: React.FC<PropTypes | MergedType | any> = (props: PropT
         ten_san_pham,
         onShowDetail,
         isSkeleton = false,
-        hinh_anh
+        hinh_anh,
+        className = "w-full h-[250px] md:h-[350px] xl:h-[400px]"
     } = props;
 
     const { isLogin } = useAuth();
@@ -110,7 +112,7 @@ export const ProductCard: React.FC<PropTypes | MergedType | any> = (props: PropT
                             <img
                                 src={hinh_anh[0] || ""}
                                 alt=""
-                                className="mx-auto w-full h-[250px] md:h-[350px] xl:h-[400px] object-cover"
+                                className={`mx-auto ${className} object-cover`}
                             />
                         </div>
                     </div>

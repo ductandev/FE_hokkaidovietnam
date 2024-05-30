@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { OrderClientHistory, getOrerHistoryAsyncAction } from "@/Redux/reducers/historyReducer";
 import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootState } from "../../Redux/configStore";
@@ -10,19 +10,19 @@ export default function HistoryOrder() {
   const { isLoadingOrderHistory, orderHistory } = useSelector((state: RootState) => state.historyReducer);
   const dispatch: DispatchType = useDispatch();
 
-  const getDataOrderHistoryAPI = async () => {
+  const getDataOrderHistoryAPI = useCallback(async () => {
     if (user?.nguoi_dung_id) {
       const actionApi = getOrerHistoryAsyncAction(user.nguoi_dung_id);
       dispatch(actionApi);
     }
-  };
+  }, [user?.nguoi_dung_id, dispatch]);
 
   useEffect(() => {
     if (user?.nguoi_dung_id) {
       window.scrollTo(0, 0);
       getDataOrderHistoryAPI();
     }
-  }, [user?.nguoi_dung_id]);
+  }, [user?.nguoi_dung_id, getDataOrderHistoryAPI]);
 
 
   const renderListingDonHang = (): JSX.Element[] => {

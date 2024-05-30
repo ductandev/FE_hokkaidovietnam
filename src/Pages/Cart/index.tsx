@@ -228,7 +228,6 @@ export default function Cart() {
                         md:mt-11
                         w-full
                         mt-6
-                        md:mt-0
                         `}
                         variant={'order-btn-dark'}
                         disabled={!cartState.length}
@@ -243,12 +242,10 @@ export default function Cart() {
                         className={`
                             md:ms-6
                             md:mt-11
-                            md:inline
                             md:hidden
                             block
                             w-full
                             mt-2
-                        md:mt-0
                         `}
                         variant={'order-btn-light'}
                         onClick={() => {
