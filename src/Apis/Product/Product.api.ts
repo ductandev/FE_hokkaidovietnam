@@ -41,7 +41,7 @@ export const removeProduct = (id: string | number) => {
 }
 
 export const updateProduct = (id: string | number, body: any) => {
-    return httpGuard.put<any>(`${Models.update}/${id}`, body)
+    return httpGuard.patch<any>(`${Models.update}/${id}`, body)
 }
 
 export const getProduct = (id: number | string) => http.get<Product>(`${Models.item}/${id}`)
