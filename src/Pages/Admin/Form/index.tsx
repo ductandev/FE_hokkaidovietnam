@@ -28,7 +28,7 @@ import {
 
 // ! Form Handler
 import FormProduct from "./Components/FormProduct"
-import FormContact from "./Components/FormContact"
+// import FormContact from "./Components/FormContact"
 import FormOrderFilter from "./Components/FormOrderFilter";
 import FormOrderDetail from "./Components/FormOrderDetail";
 import { FormCustomerDetail } from "./Components/FormCustomerDetail";
@@ -87,11 +87,10 @@ export function DrawerDialog(props: IProps) {
     const errorsMgs: any = errors;
 
     const renderForm: any = {
-        'product': <FormProduct {...formProps} errorsMgs={errorsMgs} />,
-        'contact': <FormContact />,
-        'orderFilter': <FormOrderFilter {...formProps} />,
-        "orderDetail": <FormOrderDetail id={defaultValues} />,
-        "customerDetail": <FormCustomerDetail id={defaultValues} />,
+        'product': <FormProduct {...formProps} errorsMgs={errorsMgs} reset={reset} />,
+        'orderFilter': <FormOrderFilter {...formProps} reset={reset} />,
+        "orderDetail": <FormOrderDetail id={defaultValues} reset={reset} />,
+        "customerDetail": <FormCustomerDetail id={defaultValues} reset={reset} />,
     }
 
     const handleToogleVisible = (isOpen: boolean) => {

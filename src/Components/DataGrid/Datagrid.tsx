@@ -1,11 +1,11 @@
 import { useDeferredValue, useEffect, useState } from "react";
+import { useAddress } from "@/Hooks/useAddress/useAddress";
 
 import { columnsContact, columnsCustomer, columnsNews, columnsOrder, columnsProduct } from "./columns";
 import { DataTable } from "./data-table";
 import ProductStatus from "../ProductStatus";
 
 import { ProductType } from "@/Types/ProductType.type";
-import { useAddress } from "@/Hooks/useAddress/useAddress";
 
 enum EnumTableDefine {
     product = 'product',
@@ -83,7 +83,8 @@ export default function DataGrid(props: PropsType) {
                         onHandleRemove && onHandleRemove(id)
                     }
                 }
-            } else if (type === "customer") {
+            }
+            else if (type === "customer") {
                 return {
                     ...object,
                     index: position + paged,
@@ -99,6 +100,18 @@ export default function DataGrid(props: PropsType) {
                     onEdit: (id: any) => {
                         onHandleEdit && onHandleEdit(id)
                     }
+                }
+            }
+            else if (type === "contact") {
+                return {
+                    ...object,
+                    index: position + paged,
+                    onRemove: (id: any) => {
+                        onHandleRemove && onHandleRemove(id)
+                    },
+                    onChangeStatus: (id: any, status: any) => {
+                        onChangeStatus && onChangeStatus(id, status)
+                    },
                 }
             } else {
                 return {
