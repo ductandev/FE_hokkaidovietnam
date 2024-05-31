@@ -164,7 +164,7 @@ export default function Header() {
               }}>Vào admin</DropdownMenuItem>}
               <DropdownMenuItem onClick={() => {
                 navigate('/history')
-              }}>Xem đơn hàng</DropdownMenuItem>
+              }}>Lịch sử mua hàng</DropdownMenuItem>
               <DropdownMenuItem>Đổi mật khẩu</DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => {
