@@ -45,19 +45,22 @@ export default function HistoryOrder() {
         <div className="mt-4" key={don_hang_id}>
           <h1 className="font-semibold md:text-2xl text-[#484848] mb-4">#{index + 1}</h1>
           {items.map((item, itemIndex) => (
-            <div key={item.san_pham_id} className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-4">
-              <div className="col-span-1 lg:flex justify-between">
-                <img src={item.hinh_anh} className="h-[100px] xl:me-28" alt={item.ten_san_pham} />
+
+            <div key={item.san_pham_id} className="md:grid grid-cols-1 md:grid-cols-5 gap-0 sm:gap-6 mb-4">
+              <div className="md:col-span-1 flex">
+                <div className="w-[27%] md:w-full">
+                  <img src={item.hinh_anh} className="h-[100px] xl:me-28 mb-2 md:mb-0" alt={item.ten_san_pham} />
+                </div>
+                <h2 className="font-bold text-lg md:h-[48px] md:hidden">{item.ten_san_pham}</h2>
               </div>
-              <div className="col-span-1">
-                <h2 className="font-bold text-lg md:h-[48px] -translate-x-24">{item.ten_san_pham}</h2>
-                {/* <p className="text-sm md:text-base">Tổng cộng: {(item.so_luong * item.don_gia).toLocaleString()}</p> */}
-              </div>
-              <div className="col-span-2">
-                <div className="flex justify-between items-center gap-8">
+
+              <div className="md:col-span-3">
+                <h2 className="font-bold text-lg md:h-[48px] hidden md:block">{item.ten_san_pham}</h2>
+
+                <div className="flex justify-between items-center">
                   <div>
                     <p className="font-bold text-sm md:text-base">Số lượng</p>
-                    <p className="text-sm md:text-base">{item.so_luong}</p>
+                    <p className="text-sm md:text-base">x{item.so_luong}</p>
                   </div>
                   <div>
                     <p className="font-bold text-sm md:text-base">Đơn giá</p>
@@ -65,18 +68,19 @@ export default function HistoryOrder() {
                   </div>
                   <div>
                     <p className="font-bold text-sm md:text-base">Thành tiền</p>
-                    <p className="text-sm md:text-base">{(item.so_luong * item.don_gia).toLocaleString()}</p>
+                    <p className="text-sm md:text-base">{(item.so_luong * item.don_gia).toLocaleString()} đ</p>
                   </div>
                   <div>
                     <p className="font-bold text-sm md:text-base">Ngày mua</p>
                     <p className="text-sm md:text-base">{new Date(item.thoi_gian_dat_hang).toLocaleDateString()}</p>
                   </div>
-                  <button className="px-3 py-2 text-white bg-rose-500 hover:text-black rounded-md">Đánh giá</button>
                 </div>
               </div>
             </div>
+
           ))}
-          <p className="text-sm md:text-base text-end"><b>Tổng cộng:</b> {(totalAmount).toLocaleString()}</p>
+          {/* <button className="px-3 py-2 text-white bg-rose-500 hover:text-black rounded-md">Đánh giá</button> */}
+          <p className="text-sm md:text-base text-end"><b>Tổng cộng:</b> {(totalAmount).toLocaleString()} đ</p>
           <hr className="w-full" />
         </div>
       );
@@ -119,7 +123,7 @@ export default function HistoryOrder() {
   return (
     isLoadingOrderHistory ? <Loading /> :
       <div className="container mx-auto">
-        <h1 className="pt-9 pb-6 text-xl lg:text-3xl xl:text-4xl font-bold text-[#393939]">Lịch sử mua hàng</h1>
+        <h1 className="pt-4 sm:pt-9 mb-2 sm:pb-6 text-xl lg:text-3xl xl:text-4xl font-bold text-[#393939]">Lịch sử mua hàng</h1>
         <hr />
 
         <div className="pb-12">{renderTripHistory()}</div>
