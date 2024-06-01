@@ -16,7 +16,6 @@ import {
 import { ScrollArea } from "../ui/scroll-area";
 import { Input } from "../ui/input";
 
-
 interface FileUploadProgress {
     progress: number;
     File: File;
@@ -57,7 +56,7 @@ const OtherColor = {
 };
 
 export default function ImageUpload(props: any) {
-    const { watch, name, setValue } = props;
+    const { watch, name, setValue, multiple = true } = props;
     const [filesToUpload, setFilesToUpload] = useState<FileUploadProgress[]>([]);
     const [isLoadingUpload, setIsLoadingUpload] = useState(false);
     const watchImagesUploaded = watch(name);
@@ -97,8 +96,6 @@ export default function ImageUpload(props: any) {
         };
     };
 
-    // feel free to mode all these functions to separate utils
-    // here is just for simplicity
     const onUploadProgress = (
         progressEvent: AxiosProgressEvent,
         file: File,
@@ -109,7 +106,6 @@ export default function ImageUpload(props: any) {
         );
 
         if (progress === 100) {
-            // ! When process done remove files from file upload
             setFilesToUpload((prevUploadProgress) => {
                 return prevUploadProgress.filter((item) => item.File !== file);
             });
@@ -177,8 +173,6 @@ export default function ImageUpload(props: any) {
             ];
         });
 
-        // cloudinary upload
-
         const fileUploadBatch = acceptedFiles.map((file) => {
             const formData = new FormData();
             formData.append("file", file);
@@ -212,7 +206,7 @@ export default function ImageUpload(props: any) {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    const { getRootProps, getInputProps } = useDropzone({ onDrop });
+    const { getRootProps, getInputProps } = useDropzone({ onDrop, multiple });
 
     return (
         <div>
@@ -272,14 +266,6 @@ export default function ImageUpload(props: any) {
                                                         {fileUploadProgress.progress}%
                                                     </span>
                                                 </div>
-
-                                                {/* <Progress
-                                                    progress={fileUploadProgress.progress}
-                                                    className={
-                                                        getFileIconAndColor(fileUploadProgress.File).color
-                                                    }
-                                                /> */}
-
                                             </div>
                                         </div>
                                         <button
@@ -300,7 +286,6 @@ export default function ImageUpload(props: any) {
                     </ScrollArea>
                 </div>
             )}
-
 
             {isLoadingUpload ? <p>Đang tải</p> : <>
                 {watchImagesUploaded.length > 0 && (

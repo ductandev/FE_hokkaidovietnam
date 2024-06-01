@@ -348,7 +348,7 @@ export const columnsNews: ColumnDef<News>[] = [
                     maxWidth: 50,
                     maxHeight: 50,
                 }}>
-                    <img src={row.original.hinh_anh} alt={'hinh anh render'} />
+                    <img src={row.original.hinh_anh[0]} alt={'hinh anh render'} />
                 </span>
             </div>
         },
@@ -371,8 +371,22 @@ export const columnsNews: ColumnDef<News>[] = [
         header: "Hành động",
         cell: ({ row }) => {
             return <div className="flex items-center justify-start">
-                <span className="mr-4" >{svgEdit}</span>
-                <span >{svgDelete}</span>
+                <span
+                    className="mr-4"
+                    onClick={() => {
+                        row.original.onEdit(row.original.tin_tuc_id)
+                    }}
+                >
+                    {svgEdit}
+                </span>
+
+                <span
+                    onClick={() => {
+                        row.original.onRemove(row.original.tin_tuc_id)
+                    }}
+                >
+                    {svgDelete}
+                </span>
             </div>
         },
     },

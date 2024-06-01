@@ -21,7 +21,7 @@ function SidebarAdmin() {
             to: "contact"
         },
         {
-            name: "Tạo tin tức",
+            name: "Tin tức",
             to: "news"
         },
     ]
@@ -36,9 +36,13 @@ function SidebarAdmin() {
             <div className="flex items-center justify-center my-2">
                 <ul className="sidebar-admin-menu">
                     {menu.map((item, index) => {
-                        return <NavLink className={({ isActive }) =>
-                            isActive ? "active sidebar-admin-menu-item" : "sidebar-admin-menu-item"
-                        } to={item.to} key={index}>
+                        return <NavLink
+                            className={({ isActive }) =>
+                                isActive ? "active sidebar-admin-menu-item" : "sidebar-admin-menu-item"
+                            }
+                            to={item.to}
+                            key={index}
+                        >
                             <p className="pl-10">{item.name}</p>
                         </NavLink>
                     })}
@@ -49,7 +53,6 @@ function SidebarAdmin() {
 }
 
 export default SidebarAdmin
-
 
 const svgDashboard = <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
     <rect x="4" y="4" width="6" height="6" rx="1" stroke="black" strokeWidth="2" strokeLinejoin="round" />
