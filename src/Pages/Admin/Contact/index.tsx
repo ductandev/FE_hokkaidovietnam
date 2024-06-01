@@ -2,7 +2,8 @@ import { useMemo, useState } from "react";
 import useDebouncedCallback from "@/Hooks/useDebounceCallback";
 import {
     useContact,
-    useContactList
+    useContactList,
+    useContactSummary
 } from "@/Hooks/useContact";
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
@@ -24,7 +25,22 @@ function AdminContact() {
         isLoading,
         data
     } = useContactList({ page, pageSize, search: debouncedValue });
+    const { isLoading: isLoadingSummary, data: dataSummary } = useContactSummary();
+
     const { remove, editStatus } = useContact({ page, pageSize, search: debouncedValue });
+
+
+    const Metrics = useMemo(() => {
+        return [
+            {
+                icon: <LuPackageSearch />,
+                label: "Tổng số liên hệ",
+                index: dataSummary?.content?.totalContact,
+                format: "liên hệ"
+            },
+        ];
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [dataSummary]);
 
     const handleChangeDebounced = (value: string) => {
         setPage(1);
@@ -32,25 +48,6 @@ function AdminContact() {
     };
 
     const [debouncedCallback] = useDebouncedCallback(handleChangeDebounced, 500, [search]);
-
-    const Metrics = useMemo(() => {
-        return [
-            {
-                icon: <LuPackageSearch />,
-                label: "Tổng số liên hệ",
-                index: 1000000,
-                format: "liên hệ"
-            },
-            // {
-            //     icon: <LiaBoxSolid />,
-            //     label: "Loại sản phẩm",
-            //     index: 200000,
-            //     format: "loại"
-            // },
-        ];
-
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
 
 
     const handleChangeStatusContact = (id: any, status: any) => {
@@ -62,7 +59,7 @@ function AdminContact() {
     return (
         <div>
             <div className="flex items-center">
-                {Metrics.map((metric, index) => {
+                {!isLoadingSummary && Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>
