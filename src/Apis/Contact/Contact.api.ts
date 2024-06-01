@@ -3,6 +3,7 @@ import { httpGuard } from "@/lib/utils"
 
 const Models = {
     list: 'contact/pagination',
+    summary: 'contact/summary',
     remove: "contact",
     edit: 'contact'
 };
@@ -22,6 +23,12 @@ export const getContacts = (
         signal
     }
     );
+
+export const getContactSummary = (
+    signal?: AbortSignal) =>
+    httpGuard.get(`${Models.summary}`, {
+        signal
+    });
 
 export const removeContact = (id: string | number) => {
     return httpGuard.delete<any>(`${Models.remove}/${id}`)

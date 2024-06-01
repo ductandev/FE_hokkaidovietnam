@@ -3,6 +3,7 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 // * Custom Apis
 import {
     editStatusContact,
+    getContactSummary,
     getContacts,
     removeContact
 } from "@/Apis/Contact/Contact.api";
@@ -33,6 +34,26 @@ export const useContactList = ({
 
     return { isLoading, data: data?.data }
 }
+
+export const useContactSummary = () => {
+    const { isLoading, data }: any = useQuery({
+        queryKey: ['contact_summary'],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000);
+
+            return getContactSummary(controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
+
+    return { isLoading, data: data?.data }
+}
+
 
 export const useContact = ({ page, search, pageSize }: any) => {
     const queryClient = useQueryClient();
