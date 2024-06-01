@@ -37,3 +37,10 @@ export const ORDER_STATUS: any = [
         value: 3
     },
 ];
+
+export const DEFAULT_ARTICLE_FORM = {
+    hinh_anh: [],
+    tieu_de: "",
+    mo_ta: "",
+    noi_dung: ""
+}

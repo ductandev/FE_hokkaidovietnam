@@ -42,3 +42,31 @@ export const productCreateValidationSchema = yup.object().shape(
             .required("Giá bán không được để trống")
     }
 );
+
+
+
+export const articleValidation = yup.object().shape(
+    {
+        tieu_de: yup
+            .string()
+            .required("Tiêu đề không được để trống"),
+
+        hinh_anh: yup
+            .array()
+            .of(
+                yup
+                    .string()
+                    .url('Đây không phải là một URL hợp lệ')
+            )
+            .min(1, 'Hình ảnh không được trống')
+            .required('Trường hình ảnh là bắt buộc'),
+
+        mo_ta: yup
+            .string()
+            .required("Mô tả không được để trống"),
+
+        // noi_dung: yup
+        //     .string()
+        //     .required("Nội dung không được để trống"),
+    }
+);

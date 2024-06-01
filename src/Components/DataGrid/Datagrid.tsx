@@ -113,7 +113,20 @@ export default function DataGrid(props: PropsType) {
                         onChangeStatus && onChangeStatus(id, status)
                     },
                 }
-            } else {
+            }
+            else if (type === "news") {
+                return {
+                    ...object,
+                    index: position + paged,
+                    onRemove: (id: any) => {
+                        onHandleRemove && onHandleRemove(id)
+                    },
+                    onEdit: (id: any) => {
+                        onHandleEdit && onHandleEdit(id)
+                    },
+                }
+            }
+            else {
                 return {
                     ...object, index: position + paged
                 }
