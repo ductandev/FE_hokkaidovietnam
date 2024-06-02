@@ -74,7 +74,7 @@ function AdminNews() {
 
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex items-center flex-wrap">
                 {!isLoadingSummary && Metrics.map((metric, index) => (
                     <MetricCard {...metric} key={index} />
                 ))}
