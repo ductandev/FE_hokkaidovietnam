@@ -135,13 +135,11 @@ export default function Profile() {
 
   return (
     <div className="container mx-auto xl:max-w-[1220px] mt-4">
-      <h1 className="text-[32px] font-extrabold text-[#484848] mb-8">
+      <h1 className=" text-xl md:text-2xl xl:text-[32px] font-extrabold text-[#484848] mb-8">
         Thông tin cá nhân
       </h1>
       <div className="grid md:grid-cols-3 gap-3">
         <div className="col-span-2 md:me-[20px] lg:me-[88px]">
-
-
 
 
           <form onSubmit={handleSubmit((values) => handleOnSubmitForm(values))}>
@@ -153,7 +151,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Input
                         placeholder="Họ và tên"
                         error={SErrors?.ho_ten?.message || ""}
@@ -170,7 +168,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Input
                         placeholder="Email"
                         error={SErrors?.email?.message || ""}
@@ -187,7 +185,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Input
                         type="password"
                         placeholder="Nhập nếu cần thay đổi mật khẩu của bạn"
@@ -205,7 +203,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Input
                         disabled={true}
                         placeholder="Số điện thoại"
@@ -223,7 +221,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Input
                         placeholder="Địa chỉ"
                         error={SErrors?.dia_chi?.message || ""}
@@ -240,7 +238,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Selection
                         title="Tỉnh thành"
                         placeholder="Chọn tỉnh thành"
@@ -268,7 +266,7 @@ export default function Profile() {
                 render={({ field }: any) => {
 
                   return (
-                    <div className="mb-4">
+                    <div className="mb-2 md:mb-4">
                       <Selection
                         title="Quận huyện"
                         placeholder="Chọn quận huyện"
@@ -295,7 +293,7 @@ export default function Profile() {
                 control={control}
                 render={({ field }: any) => {
                   return (
-                    <div className="mb-4">
+                    <div className="mb-8">
                       <Selection
                         title="Phường xã"
                         placeholder="Chọn phường/xã"
@@ -315,21 +313,15 @@ export default function Profile() {
                 }}
               />
 
-
               <Button
+                className="hover:bg-slate-400"
                 disabled={!isEmpty(errors)}
                 type="submit"
               >
                 Lưu
               </Button>
-
-
-
             </div>
           </form>
-
-
-
         </div>
 
 
