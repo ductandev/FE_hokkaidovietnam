@@ -83,11 +83,11 @@ function AdminOrder() {
                 })}
             </div>
 
-            <h2 className="text-center uppercase text-xl font-semibold">
+            <h2 className="lg:mt-0 mt-5 text-lg text-center uppercase lg:text-xl font-semibold">
                 Đơn hàng
             </h2>
 
-            <div className="p-4 mt-8 flex justify-between items-center">
+            <div className="px-0 lg:p-4 mt-4 lg:mt-8 flex justify-between items-center">
                 <div className="flex justify-between items-center">
                     <PageSize
                         options={[10, 20, 50]}
@@ -111,6 +111,7 @@ function AdminOrder() {
                         setQueryFilter(buildQueryString(values))
                     }}
                     defaultValues={DEFAULT_ORDER_FILTER_FORM}
+                    className="lg:h-[40px] h-[26px]"
                 />
             </div>
 

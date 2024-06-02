@@ -1,4 +1,10 @@
-import { NavLink } from "react-router-dom"
+import { NavLink } from "react-router-dom";
+
+import { IoCartOutline } from "react-icons/io5";
+import { CiUser } from "react-icons/ci";
+import { AiOutlineProduct } from "react-icons/ai";
+import { IoIosContacts } from "react-icons/io";
+import { GrArticle } from "react-icons/gr";
 
 import "./styles.scss";
 
@@ -6,31 +12,37 @@ function SidebarAdmin() {
     const menu = [
         {
             name: "Đơn hàng",
-            to: "order"
+            to: "order",
+            icon: <IoCartOutline />
         },
         {
             name: "Khách hàng",
-            to: "customer"
+            to: "customer",
+            icon: <CiUser />
         },
         {
             name: "Sản phẩm",
-            to: "product"
+            to: "product",
+            icon: <AiOutlineProduct />
         },
         {
             name: "Liên hệ",
-            to: "contact"
+            to: "contact",
+            icon: <IoIosContacts />
         },
         {
             name: "Tin tức",
-            to: "news"
+            to: "news",
+            icon: <GrArticle />
         },
-    ]
+    ];
+
     return (
         <nav className='sidebar-admin'>
             <div className="flex items-center justify-center">
                 <span>{svgDashboard}</span>
 
-                <span className="text-xl font-semibold ml-1">Dashboard</span>
+                <span className="hidden lg:block text-xl font-semibold ml-1">Dashboard</span>
             </div>
 
             <div className="flex items-center justify-center my-2">
@@ -43,7 +55,9 @@ function SidebarAdmin() {
                             to={item.to}
                             key={index}
                         >
-                            <p className="pl-10">{item.name}</p>
+                            <p className="hidden lg:block pl-10">{item.name}</p>
+
+                            <span className="block lg:hidden text-2xl">{item.icon}</span>
                         </NavLink>
                     })}
                 </ul>

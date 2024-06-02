@@ -8,12 +8,15 @@ import { actions as userActions } from '@/Redux/actions/user.action'
 import SidebarAdmin from '@/Components/SideBarAdmin';
 import { useAuth } from '@/Auth/AuthProvider';
 import { getInfo } from '@/Apis/Auth/Auth.api'
+import useWindowDimensions from '@/Hooks/useWindowDimension';
 
 const SIDEBAR_WIDTH = `230px`;
+const SIDEBAR_WIDTH_MOBILE = `50px`;
 
 const AdminTemplate: React.FC = (): JSX.Element => {
     const { isLogin, isAdmin } = useAuth();
     const dispatch: any = useDispatch();
+    const { width } = useWindowDimensions();
 
     const { isLoading: isLoadingUser, data: dataUser }: any = useQuery({
         queryKey: ['user'],
@@ -43,6 +46,12 @@ const AdminTemplate: React.FC = (): JSX.Element => {
         padding: 24
     };
 
+    const isMobile = {
+        width: `calc(100vw - ${SIDEBAR_WIDTH_MOBILE})`,
+        marginLeft: `${SIDEBAR_WIDTH_MOBILE}`,
+        padding: 24
+    };
+
     // Chuyển hướng đến trang chủ nếu người dùng chưa đăng nhập hoặc không phải là admin
     if (!isLogin || !isAdmin) {
         return <Navigate to="/" />;
@@ -54,7 +63,7 @@ const AdminTemplate: React.FC = (): JSX.Element => {
 
             <SidebarAdmin />
 
-            <div style={isDesktop}>
+            <div style={width > 992 ? isDesktop : isMobile}>
                 <Outlet />
             </div>
         </div>

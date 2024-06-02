@@ -43,6 +43,7 @@ interface IProps {
     defaultValues?: any;
     validateSchema?: any;
     isShowButton?: boolean;
+    className?: string
 }
 
 export function DrawerDialog(props: IProps) {
@@ -55,7 +56,8 @@ export function DrawerDialog(props: IProps) {
         context,
         defaultValues,
         validateSchema,
-        isShowButton = true
+        isShowButton = true,
+        className = ""
     }: any = props;
 
     const [open, setOpen] = React.useState(isVisible);
@@ -105,7 +107,7 @@ export function DrawerDialog(props: IProps) {
                 <DialogTrigger asChild>
                     {
                         drawerTriggerEle ?
-                            drawerTriggerEle : <Button>
+                            drawerTriggerEle : <Button className={className}>
                                 {label}
                             </Button>
                     }
@@ -155,7 +157,7 @@ export function DrawerDialog(props: IProps) {
             {isShowButton && <DrawerTrigger asChild>
                 {
                     drawerTriggerEle ?
-                        drawerTriggerEle : <Button>
+                        drawerTriggerEle : <Button className={className}>
                             {label}
                         </Button>
                 }

@@ -86,15 +86,15 @@ function AdminProduct() {
                 })}
             </div>
 
-            <h2 className="text-center uppercase text-xl font-semibold">
+            <h2 className="lg:mt-0 mt-5 text-lg text-center uppercase lg:text-xl font-semibold">
                 Sản phẩm
             </h2>
 
-            <div className="p-4 mt-8 flex justify-between items-center">
-                <div className="flex justify-between items-center">
+            <div className="px-0 lg:p-4 mt-4 lg:mt-8 lg:flex lg:justify-between lg:items-center">
+                <div className="flex justify-between items-center lg:flex-row flex-col">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-3 w-full"
+                        className="mb-2 lg:mb-0 lg:mr-3 w-full"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
@@ -109,7 +109,7 @@ function AdminProduct() {
                             debouncedCallback(event.target.value);
                             setSearch(event.target.value)
                         }}
-                        className="w-[230px]"
+                        className="w-full lg:w-[230px] lg:mb-0 mb-2"
                     />
                 </div>
 
@@ -123,6 +123,7 @@ function AdminProduct() {
                     defaultValues={DEFAULT_PRODUCT_ADD_FORM}
                     onHandleSubmit={(values: any) => add(values)}
                     validateSchema={productCreateValidationSchema}
+                    className="lg:h-[40px] h-[26px]"
                 />
             </div>
 
