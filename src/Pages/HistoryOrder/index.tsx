@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { DispatchType, RootState } from "../../Redux/configStore";
 import Loading from "@/Components/Loading/Loading";
 import BlankPage from "@/Components/BlankPage/BlankPage";
+import { formatCurrency } from "@/Helper/helper";
 
 export default function HistoryOrder() {
   const { user } = useSelector((state: RootState) => state.userReducer);
@@ -64,11 +65,11 @@ export default function HistoryOrder() {
                   </div>
                   <div>
                     <p className="font-bold text-sm md:text-base">Đơn giá</p>
-                    <p className="text-sm md:text-base">{item.don_gia.toLocaleString()} đ</p>
+                    <p className="text-sm md:text-base">{formatCurrency(item.don_gia)}</p>
                   </div>
                   <div>
                     <p className="font-bold text-sm md:text-base">Thành tiền</p>
-                    <p className="text-sm md:text-base">{(item.so_luong * item.don_gia).toLocaleString()} đ</p>
+                    <p className="text-sm md:text-base">{formatCurrency(item.so_luong * item.don_gia)}</p>
                   </div>
                   <div>
                     <p className="font-bold text-sm md:text-base">Ngày mua</p>
@@ -80,7 +81,7 @@ export default function HistoryOrder() {
 
           ))}
           {/* <button className="px-3 py-2 text-white bg-rose-500 hover:text-black rounded-md">Đánh giá</button> */}
-          <p className="text-sm md:text-base text-end"><b>Tổng cộng:</b> {(totalAmount).toLocaleString()} đ</p>
+          <p className="text-sm md:text-base text-end"><b>Tổng cộng:</b> {formatCurrency(totalAmount)}</p>
           <hr className="w-full" />
         </div>
       );

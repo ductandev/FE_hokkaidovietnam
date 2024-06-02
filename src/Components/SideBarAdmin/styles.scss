@@ -34,4 +34,17 @@
             }
         }
     }
+
+    @media screen and (max-width: 992px) {
+        & {
+            width: 50px;
+            max-width: 50px;
+
+            &-menu {
+                &::after {
+                    width: 0;
+                }
+            }
+        }
+    }
 }

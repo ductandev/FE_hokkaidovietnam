@@ -59,22 +59,29 @@ export const STATUS_CONTACT = [
     },
 ];
 
-export const columnsOrder: ColumnDef<Order>[] = [
+export const columnsOrder: ColumnDef<Order>[] | any = [
     {
         accessorKey: "index",
         header: "Số thứ tự",
+        width: 5,
     },
     {
         accessorKey: "don_hang_id",
         header: "Mã đơn hàng",
+        width: 5,
+
     },
     {
         accessorKey: "ho_ten",
         header: "Tên khách hàng",
+        width: 20,
+
     },
     {
         accessorKey: "thoi_gian_dat_hang",
         header: "Ngày",
+        width: 20,
+
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -86,6 +93,8 @@ export const columnsOrder: ColumnDef<Order>[] = [
     {
         accessorKey: "tong_tien",
         header: "Thành tiền",
+        width: 20,
+
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -97,6 +106,8 @@ export const columnsOrder: ColumnDef<Order>[] = [
     {
         accessorKey: "hinh_thuc_thanh_toan_id",
         header: "Thanh toán",
+        width: 20,
+
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -110,6 +121,7 @@ export const columnsOrder: ColumnDef<Order>[] = [
     {
         accessorKey: "trang_thai_don_hang_id",
         header: "Trạng thái",
+        width: 25,
         cell: ({ row }: any) => {
             return <div className="max-w-[140px] flex items-center justify-start">
                 <Selection
@@ -130,7 +142,9 @@ export const columnsOrder: ColumnDef<Order>[] = [
     {
         accessorKey: "hanh_dong",
         header: "Hành động",
-        cell: ({ row }) => {
+        width: 20,
+
+        cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4" onClick={() => {
                     row.original.onEdit(row.original.don_hang_id, row.original)
@@ -143,14 +157,16 @@ export const columnsOrder: ColumnDef<Order>[] = [
     },
 ];
 
-export const columnsProduct: ColumnDef<Product>[] = [
+export const columnsProduct: ColumnDef<Product>[] | any = [
     {
         accessorKey: "index",
         header: "Số thứ tự",
+        width: 5,
     },
     {
         accessorKey: "ten_san_pham",
         header: "Tên sản phẩm",
+        width: 25,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4" style={{
@@ -168,6 +184,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
     {
         accessorKey: "loai_san_pham_id",
         header: "Loại sản phẩm",
+        width: 20,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span >
@@ -179,10 +196,12 @@ export const columnsProduct: ColumnDef<Product>[] = [
     {
         accessorKey: "so_luong_trong_kho",
         header: "Số lượng trong kho",
+        width: 10,
     },
     {
         accessorKey: "gia_ban",
         header: "Giá tiền",
+        width: 10,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -194,6 +213,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
     {
         accessorKey: "trang_thai_san_pham",
         header: "Trạng thái",
+        width: 20,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span >
@@ -205,6 +225,7 @@ export const columnsProduct: ColumnDef<Product>[] = [
     {
         accessorKey: "hanh_dong",
         header: "Hành động",
+        width: 10,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4"
@@ -222,18 +243,21 @@ export const columnsProduct: ColumnDef<Product>[] = [
     },
 ];
 
-export const columnsCustomer: ColumnDef<Customer>[] = [
+export const columnsCustomer: ColumnDef<Customer>[] | any = [
     {
         accessorKey: "index",
         header: "Số thứ tự",
+        width: 5
     },
     {
         accessorKey: "ho_ten",
         header: "Tên khách hàng",
+        width: 25
     },
     {
         accessorKey: "don_da_mua",
         header: "Đơn đã mua",
+        width: 7,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span >
@@ -245,6 +269,7 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
     {
         accessorKey: "dia_chi",
         header: "Địa chỉ",
+        width: 25,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span >
@@ -256,15 +281,21 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
     {
         accessorKey: "email",
         header: "Email",
+        width: 15,
+
     },
     {
         accessorKey: "so_dien_thoai",
         header: "Số điện thoại",
+        width: 10,
+
     },
     {
         accessorKey: "hanh_dong",
         header: "Hành động",
-        cell: ({ row }) => {
+        width: 10,
+
+        cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4"
                     onClick={() => {
@@ -280,26 +311,31 @@ export const columnsCustomer: ColumnDef<Customer>[] = [
     },
 ];
 
-export const columnsContact: ColumnDef<any>[] = [
+export const columnsContact: ColumnDef<any>[] | any = [
     {
         accessorKey: "index",
         header: "Số thứ tự",
+        width: 5,
     },
     {
         accessorKey: "ho_ten",
         header: "Họ tên",
+        width: 20,
     },
     {
         accessorKey: "noi_dung",
         header: "Nội dung",
+        width: 20
     },
     {
         accessorKey: "email",
         header: "email",
+        width: 15
     },
     {
         accessorKey: "TrangThaiLienHe.trang_thai_lien_he_id",
         header: "Trạng thái liên hệ",
+        width: 25,
         cell: ({ row }: any) => {
 
             return <div className="max-w-[140px] flex items-center justify-start">
@@ -321,7 +357,8 @@ export const columnsContact: ColumnDef<any>[] = [
     {
         accessorKey: "hanh_dong",
         header: "Hành động",
-        cell: ({ row }) => {
+        width: 10,
+        cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span
                     onClick={() => {
@@ -334,21 +371,23 @@ export const columnsContact: ColumnDef<any>[] = [
     },
 ];
 
-export const columnsNews: ColumnDef<News>[] = [
+export const columnsNews: ColumnDef<News>[] | any = [
     {
         accessorKey: "index",
         header: "Số thứ tự",
+        width: 5,
     },
     {
         accessorKey: "hinh_anh",
         header: "Hình ảnh",
+        width: 25,
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span className="mr-4" style={{
                     maxWidth: 50,
                     maxHeight: 50,
                 }}>
-                    <img src={row.original.hinh_anh} alt={'hinh anh render'} />
+                    <img src={row.original.hinh_anh[0]} alt={'hinh anh render'} />
                 </span>
             </div>
         },
@@ -356,10 +395,14 @@ export const columnsNews: ColumnDef<News>[] = [
     {
         accessorKey: "tieu_de",
         header: "Tiêu đề",
+        width: 25,
+
     },
     {
         accessorKey: "mo_ta",
         header: "Mô tả",
+        width: 25,
+
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <p> {row.original.mo_ta.length > 150 ? row.original.mo_ta.substr(0, 50) + ' ...' : row.original.mo_ta} </p>
@@ -369,10 +412,26 @@ export const columnsNews: ColumnDef<News>[] = [
     {
         accessorKey: "hanh_dong",
         header: "Hành động",
-        cell: ({ row }) => {
+        width: 15,
+
+        cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
-                <span className="mr-4" >{svgEdit}</span>
-                <span >{svgDelete}</span>
+                <span
+                    className="mr-4"
+                    onClick={() => {
+                        row.original.onEdit(row.original.tin_tuc_id)
+                    }}
+                >
+                    {svgEdit}
+                </span>
+
+                <span
+                    onClick={() => {
+                        row.original.onRemove(row.original.tin_tuc_id)
+                    }}
+                >
+                    {svgDelete}
+                </span>
             </div>
         },
     },

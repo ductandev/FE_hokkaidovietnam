@@ -106,34 +106,32 @@ export function FormCustomerDetail(props: any) {
 
                     <h4 className='my-4 font-semibold'>Đơn đã mua ({orders.length} đơn)</h4>
 
-                    <ScrollArea className='h-[55vh]'>
-                        <div className='my-4'>
-                            {orders?.map((product: any, idx: any) => {
-                                return <div key={idx} className='grid my-3 flex items-center grid-cols-2'>
-                                    <div className="flex flex-col justify-center ">
-                                        <Link target="_blank" rel="noopener noreferrer" to={`/admin/order/${product.don_hang_id}`} className='mr-4 text-blue-600'>
-                                            Mã đơn hàng #{product.don_hang_id}
-                                        </Link>
+                    <div className='my-4'>
+                        {orders?.map((product: any, idx: any) => {
+                            return <div key={idx} className='grid my-3 flex items-center grid-cols-2'>
+                                <div className="flex flex-col justify-center ">
+                                    <Link target="_blank" rel="noopener noreferrer" to={`/admin/order/${product.don_hang_id}`} className='mr-4 text-blue-600'>
+                                        Mã đơn hàng #{product.don_hang_id}
+                                    </Link>
 
-                                        <div className='flex'>
-                                            <p className='mr-4'>{formatCurrency(product.tong_tien)}</p>
+                                    <div className='flex'>
+                                        <p className='mr-4'>{formatCurrency(product.tong_tien)}</p>
 
-                                            <p>
-                                                {<Badge
-                                                    variant={badgeTagStatusTransform(product.trang_thai_don_hang_id, 'trang_thai_don_hang_id')}>
-                                                    {STATUS_ORDER?.find((y: any) => y.value === product?.trang_thai_don_hang_id)?.label || ""}</Badge>}
-                                            </p>
-                                        </div>
+                                        <p>
+                                            {<Badge
+                                                variant={badgeTagStatusTransform(product.trang_thai_don_hang_id, 'trang_thai_don_hang_id')}>
+                                                {STATUS_ORDER?.find((y: any) => y.value === product?.trang_thai_don_hang_id)?.label || ""}</Badge>}
+                                        </p>
                                     </div>
+                                </div>
 
-                                    <div className="col-span-1 flex justify-end">
-                                        <span >{formatTime(product.thoi_gian_dat_hang, "dd/mm/yyyy hh:mm")}</span>
+                                <div className="col-span-1 flex justify-end">
+                                    <span >{formatTime(product.thoi_gian_dat_hang, "dd/mm/yyyy hh:mm")}</span>
 
-                                    </div>
-                                </div>;
-                            })}
-                        </div>
-                    </ScrollArea>
+                                </div>
+                            </div>;
+                        })}
+                    </div>
                 </div>}
         </div>
     );

@@ -5,7 +5,6 @@ import { Input } from '@/Components/ui/input';
 import Selection from "@/Components/Selection";
 import { Button } from '@/Components/ui/button';
 import { Label } from '@/Components/ui/label';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 import { STATUS_ORDER } from '@/Components/DataGrid/columns';
 
@@ -17,7 +16,7 @@ function FormOrderFilter(props: any) {
     const watchWard = getWard(watch("quan_id"));
 
     return (
-        <ScrollArea className='h-[80vh]'>
+        <>
             <div>
                 <div className='grid grid-cols-2'>
                     <Controller
@@ -198,7 +197,7 @@ function FormOrderFilter(props: any) {
 
                 <Button type='submit' className='w-full'>Xác nhận</Button>
             </div>
-        </ScrollArea>
+        </>
     )
 }
 

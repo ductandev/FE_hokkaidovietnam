@@ -37,15 +37,24 @@ export function DataTable<TData, TValue>({
                 <TableHeader>
                     {table.getHeaderGroups().map((headerGroup) => (
                         <TableRow key={headerGroup.id}>
-                            {headerGroup.headers.map((header) => {
+                            {headerGroup.headers.map((header: any, idx: any) => {
+
+                                const widthCol: any = headerGroup.headers[idx].column.columnDef;
+
                                 return (
-                                    <TableHead key={header.id}>
-                                        {header.isPlaceholder
-                                            ? null
-                                            : flexRender(
-                                                header.column.columnDef.header,
-                                                header.getContext()
-                                            )}
+                                    <TableHead key={header.id}
+                                        style={{
+                                            width: `${widthCol.width}vw`
+                                        }}
+                                    >
+                                        {
+                                            header.isPlaceholder
+                                                ? null
+                                                : flexRender(
+                                                    header.column.columnDef.header,
+                                                    header.getContext()
+                                                )
+                                        }
                                     </TableHead>
                                 )
                             })}
@@ -60,11 +69,12 @@ export function DataTable<TData, TValue>({
                                 key={row.id}
                                 data-state={row.getIsSelected() && "selected"}
                             >
-                                {row.getVisibleCells().map((cell) => (
-                                    <TableCell key={cell.id}>
+                                {row.getVisibleCells().map((cell) => {
+                                    return <TableCell key={cell.id}>
                                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                                     </TableCell>
-                                ))}
+                                }
+                                )}
                             </TableRow>
                         ))
                     ) : (
@@ -76,6 +86,6 @@ export function DataTable<TData, TValue>({
                     )}
                 </TableBody>
             </Table>
-        </div>
+        </div >
     )
 }

@@ -28,7 +28,9 @@ import { Return } from "@/Components/Return/Return";
 import { Privacy } from "@/Components/Privacy/Privacy";
 
 // ! Admin Pages
-import { AdminContact, AdminCustomer, AdminNews, AdminOrder, AdminProduct } from "@/Pages/Admin";
+import { AdminContact, AdminCustomer, AdminNews, AdminOrder, AdminProduct, AdminNewsEditorPage } from "@/Pages/Admin";
+import Search from "@/Pages/Search";
+import DetailMedia from "@/Pages/DetailMedia";
 
 const router = createBrowserRouter([
   {
@@ -62,6 +64,10 @@ const router = createBrowserRouter([
       {
         path: "/media",
         element: <MediaPage />,
+      },
+      {
+        path: "/media/:id",
+        element: <DetailMedia />,
       },
       {
         path: "/terms",
@@ -136,6 +142,14 @@ const router = createBrowserRouter([
       {
         path: "news",
         element: <AdminNews />
+      },
+      {
+        path: "news-editor",
+        element: <AdminNewsEditorPage />
+      },
+      {
+        path: "news-editor/:id",
+        element: <AdminNewsEditorPage />
       }
     ]
   },

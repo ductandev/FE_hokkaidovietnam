@@ -33,7 +33,7 @@ function FormProduct(props: any) {
     const productTypeDeffered = useDeferredValue(productType?.data?.content);
 
     return (
-        <ScrollArea className="h-[76vh]">
+        <>
             <Controller
                 control={control}
                 name='ten_san_pham'
@@ -209,8 +209,10 @@ function FormProduct(props: any) {
                 }}
             />
 
-            <Button disabled={!isEmpty(errorsMgs)} type='submit' className='fixed bottom-[80px] mx-3 mt-6 w-full'>Lưu</Button>
-        </ScrollArea>
+            <div className='mx-3'>
+                <Button disabled={!isEmpty(errorsMgs)} type='submit' className=' mt-6 w-[100%]'>Lưu</Button>
+            </div>
+        </>
     )
 }
 
