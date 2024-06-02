@@ -55,21 +55,21 @@ function AdminCustomer() {
 
     return (
         <div>
-            <div className="flex items-center">
+            <div className="flex items-center flex-wrap">
                 {!isLoadingSummary && Metrics.map((metric, index) => {
                     return <MetricCard {...metric} key={index} />
                 })}
             </div>
 
-            <h2 className="text-center uppercase text-xl font-semibold">
+            <h2 className="lg:mt-0 mt-5 text-lg text-center uppercase lg:text-xl font-semibold">
                 Khách hàng
             </h2>
 
-            <div className="p-4 mt-8 flex justify-between items-center">
-                <div className="flex justify-between items-center">
+            <div className="px-0 lg:p-4 mt-4 lg:mt-8 lg:flex lg:justify-between lg:items-center">
+                <div className="flex justify-between items-center lg:flex-row flex-col">
                     <PageSize
                         options={[10, 20, 50]}
-                        className="mr-3 w-full"
+                        className="mb-2 lg:mb-0 lg:mr-3 w-full"
                         defaultValue={pageSize}
                         onChange={(size: number) => {
                             setPage(1);
@@ -84,7 +84,7 @@ function AdminCustomer() {
                             debouncedCallback(event.target.value);
                             setSearch(event.target.value)
                         }}
-                        className="w-[230px]"
+                        className="w-full lg:w-[230px]"
                     />
                 </div>
             </div>

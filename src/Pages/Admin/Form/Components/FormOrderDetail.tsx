@@ -103,43 +103,41 @@ function FormOrderDetail(props: any) {
 
                         <h4 className='my-4 font-semibold'>Sản phẩm trong đơn</h4>
 
-                        <ScrollArea className='h-[44vh]'>
-                            <div className='my-4'>
-                                {order.ChiTietDonHang.map((product: any, idx: any) => {
-                                    return <div key={idx} className='grid my-2 flex items-center  grid-cols-4'>
-                                        <div className="col-span-3 flex items-center ">
-                                            <div className='mr-4'>
-                                                <img
-                                                    src={product.SanPham.hinh_anh[0]}
-                                                    style={{
-                                                        maxWidth: "40px",
-                                                        height: "auto"
-                                                    }}
-                                                    alt="hinh_anh san pham"
-                                                />
-                                            </div>
-                                            <div>{product.SanPham.ten_san_pham}</div>
+                        <div className='my-4'>
+                            {order.ChiTietDonHang.map((product: any, idx: any) => {
+                                return <div key={idx} className='grid my-2 flex items-center  grid-cols-4'>
+                                    <div className="col-span-3 flex items-center ">
+                                        <div className='mr-4'>
+                                            <img
+                                                src={product.SanPham.hinh_anh[0]}
+                                                style={{
+                                                    maxWidth: "40px",
+                                                    height: "auto"
+                                                }}
+                                                alt="hinh_anh san pham"
+                                            />
                                         </div>
-
-                                        <div className="col-span-1 flex">
-                                            <span className='flex flex-start' style={{
-                                                width: '60%'
-                                            }}>{formatCurrency(product.don_gia)}</span>
-                                            <span style={{
-                                                width: '20%'
-                                            }} className='flex items-center'>x</span>
-                                            <span style={{
-                                                width: '20%'
-                                            }}>{product.so_luong}</span>
-                                        </div>
+                                        <div>{product.SanPham.ten_san_pham}</div>
                                     </div>
-                                })}
-                            </div>
-                        </ScrollArea>
+
+                                    <div className="col-span-1 flex">
+                                        <span className='flex flex-start' style={{
+                                            width: '60%'
+                                        }}>{formatCurrency(product.don_gia)}</span>
+                                        <span style={{
+                                            width: '20%'
+                                        }} className='flex items-center'>x</span>
+                                        <span style={{
+                                            width: '20%'
+                                        }}>{product.so_luong}</span>
+                                    </div>
+                                </div>
+                            })}
+                        </div>
                     </div>
             }
 
-            {!isLoading && <div className='fixed bottom-[8vh]'>
+            {!isLoading && <div >
                 <h3 className='font-bold'>Tổng cộng: <span className='text-xl'>{calculateSummary}</span></h3>
             </div>}
         </div>

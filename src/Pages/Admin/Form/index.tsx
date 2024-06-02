@@ -32,6 +32,7 @@ import FormProduct from "./Components/FormProduct"
 import FormOrderFilter from "./Components/FormOrderFilter";
 import FormOrderDetail from "./Components/FormOrderDetail";
 import { FormCustomerDetail } from "./Components/FormCustomerDetail";
+import { ScrollArea } from "@/Components/ui/scroll-area";
 
 interface IProps {
     isVisible: boolean;
@@ -43,6 +44,7 @@ interface IProps {
     defaultValues?: any;
     validateSchema?: any;
     isShowButton?: boolean;
+    className?: string
 }
 
 export function DrawerDialog(props: IProps) {
@@ -55,7 +57,8 @@ export function DrawerDialog(props: IProps) {
         context,
         defaultValues,
         validateSchema,
-        isShowButton = true
+        isShowButton = true,
+        className = ""
     }: any = props;
 
     const [open, setOpen] = React.useState(isVisible);
@@ -99,30 +102,30 @@ export function DrawerDialog(props: IProps) {
         setOpen(isOpen);
     }
 
-    if (isMobile) {
-        return (
-            <Dialog open={open} onOpenChange={handleToogleVisible} >
-                <DialogTrigger asChild>
-                    {
-                        drawerTriggerEle ?
-                            drawerTriggerEle : <Button>
-                                {label}
-                            </Button>
-                    }
-                </DialogTrigger>
+    // if (isMobile) {
+    //     return (
+    //         <Dialog open={open} onOpenChange={handleToogleVisible} >
+    //             <DialogTrigger asChild>
+    //                 {
+    //                     drawerTriggerEle ?
+    //                         drawerTriggerEle : <Button className={className}>
+    //                             {label}
+    //                         </Button>
+    //                 }
+    //             </DialogTrigger>
 
-                <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                        <DialogTitle>Edit profile</DialogTitle>
+    //             <DialogContent className="sm:max-w-[425px]">
+    //                 <DialogHeader>
+    //                     <DialogTitle>Edit profile</DialogTitle>
 
-                        <DialogDescription>
-                            Make changes to your profile here. Click save when you're done.
-                        </DialogDescription>
-                    </DialogHeader>
-                </DialogContent>
-            </Dialog>
-        )
-    };
+    //                     <DialogDescription>
+    //                         Make changes to your profile here. Click save when you're done.
+    //                     </DialogDescription>
+    //                 </DialogHeader>
+    //             </DialogContent>
+    //         </Dialog>
+    //     )
+    // };
 
 
     const handleOnSubmitForm = async (values: any) => {
@@ -155,15 +158,17 @@ export function DrawerDialog(props: IProps) {
             {isShowButton && <DrawerTrigger asChild>
                 {
                     drawerTriggerEle ?
-                        drawerTriggerEle : <Button>
+                        drawerTriggerEle : <Button className={className}>
                             {label}
                         </Button>
                 }
             </DrawerTrigger>}
 
 
-            <DrawerContent className="h-[100vh] w-[30vw]" >
-                <DrawerHeader className="max-w-[300px] text-left">
+            <DrawerContent className="h-[100vh] w-[100vw] lg:w-[40vw]" >
+                <DrawerHeader className="max-w-[300px] text-left" style={{
+                    height: "76px"
+                }}>
                     <DrawerTitle>{label}</DrawerTitle>
 
                     <DrawerDescription>
@@ -171,11 +176,19 @@ export function DrawerDialog(props: IProps) {
                     </DrawerDescription>
                 </DrawerHeader>
 
-                <form onSubmit={handleSubmit((values) => handleOnSubmitForm(values))}>
-                    {renderForm[context]}
-                </form>
+                <ScrollArea
+                    style={{
+                        height: `calc(100vh - 80px - 76px)`
+                    }}
+                >
+                    <form onSubmit={handleSubmit((values) => handleOnSubmitForm(values))}>
+                        {renderForm[context]}
+                    </form>
+                </ScrollArea>
 
-                <DrawerFooter className="pt-2 w-full">
+                <DrawerFooter className="pt-2 w-full" style={{
+                    height: "80px"
+                }}>
                     <DrawerClose asChild>
                         <Button variant="outline">Đóng</Button>
                     </DrawerClose>
