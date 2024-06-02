@@ -1,11 +1,12 @@
-import { Customers } from '@/Types/Customer.type';
+import { CustomerEdit, Customers } from '@/Types/Customer.type';
 import { httpGuard } from "@/lib/utils"
 
 const Models = {
     list: 'user/pagination',
     summary: 'user/summary',
     remove: "user",
-    detail: "user"
+    detail: "user",
+    edit: 'user'
 };
 
 export const getCustomers = (
@@ -29,6 +30,9 @@ export const getCustomerSummary = (
         signal
     });
 
+export const patchCustomer = (id: any, payload: CustomerEdit) => {
+    return httpGuard.patch<CustomerEdit>(`${Models.edit}/${id}`, payload)
+}
 
 export const removeCustomer = (id: string | number) => {
     return httpGuard.delete<any>(`${Models.remove}/${id}`)

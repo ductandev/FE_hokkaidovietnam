@@ -165,10 +165,13 @@ export default function Header() {
               <DropdownMenuItem onClick={() => {
                 navigate('/history')
               }}>Lịch sử mua hàng</DropdownMenuItem>
-              <DropdownMenuItem>Đổi mật khẩu</DropdownMenuItem>
+              <DropdownMenuItem onClick={() => {
+                navigate('/profile')
+              }}>Thông tin tài khoản</DropdownMenuItem>
 
               <DropdownMenuItem onClick={() => {
                 signOut()
+                navigate('/')
               }}>Đăng xuất</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

@@ -10,9 +10,9 @@ import {
   MediaPage,
   ForgotPasswordPage,
   CheckoutPage,
-  HistoryOrderPage
-  // ProfilePage,
-  // SearchPage
+  HistoryOrderPage,
+  ProfilePage,
+  SearchPage
 } from "../Pages";
 
 import { HomeTemplate, AdminTemplate } from "@/Templates";
@@ -105,6 +105,14 @@ const router = createBrowserRouter([
         path: "/history",
         element: <HistoryOrderPage />,
       },
+      {
+        path: "/search",
+        element: <SearchPage />,
+      },
+      {
+        path: "/profile",
+        element: <ProfilePage />,
+      },
     ],
   },
   {
@@ -152,11 +160,7 @@ const router = createBrowserRouter([
   {
     path: "/register",
     Component: Register
-  },
-  {
-    path: "/search",
-    Component: Search,
-  },
+  }
 ]);
 
 export default router;
