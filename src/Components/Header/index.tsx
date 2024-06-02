@@ -96,8 +96,9 @@ export default function Header() {
           ? "header__transparent__scrolling"
           : "header__whitebox__scrolling"
         } z-50
-        hover:bg-white
+        ${isOpenMenu ? "bg-white text-black" : "hover:bg-white"}
         hover:text-black
+        overflow-hidden
         `}
     >
       <div className="header-menu">
@@ -204,7 +205,7 @@ export default function Header() {
       </div>
 
       <nav
-        className="header-navMenu flex flex-col justify-between"
+        className="header-navMenu flex flex-col justify-between -translate-y-[1px]"
         style={{
           width: isOpenMenu ? "100%" : "0px",
         }}
@@ -228,10 +229,10 @@ export default function Header() {
               })}
             </ul>
 
-            <div className="h-[100px] border-t-2  flex items-center justify-start pl-[15px]">
+            <div className="h-[100px] border-y-2 flex items-center justify-start pl-[15px] translate-y-[1px] overflow-hidden">
               {!isLogin ? <Link to="/login" className="flex items-center space-x-2">
                 <CircleUserRound size={35} />
-                <h3 className="font-semibold text-lg">LOGIN</h3>
+                <h3 className="font-semibold text-lg">Đăng Nhập</h3>
               </Link> : <Button onClick={() => {
                 signOut();
               }}>
