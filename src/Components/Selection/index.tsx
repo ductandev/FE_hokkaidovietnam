@@ -22,8 +22,9 @@ type PropTypes = {
     disabled?: boolean;
     defaultValue: any;
     customClassTrigger?: string;
-    error?: string
-    type?: string
+    error?: string;
+    type?: string;
+    className?: string;
 }
 
 export default function Selection(props: PropTypes) {
@@ -39,7 +40,8 @@ export default function Selection(props: PropTypes) {
         defaultValue,
         customClassTrigger,
         error,
-        type = 'label'
+        type = 'label',
+        className,
     } = props;
 
     const [value, setValue] = useState(defaultValue)
@@ -59,6 +61,7 @@ export default function Selection(props: PropTypes) {
             <SelectTrigger
                 error={error}
                 className={`
+                ${className}
                 w-full 
                 ${type === 'tag' ? "px-0 border-none focus:ring-0" : ""}
                  ${customClassTrigger}`

@@ -171,6 +171,7 @@ export default function Header() {
 
               <DropdownMenuItem onClick={() => {
                 signOut()
+                navigate('/')
               }}>Đăng xuất</DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
