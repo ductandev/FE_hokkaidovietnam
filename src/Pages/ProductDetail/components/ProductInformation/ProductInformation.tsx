@@ -20,13 +20,18 @@ import "./styles.scss"
 
 const DEFAULT_QUANTITY = 1;
 
-const ProductInformation: React.FC<Product> = (props: Product) => {
+interface ProductAddTypeName extends Product {
+    ten_loai_san_pham: string;
+}
+
+const ProductInformation: React.FC<ProductAddTypeName> = (props: ProductAddTypeName) => {
     const {
         ten_san_pham,
         trang_thai_san_pham,
         gia_ban,
         mo_ta,
-        so_luong_trong_kho
+        so_luong_trong_kho,
+        ten_loai_san_pham
     } = props;
 
     const { saveCartStorage } = useCartStorage();
@@ -95,7 +100,7 @@ const ProductInformation: React.FC<Product> = (props: Product) => {
         md:text-left mt-5">
             <span className="font-light text-base text-[#777171]">
                 Thương hiệu:
-                <span className="font-medium text-black ml-1">Hokkaido</span>
+                <span className="font-medium text-black ml-1">{ten_loai_san_pham}</span>
             </span>
             <span className="mx-2">|</span>
 

@@ -14,6 +14,7 @@ import BlankPage from '@/Components/BlankPage/BlankPage';
 import { ProductCard } from '@/Components/ProductCard';
 
 import { getProduct, getProducts } from '@/Apis/Product/Product.api';
+import { getProductTypes } from "@/Apis/Product/ProductType.api";
 
 export default function ProductDetail() {
     const OPTIONS: EmblaOptionsType = {};
@@ -41,6 +42,22 @@ export default function ProductDetail() {
         retry: 0
     });
 
+    const { isLoading: isLoadingProductType, data: productType }: any = useQuery({
+        queryKey: ['productType'],
+        queryFn: () => {
+            const controller = new AbortController();
+
+            setTimeout(() => {
+                controller.abort()
+            }, 5000)
+            return getProductTypes(controller.signal)
+        },
+        keepPreviousData: true,
+        retry: 0
+    });
+
+
+
     const RenderTabs = [
         {
             tabName: "Detail",
@@ -57,6 +74,17 @@ export default function ProductDetail() {
     ];
 
     const deferredProductList = useDeferredValue(productList?.data?.content || [])
+    const deferredProductType = useDeferredValue(productType?.data?.content || []);
+
+    // Lấy tên loại sản phẩm từ deferredProductType
+    const productTypeName = data?.data?.content?.loai_san_pham_id != null
+        ? deferredProductType.find((type: { loai_san_pham_id: number; }) => type.loai_san_pham_id === data.data.content.loai_san_pham_id)?.ten_loai_san_pham
+        : '';
+
+    const productDataWithTypeName = {
+        ...data?.data?.content,
+        ten_loai_san_pham: productTypeName,
+    };
 
     const handleClickDetail = (_id: number | string) => {
         navigate(`/product/${_id}`);
@@ -67,15 +95,15 @@ export default function ProductDetail() {
             <Banner title="Thông tin sản phẩm" />
 
             {
-                isLoading ? <ProductDetailSkeleton /> :
+                isLoading && isLoadingProductType ? <ProductDetailSkeleton /> :
                     <div className='container grid grid-cols-1 md:grid-cols-2 mb-24 my-7'>
                         <ImageGallery
-                            slides={data?.data?.content?.hinh_anh}
+                            slides={data?.data?.content?.hinh_anh || []}
                             options={OPTIONS}
                             customClass="imageGallery_detail md:pr-10 lg:pr-26"
                         />
 
-                        <ProductInformation {...data?.data?.content} />
+                        <ProductInformation {...productDataWithTypeName} />
                     </div>
             }
 

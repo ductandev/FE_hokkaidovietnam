@@ -94,6 +94,11 @@ export default function Products() {
     });
 
     const renderXMLBody = () => {
+        // Lấy tên loại sản phẩm từ deferredProductType
+        const productTypeName = detailProduct?.loai_san_pham_id != null
+            ? deferredProductType.find((type: { loai_san_pham_id: number; }) => type.loai_san_pham_id === detailProduct.loai_san_pham_id)?.ten_loai_san_pham
+            : '';
+
         return <div className="grid grid-cols-1 md:grid-cols-2 mt-12 sm:mt-0">
             <div>
                 <ImageGallery
@@ -108,7 +113,7 @@ export default function Products() {
                 <h3 className="mt-4 md:mt-0 text-xl font-light">{detailProduct?.ten_san_pham}</h3>
 
                 <div className="my-3 md:my-5">
-                    <span className=" font-light text-base text-[#777171]">Thương hiệu <span className="font-medium text-black">Hokkaido</span></span>
+                    <span className=" font-light text-base text-[#777171]">Thương hiệu <span className="font-medium text-black">{productTypeName}</span></span>
                 </div>
 
                 <p className="font-normal text-2xl md:text-4xl">{formatCurrency(detailProduct?.gia_ban || 0)}</p>
