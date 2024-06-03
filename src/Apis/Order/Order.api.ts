@@ -9,7 +9,8 @@ const Models = {
     list: 'order/pagination',
     summary: "order/summary",
     create: 'order',
-    item: 'order'
+    item: 'order',
+    export: "order/export"
 };
 
 export const getOrders = (
@@ -44,6 +45,13 @@ export const editStatus = (id: any, payload: any) => {
 export const removeOrder = (id: any) => {
     return httpGuard.delete<any>(`${Models.create}/${id}`)
 }
+
+export const exportOrder = (
+    dateRange: any,
+    signal?: AbortSignal) =>
+    httpGuard.get<Orders>(`${Models.export}${dateRange}`, {
+        signal
+    });
 
 
 export const getOrderDetail = (orderID: number | string) => httpGuard.get<any>(`${Models.item}/${orderID}`)

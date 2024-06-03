@@ -1,6 +1,8 @@
 /* eslint-disable no-useless-escape */
 import { useCartStorage } from "@/Hooks/useCartStorage";
 import { Product } from "@/Types/Product.type";
+import { utils, writeFile } from 'xlsx';
+
 
 export const formatCurrency = (number: number) => {
     const formatter = new Intl.NumberFormat('vi-VN', {
@@ -149,10 +151,17 @@ export const badgeTagStatusTransform = (value: number, name: string) => {
         5: 'error',
     };
 
+    const statusContac: any = {
+        1: "outline",
+        2: 'success',
+        3: 'error',
+    };
+
     switch (name) {
         case 'trang_thai_don_hang_id':
             return statusOrder[value];
-
+        case 'trang_thai_lien_he_id':
+            return statusContac[value];
         default:
             return "unknown"
     }
@@ -171,4 +180,16 @@ export function getNestedError(name: string, errors: Record<string, any>) {
     }
 
     return currentError.message ?? "";
+}
+
+export const exportHandler = (aoo: any, opts?: any) => {
+    const ws = utils.json_to_sheet(aoo, opts);
+
+    const wb = utils.book_new();
+
+    utils.book_append_sheet(wb, ws, "Data");
+
+    let generatedName = `order-${Date.now()}`;
+
+    writeFile(wb, `${generatedName}.xlsx`);
 }

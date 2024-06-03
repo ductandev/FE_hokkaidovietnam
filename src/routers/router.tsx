@@ -29,7 +29,6 @@ import { Privacy } from "@/Components/Privacy/Privacy";
 
 // ! Admin Pages
 import { AdminContact, AdminCustomer, AdminNews, AdminOrder, AdminProduct, AdminNewsEditorPage } from "@/Pages/Admin";
-import Search from "@/Pages/Search";
 import DetailMedia from "@/Pages/DetailMedia";
 
 const router = createBrowserRouter([
