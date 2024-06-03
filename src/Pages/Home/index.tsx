@@ -153,22 +153,25 @@ export default function Home() {
   const RenderNewsCards = (): JSX.Element[] => {
     return NewsList?.data?.content?.map((news: any, idx: any) => {
       return (
-        <div className="flex flex-col items-center" key={idx}>
-          <div className="w-full md:w-[350px] h-[250px]">
-            <img className="w-full h-full object-cover" src={news.hinh_anh} alt="..." />
+        <Link to={`/media/${news.tin_tuc_id}`}>
+          <div className="flex flex-col items-center" key={idx}>
+            <div className="w-full md:w-[350px] h-[250px]">
+              <img className="w-full h-full object-cover" src={news.hinh_anh} alt="..." />
+            </div>
+            <div className="flex flex-col items-center w-[350px]">
+              <h1 className="text-lg font-medium text-center mt-4">
+                {news.tieu_de}
+              </h1>
+              <span className="block text-center text-gray-500 mt-2 mb-2">
+                {news.mo_ta.length > 130 ? news.mo_ta.substr(0, 133) + '...' : news.mo_ta}
+              </span>
+              <button className="border-b-2 border-black transition-transform transform hover:scale-105">
+                Xem thêm
+              </button>
+            </div>
           </div>
-          <div className="flex flex-col items-center w-[350px]">
-            <h1 className="text-lg font-medium text-center mt-4">
-              {news.tieu_de}
-            </h1>
-            <span className="block text-center text-gray-500 mt-2 mb-2">
-              {news.mo_ta.length > 130 ? news.mo_ta.substr(0, 133) + '...' : news.mo_ta}
-            </span>
-            <button className="border-b-2 border-black transition-transform transform hover:scale-105">
-              Xem thêm
-            </button>
-          </div>
-        </div>
+        </Link>
+
       )
     })
   }
