@@ -67,9 +67,12 @@ export default function Selection(props: PropTypes) {
                  ${customClassTrigger}`
                 }
             >
-                {type === 'tag' && <Badge
-                    variant={badgeTagStatusTransform(value, name)}>
-                    {options.find(y => y[valueKey] === value)[displayKey]}</Badge>}
+                {type === 'tag' &&
+                    <Badge
+                        variant={badgeTagStatusTransform(value, name)}
+                    >
+                        {options.find(y => y[valueKey] === value)[displayKey]}
+                    </Badge>}
 
                 {type === "label" && <SelectValue placeholder={placeholder} />}
             </SelectTrigger>

@@ -146,9 +146,11 @@ export const columnsOrder: ColumnDef<Order>[] | any = [
                 <span className="mr-4" onClick={() => {
                     row.original.onEdit(row.original.don_hang_id, row.original)
                 }}>{svgEdit}</span>
-                <span onClick={() => {
+
+                {row.original.trang_thai_don_hang_id !== 4 && <span onClick={() => {
                     row.original.onRemove(row.original.don_hang_id)
-                }}>{svgDelete}</span>
+                }}>{svgDelete}</span>}
+
             </div>
         },
     },
@@ -337,7 +339,7 @@ export const columnsContact: ColumnDef<any>[] | any = [
 
             return <div className="max-w-[140px] flex items-center justify-start">
                 <Selection
-                    type="label"
+                    type="tag"
                     defaultValue={row.original.TrangThaiLienHe.trang_thai_lien_he_id}
                     options={STATUS_CONTACT}
                     valueKey="value"

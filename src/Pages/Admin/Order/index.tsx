@@ -1,5 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 import { useOrder, useOrderList, useOrderSummary } from "@/Hooks/useOrder";
+import { useAddress } from "@/Hooks/useAddress/useAddress";
+import { useParams } from "react-router-dom";
+import dayjs from 'dayjs';
 
 import DataGrid from "@/Components/DataGrid/Datagrid";
 import MetricCard from "@/Components/Metrics/MetricCard";
@@ -11,8 +14,9 @@ import { BsWallet2 } from "react-icons/bs";
 import { BsBoxSeam } from "react-icons/bs";
 import { DrawerDialog } from "../Form";
 import { DEFAULT_ORDER_FILTER_FORM } from "../Form/constants";
-import { buildQueryString } from "@/Helper/helper";
-import { useParams } from "react-router-dom";
+import { buildQueryString, exportHandler } from "@/Helper/helper";
+import { Button } from "@/Components/ui/button";
+import { exportOrder } from "@/Apis/Order/Order.api";
 
 function AdminOrder() {
     const { id }: any = useParams();
@@ -22,10 +26,12 @@ function AdminOrder() {
     const [isVisibleDetail, setIsVisibleDetail] = useState(false);
     const [detialOfOrder, setDetailOfOrder] = useState(0)
     const [queryFilter, setQueryFilter] = useState("?status=0");
+    const { buildAddressFromId }: any = useAddress();
 
     const { editStatusOrder, removeOrderMutation } = useOrder({ page, pageSize, queryFilter });
     const { isLoading, data } = useOrderList({ page, pageSize, queryFilter });
     const { isLoading: isLoadingSummary, data: dataSummary } = useOrderSummary();
+    const [isLoadingExport, setIsLoadingExport] = useState(false);
 
     useEffect(() => {
         if (id) {
@@ -75,6 +81,39 @@ function AdminOrder() {
         removeOrderMutation.mutate(id)
     }
 
+    const handleClickExport = async (range: any) => {
+        setIsLoadingExport(true)
+        const controller = new AbortController();
+
+        setTimeout(() => {
+            controller.abort()
+        }, 5000);
+
+        const data: any = await exportOrder(buildQueryString(range), controller.signal)
+        const exportData = data?.data?.content;
+
+        const payload = exportData.map((values: any) => {
+            let result = {
+                ...values,
+                dia_chi: buildAddressFromId({
+                    dia_chi: values.dia_chi,
+                    phuong_id: values.phuong_id,
+                    quan_id: values.quan_id,
+                    tinh_thanh_id: values.tinh_thanh_id,
+                }),
+            }
+
+            delete result['phuong_id']
+            delete result['tinh_thanh_id']
+            delete result['quan_id'];
+
+            return result;
+        })
+
+        exportHandler(payload, { dateNF: 'dd/mm/yyyy;@', cellDates: true, raw: true })
+        setIsLoadingExport(false);
+    };
+
     return (
         <div>
             <div className="flex items-center flex-wrap">
@@ -100,19 +139,51 @@ function AdminOrder() {
                     />
                 </div>
 
-                <DrawerDialog
-                    label={'Bộ lọc'}
-                    isVisible={isVisibleAdd}
-                    onHandleToogleVisible={(visible: boolean) => {
-                        setIsVisibleAdd(visible)
-                    }}
-                    context='orderFilter'
-                    onHandleSubmit={(values: any) => {
-                        setQueryFilter(buildQueryString(values))
-                    }}
-                    defaultValues={DEFAULT_ORDER_FILTER_FORM}
-                    className="lg:h-[40px] h-[26px]"
-                />
+                <div>
+                    <DrawerDialog
+                        label={'Bộ lọc'}
+                        isVisible={isVisibleAdd}
+                        onHandleToogleVisible={(visible: boolean) => {
+                            setIsVisibleAdd(visible)
+                        }}
+                        context='orderFilter'
+                        onHandleSubmit={(values: any) => {
+                            setQueryFilter(buildQueryString(values))
+                        }}
+                        defaultValues={DEFAULT_ORDER_FILTER_FORM}
+                        className="lg:h-[40px] h-[26px]"
+                    />
+
+                    <Button
+                        className="lg:h-[40px] h-[26px] ml-3"
+                        variant={"outline"}
+                        disabled={isLoadingExport}
+                        onClick={() => {
+                            handleClickExport(
+                                {
+                                    startDate: dayjs().startOf("month").format(),
+                                    endDate: dayjs().add(1, 'day').format()
+                                }
+                            )
+                        }}
+                    >
+                        Xuất tháng
+                    </Button>
+
+                    <Button
+                        className="lg:h-[40px] h-[26px] ml-3"
+                        variant={"outline"}
+                        disabled={isLoadingExport}
+                        onClick={() => {
+                            handleClickExport({
+                                startDate: "",
+                                endDate: ""
+                            })
+                        }}
+                    >
+                        Xuất All
+                    </Button>
+                </div>
             </div>
 
             {isLoading ? <>
