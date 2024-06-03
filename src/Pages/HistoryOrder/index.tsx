@@ -101,10 +101,10 @@ export default function HistoryOrder() {
     } else {
       return (
         <>
-          <div className="sm:mt-8 md:mt-12 lg:mt-[77px] border-b-[#989494] border-b-[1.5px] md:border-none">
+          <div className="sm:mt-8 md:mt-12 lg:mt-[60px] border-b-[#989494] border-b-[1.5px] md:border-none">
             <BlankPage text="Lịch sử mua hàng trống" subText="Hãy đặt hàng ngay để có thể xem đơn đặt hàng đã mua" />
           </div>
-          <div className="flex justify-center">
+          <div className="flex justify-center mb-4">
             <a href="/products" className="mt-4 bg-black text-white hover:bg-slate-200 hover:text-black border rounded-full px-[23px] py-[13px] font-bold">
               Bắt đầu mua hàng
             </a>
