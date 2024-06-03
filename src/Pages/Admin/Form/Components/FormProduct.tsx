@@ -7,7 +7,6 @@ import { Textarea } from '@/Components/ui/textarea';
 import { Button } from '@/Components/ui/button';
 import Selection from "@/Components/Selection";
 import ImageUpload from '@/Components/ImageUpload';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 import { getProductTypes } from '@/Apis/Product/ProductType.api';
 import { getNestedError, isEmpty, isNumberKey, isNumberMobile } from '@/Helper/helper';

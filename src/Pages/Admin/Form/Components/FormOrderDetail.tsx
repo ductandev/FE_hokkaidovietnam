@@ -8,7 +8,6 @@ import { Skeleton } from '@/Components/ui/skeleton';
 import { badgeTagStatusTransform, formatCurrency, formatTime, isEmpty, paymentTransform, summaryPriceInCart } from '@/Helper/helper';
 import { getOrderDetail } from '@/Apis/Order/Order.api';
 import { STATUS_ORDER } from '@/Components/DataGrid/columns';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 function FormOrderDetail(props: any) {
     const { id } = props;
@@ -35,7 +34,7 @@ function FormOrderDetail(props: any) {
     }
 
     const order: any = data?.data?.content || {};
-    console.log({ order })
+
     const products = order?.ChiTietDonHang?.map(((product: any) => {
         return {
             so_luong: product.so_luong,

@@ -5,7 +5,6 @@ import { Label } from '@/Components/ui/label';
 import { Badge } from '@/Components/ui/badge';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { STATUS_ORDER } from '@/Components/DataGrid/columns';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 import { badgeTagStatusTransform, formatCurrency, formatTime } from '@/Helper/helper';
 
