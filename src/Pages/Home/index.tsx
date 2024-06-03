@@ -13,8 +13,6 @@ import img7 from "../../assets/img_home/7.png";
 import img8 from "../../assets/img_home/8.png";
 import img9 from "../../assets/img_home/9.png";
 import img10 from "../../assets/img_home/10.png";
-import img11 from "../../assets/img_home/11.png";
-import img12 from "../../assets/img_home/12.png";
 import bg1 from "../../assets/img_home/bg1.png";
 import bg2 from "../../assets/img_home/bg2.png";
 import logofb from "../../assets/img_home/logo-fb.png";
@@ -34,6 +32,7 @@ import FieldLife from "@/Components/FieldLife/FieldLife";
 import { ProductCard } from "@/Components/ProductCard";
 import { useQuery } from "react-query";
 import { getProducts } from "@/Apis/Product/Product.api";
+import { getNews } from "@/Apis/News/News.api";
 
 
 export default function Home() {
@@ -46,6 +45,21 @@ export default function Home() {
         controller.abort()
       }, 5000)
       return getProducts(1, 4, 0, "", controller.signal)
+    },
+    keepPreviousData: true,
+    retry: 0
+  });
+
+  const { isLoading: isLoadingNews, data: NewsList }: any = useQuery({
+    queryKey: ['news'],
+    queryFn: () => {
+      const controller = new AbortController();
+
+      setTimeout(() => {
+        controller.abort()
+      }, 5000);
+
+      return getNews(1, 3, "", controller.signal);
     },
     keepPreviousData: true,
     retry: 0
@@ -132,6 +146,29 @@ export default function Home() {
         <Fragment key={`${product.id}_${idx}`}>
           <ProductCard {...product} />
         </Fragment>
+      )
+    })
+  }
+
+  const RenderNewsCards = (): JSX.Element[] => {
+    return NewsList?.data?.content?.map((news: any, idx: any) => {
+      return (
+        <div className="flex flex-col items-center" key={idx}>
+          <div className="w-full md:w-[350px] h-[250px]">
+            <img className="w-full h-full object-cover" src={news.hinh_anh} alt="..." />
+          </div>
+          <div className="flex flex-col items-center w-[350px]">
+            <h1 className="text-lg font-medium text-center mt-4">
+              {news.tieu_de}
+            </h1>
+            <span className="block text-center text-gray-500 mt-2 mb-2">
+              {news.mo_ta}
+            </span>
+            <button className="border-b-2 border-black transition-transform transform hover:scale-105">
+              Xem thêm
+            </button>
+          </div>
+        </div>
       )
     })
   }
@@ -531,64 +568,7 @@ export default function Home() {
       <div className="flex flex-col items-center mt-16">
         <h1 className="text-xl md:text-3xl font-medium mb-8">TIN TỨC</h1>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mx-4">
-          {/* Cột 1 */}
-          <div className="flex flex-col items-center">
-            <div className="w-full md:w-[350px] h-[250px]">
-              <img className="w-full h-full object-cover" src={img11} alt="" />
-            </div>
-            <div className="flex flex-col items-center w-[350px]">
-              <h1 className="text-lg font-medium text-center mt-4">
-                Sứ mệnh mang tới những sản phẩm cao cấp cho người tiêu dùng của
-                Dairy
-              </h1>
-              <span className="block text-center text-gray-500 mt-2 mb-2">
-                Chúng tôi muốn mang đến những điều thú vị mới vào cuộc sống hàng
-                ngày của ...
-              </span>
-              <button className="border-b-2 border-black transition-transform transform hover:scale-105">
-                Xem thêm
-              </button>
-            </div>
-          </div>
-
-          {/* Cột 2 */}
-          <div className="flex flex-col items-center">
-            <div className="w-full md:w-[350px] h-[250px]">
-              <img className="w-full h-full object-cover" src={img12} alt="" />
-            </div>
-            <div className="flex flex-col items-center w-[350px]">
-              <h1 className="text-lg font-medium text-center mt-4">
-                8 bí quyết ăn uống khiến người Nhật Bản gầy nhất thế giới
-              </h1>
-              <span className="block text-center text-gray-500 mt-2 mb-2">
-                Không chỉ giữ kỷ lục về tuổi thọ, Nhật Bản còn được coi là quốc
-                gia ...
-              </span>
-              <button className="border-b-2 border-black transition-transform transform hover:scale-105">
-                Xem thêm
-              </button>
-            </div>
-          </div>
-
-          {/* Cột 3 */}
-          <div className="flex flex-col items-center">
-            <div className="w-full md:w-[350px] h-[250px]">
-              <img className="w-full h-full object-cover" src={img11} alt="" />
-            </div>
-            <div className="flex flex-col items-center w-[350px]">
-              <h1 className="text-lg font-medium text-center mt-4">
-                Thương hiệu sữa được yêu thích tại đất nước Nhật Bản đã về tới
-                Việt Nam
-              </h1>
-              <span className="block text-center text-gray-500 mt-2 mb-2">
-                Dòng sữa tươi tiệt trùng tốt cho dạ dày, giàu canxi và dòng sữa
-                chua lên ...
-              </span>
-              <button className="border-b-2 border-black transition-transform transform hover:scale-105">
-                Xem thêm
-              </button>
-            </div>
-          </div>
+          {!isLoadingNews && RenderNewsCards()}
         </div>
       </div>
 
