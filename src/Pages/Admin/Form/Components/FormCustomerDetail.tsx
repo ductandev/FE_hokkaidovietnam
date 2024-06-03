@@ -5,7 +5,6 @@ import { Label } from '@/Components/ui/label';
 import { Badge } from '@/Components/ui/badge';
 import { Skeleton } from '@/Components/ui/skeleton';
 import { STATUS_ORDER } from '@/Components/DataGrid/columns';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 import { badgeTagStatusTransform, formatCurrency, formatTime } from '@/Helper/helper';
 
@@ -114,7 +113,7 @@ export function FormCustomerDetail(props: any) {
                                         Mã đơn hàng #{product.don_hang_id}
                                     </Link>
 
-                                    <div className='flex'>
+                                    <div className='block lg:flex'>
                                         <p className='mr-4'>{formatCurrency(product.tong_tien)}</p>
 
                                         <p>

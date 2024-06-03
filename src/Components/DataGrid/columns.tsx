@@ -81,7 +81,6 @@ export const columnsOrder: ColumnDef<Order>[] | any = [
         accessorKey: "thoi_gian_dat_hang",
         header: "Ngày",
         width: 20,
-
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -94,7 +93,6 @@ export const columnsOrder: ColumnDef<Order>[] | any = [
         accessorKey: "tong_tien",
         header: "Thành tiền",
         width: 20,
-
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -107,7 +105,6 @@ export const columnsOrder: ColumnDef<Order>[] | any = [
         accessorKey: "hinh_thuc_thanh_toan_id",
         header: "Thanh toán",
         width: 20,
-
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span>
@@ -417,7 +414,7 @@ export const columnsNews: ColumnDef<News>[] | any = [
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span
-                    className="mr-4"
+                    className="md:block hidden mr-4"
                     onClick={() => {
                         row.original.onEdit(row.original.tin_tuc_id)
                     }}

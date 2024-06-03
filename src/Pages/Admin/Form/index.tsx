@@ -1,19 +1,10 @@
 import * as React from "react"
 import { useEffect } from "react";
 
-import useMediaQuery from "@/Hooks/useMediaQuery";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
 import { Button } from "@/Components/ui/button"
-import {
-    Dialog,
-    DialogContent,
-    DialogDescription,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from "@/Components/ui/dialog";
 
 import {
     Drawer,
@@ -68,7 +59,6 @@ export function DrawerDialog(props: IProps) {
     }, [isVisible])
 
 
-    const isMobile = useMediaQuery("(max-width: 768px)");
 
     const {
         handleSubmit,
@@ -101,31 +91,6 @@ export function DrawerDialog(props: IProps) {
 
         setOpen(isOpen);
     }
-
-    // if (isMobile) {
-    //     return (
-    //         <Dialog open={open} onOpenChange={handleToogleVisible} >
-    //             <DialogTrigger asChild>
-    //                 {
-    //                     drawerTriggerEle ?
-    //                         drawerTriggerEle : <Button className={className}>
-    //                             {label}
-    //                         </Button>
-    //                 }
-    //             </DialogTrigger>
-
-    //             <DialogContent className="sm:max-w-[425px]">
-    //                 <DialogHeader>
-    //                     <DialogTitle>Edit profile</DialogTitle>
-
-    //                     <DialogDescription>
-    //                         Make changes to your profile here. Click save when you're done.
-    //                     </DialogDescription>
-    //                 </DialogHeader>
-    //             </DialogContent>
-    //         </Dialog>
-    //     )
-    // };
 
 
     const handleOnSubmitForm = async (values: any) => {
@@ -166,14 +131,21 @@ export function DrawerDialog(props: IProps) {
 
 
             <DrawerContent className="h-[100vh] w-[100vw] lg:w-[40vw]" >
-                <DrawerHeader className="max-w-[300px] text-left" style={{
+                <DrawerHeader className="w-[100%] flex justify-between text-left" style={{
                     height: "76px"
                 }}>
-                    <DrawerTitle>{label}</DrawerTitle>
+                    <div>
+                        <DrawerTitle>{label}</DrawerTitle>
 
-                    <DrawerDescription>
-                        Bạn đang {label} mới
-                    </DrawerDescription>
+                        <DrawerDescription>
+                            Bạn đang {label} mới
+                        </DrawerDescription>
+
+                    </div>
+
+                    <DrawerClose asChild className="lg:hidden block h-[40px] w-[40px]">
+                        <Button>X</Button>
+                    </DrawerClose>
                 </DrawerHeader>
 
                 <ScrollArea
@@ -186,7 +158,7 @@ export function DrawerDialog(props: IProps) {
                     </form>
                 </ScrollArea>
 
-                <DrawerFooter className="pt-2 w-full" style={{
+                <DrawerFooter className="lg:flex hidden pt-2 w-full" style={{
                     height: "80px"
                 }}>
                     <DrawerClose asChild>

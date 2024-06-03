@@ -8,7 +8,6 @@ import { Skeleton } from '@/Components/ui/skeleton';
 import { badgeTagStatusTransform, formatCurrency, formatTime, isEmpty, paymentTransform, summaryPriceInCart } from '@/Helper/helper';
 import { getOrderDetail } from '@/Apis/Order/Order.api';
 import { STATUS_ORDER } from '@/Components/DataGrid/columns';
-import { ScrollArea } from '@/Components/ui/scroll-area';
 
 function FormOrderDetail(props: any) {
     const { id } = props;
@@ -35,7 +34,7 @@ function FormOrderDetail(props: any) {
     }
 
     const order: any = data?.data?.content || {};
-    console.log({ order })
+
     const products = order?.ChiTietDonHang?.map(((product: any) => {
         return {
             so_luong: product.so_luong,
@@ -105,33 +104,45 @@ function FormOrderDetail(props: any) {
 
                         <div className='my-4'>
                             {order.ChiTietDonHang.map((product: any, idx: any) => {
-                                return <div key={idx} className='grid my-2 flex items-center  grid-cols-4'>
-                                    <div className="col-span-3 flex items-center ">
-                                        <div className='mr-4'>
-                                            <img
-                                                src={product.SanPham.hinh_anh[0]}
-                                                style={{
-                                                    maxWidth: "40px",
-                                                    height: "auto"
-                                                }}
-                                                alt="hinh_anh san pham"
-                                            />
+                                return <>
+                                    <div key={idx} className='grid my-2 flex items-center  grid-cols-4'>
+                                        <div className="col-span-3 flex items-center ">
+                                            <div className='mr-4'>
+                                                <img
+                                                    src={product.SanPham.hinh_anh[0]}
+                                                    style={{
+                                                        height: "auto"
+                                                    }}
+                                                    alt="hinh_anh san pham"
+                                                    className='lg:max-w-[40px] max-w-[20px]'
+                                                />
+                                            </div>
+
+                                            <div className='text-sm lg:text-base'>{product.SanPham.ten_san_pham}</div>
                                         </div>
-                                        <div>{product.SanPham.ten_san_pham}</div>
+
+                                        <div className="col-span-1 lg:flex">
+                                            <span className='text-sm lg:text-base flex flex-start' style={{
+                                                width: '60%'
+                                            }}>{formatCurrency(product.don_gia)}</span>
+
+                                            <span
+                                                style={{
+                                                    width: '20%'
+                                                }}
+                                                className='lg:block hidden text-sm lg:text-base flex items-center'>
+                                                x
+                                            </span>
+
+                                            <span style={{
+                                                width: '20%'
+                                            }} className='lg:block hidden text-sm lg:text-base'>{product.so_luong}</span>
+                                        </div>
+
                                     </div>
 
-                                    <div className="col-span-1 flex">
-                                        <span className='flex flex-start' style={{
-                                            width: '60%'
-                                        }}>{formatCurrency(product.don_gia)}</span>
-                                        <span style={{
-                                            width: '20%'
-                                        }} className='flex items-center'>x</span>
-                                        <span style={{
-                                            width: '20%'
-                                        }}>{product.so_luong}</span>
-                                    </div>
-                                </div>
+                                    <div className='lg:text-base text-sm lg:hidden block'>Số lượng: {product.so_luong}</div>
+                                </>
                             })}
                         </div>
                     </div>
