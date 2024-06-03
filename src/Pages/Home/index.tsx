@@ -162,7 +162,7 @@ export default function Home() {
               {news.tieu_de}
             </h1>
             <span className="block text-center text-gray-500 mt-2 mb-2">
-              {news.mo_ta}
+              {news.mo_ta.length > 130 ? news.mo_ta.substr(0, 133) + '...' : news.mo_ta}
             </span>
             <button className="border-b-2 border-black transition-transform transform hover:scale-105">
               Xem thêm
