@@ -113,7 +113,7 @@ export function FormCustomerDetail(props: any) {
                                         Mã đơn hàng #{product.don_hang_id}
                                     </Link>
 
-                                    <div className='flex'>
+                                    <div className='block lg:flex'>
                                         <p className='mr-4'>{formatCurrency(product.tong_tien)}</p>
 
                                         <p>
