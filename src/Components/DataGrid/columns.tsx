@@ -414,7 +414,7 @@ export const columnsNews: ColumnDef<News>[] | any = [
         cell: ({ row }: any) => {
             return <div className="flex items-center justify-start">
                 <span
-                    className="mr-4"
+                    className="md:block hidden mr-4"
                     onClick={() => {
                         row.original.onEdit(row.original.tin_tuc_id)
                     }}
