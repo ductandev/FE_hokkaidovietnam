@@ -14,7 +14,7 @@ import { BsWallet2 } from "react-icons/bs";
 import { BsBoxSeam } from "react-icons/bs";
 import { DrawerDialog } from "../Form";
 import { DEFAULT_ORDER_FILTER_FORM } from "../Form/constants";
-import { buildQueryString, exportHandler } from "@/Helper/helper";
+import { buildQueryString, exportHandler, formatTime } from "@/Helper/helper";
 import { Button } from "@/Components/ui/button";
 import { exportOrder } from "@/Apis/Order/Order.api";
 
@@ -101,6 +101,7 @@ function AdminOrder() {
                     quan_id: values.quan_id,
                     tinh_thanh_id: values.tinh_thanh_id,
                 }),
+                thoi_gian_dat_hang: formatTime(values.thoi_gian_dat_hang, "dd/mm/yyyy hh:mm")
             }
 
             delete result['phuong_id']

@@ -1,13 +1,15 @@
 import { useQuery } from "react-query";
 import { getNews } from "@/Apis/News/News.api";
 import { Link } from "react-router-dom";
+import { HPagination } from "../Pagination";
+import { useState } from "react";
 
 const SkeletonNew = () => {
   return <></>
 }
 
 export default function New(props: any) {
-  const { page } = props;
+  const [page, setPage] = useState(1);
 
   const { isLoading, data }: any = useQuery({
     queryKey: ['news', page],
@@ -18,13 +20,14 @@ export default function New(props: any) {
         controller.abort()
       }, 5000);
 
-      return getNews(1, 8, "", controller.signal);
+      return getNews(page, 9, "", controller.signal);
     },
     keepPreviousData: true,
     retry: 0
   });
 
   const news = data?.data?.content;
+  const totalNews = data?.data?.total
 
   const mainNews = (content: any) => {
     return <Link to={`/media/${content.tin_tuc_id}`} className="flex flex-col items-start md:items-center">
@@ -100,6 +103,18 @@ export default function New(props: any) {
               </>
             })}
           </div>
+
+          <div className="mt-8">
+            <HPagination
+              total={totalNews || 0}
+              pageSize={9}
+              current={page}
+              onChangePage={(page: number) => {
+                setPage(page)
+              }}
+            />
+          </div>
+
         </>
       }
     </div>

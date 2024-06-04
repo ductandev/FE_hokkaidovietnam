@@ -489,7 +489,12 @@ export default function CheckoutPage() {
             border-[#777171]`}>
               <Input name="discount_code" placeholder="Nhập mã giảm giá" />
 
-              <Button className="h-[40px] md:text-lg text-base px-6">Áp dụng</Button>
+              <Button
+                className="h-[40px] md:text-lg text-base px-6"
+                type="button"
+              >
+                Áp dụng
+              </Button>
             </div>
 
             <div
