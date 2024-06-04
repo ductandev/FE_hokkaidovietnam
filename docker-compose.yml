@@ -1,0 +1,15 @@
+version: "3.5"
+services:
+  client_app:
+    container_name: client_app
+    build: 
+      context: .
+      dockerfile: ./Dockerfile
+    image: client_app_hokkaido:latest
+    ports:
+      - '3100:3100'
+    restart: always
+networks:
+  backend:
+    name: my-network-backend
+    

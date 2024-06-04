@@ -1,14 +1,26 @@
-FROM nginx
+# pull official base image
+FROM node:alpine
 
-# Cài đặt git
-RUN apt-get update && apt-get install -y git
+# set working directory
+WORKDIR /app
 
-WORKDIR /usr/share/nginx/html
+# Copies package.json and package-lock.json to Docker environment
+COPY package*.json ./
 
-COPY nginx.conf /etc/nginx/nginx.conf
+# Installs all node packages
+RUN npm install
 
-COPY build/ .
+# Copies everything over to Docker environment
+COPY . .
 
+# Build for production.
+RUN npm run build --production
 
-# docker build . -t img-fe-hokkaido
-# docker run -d -p 3100:80 --name cons-fe-hokkaido img-fe-hokkaido 
+# Install serve to run the application.
+RUN npm install -g serve
+
+# Uses port which is used by the actual application
+EXPOSE 3100
+
+# Run application
+CMD serve -s build
