@@ -1,7 +1,7 @@
 import axios from "axios";
 
 //setup hằng số
-export const DOMAIN = "http://hokkaido.ductandev.io.vn";
+export const DOMAIN = "https://hokkaido.ductandev.io.vn";
 export const TOKEN = "accessToken";
 export const USER_LOGIN = "hk_tk_access";
 
