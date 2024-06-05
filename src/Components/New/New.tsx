@@ -20,7 +20,7 @@ export default function New(props: any) {
         controller.abort()
       }, 5000);
 
-      return getNews(page, 9, "", controller.signal);
+      return getNews(page, 10, "", controller.signal);
     },
     keepPreviousData: true,
     retry: 0
@@ -96,7 +96,7 @@ export default function New(props: any) {
           >
             {news.map((content: any, idx: any) => {
               return <>
-                {idx === 0 ? <div className="row-span-2" key={idx}>
+                {idx === 0 ? <div className="row-span-3" key={idx}>
                   {mainNews(content)}
                 </div> : <div key={idx}>
                   {otherNews(content)}</div>}
@@ -107,9 +107,10 @@ export default function New(props: any) {
           <div className="mt-8">
             <HPagination
               total={totalNews || 0}
-              pageSize={9}
+              pageSize={10}
               current={page}
               onChangePage={(page: number) => {
+                window.scroll(0, 0)
                 setPage(page)
               }}
             />
