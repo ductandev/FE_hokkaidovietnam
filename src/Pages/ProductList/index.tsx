@@ -152,6 +152,7 @@ export default function Products() {
     }
 
     const deferredProductList = useDeferredValue(productList?.data?.content || []);
+    const filteredProductList = deferredProductList.filter((product: Product) => product.trang_thai_san_pham === true);
     const deferredProductType = useDeferredValue(productType?.data?.content || []);
 
     const handleQuantityChanged = (quantity: number) => {
@@ -228,7 +229,7 @@ export default function Products() {
             </div>
 
 
-            {isLoadingProductList ? <div className="container grid grid-cols-3 grid-md-cols-4 gap-5">
+            {isLoadingProductList ? <div className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                 {Array.from(Array(PAGE_SIZE).keys()).map((_, idx) => {
                     return <ProductCard
                         key={idx}
@@ -237,7 +238,7 @@ export default function Products() {
                 })}
             </div> : <>
                 {deferredProductList.length ? <div className="container grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-4 gap-5">
-                    {deferredProductList.map((product: Product, idx: any) => {
+                    {filteredProductList.map((product: Product, idx: any) => {
                         return <Fragment key={`${product.san_pham_id}_${idx}`}>
                             <ProductCard
                                 {...product}

@@ -128,7 +128,7 @@ export default function CheckoutPage() {
       removeItem(PREFIX);
     },
     onError: () => {
-      toast.error(`Đã xảy ra lỗi, Không thể đặt hàng !`, {
+      toast.error(`Đã xảy ra lỗi không thể đặt hàng!`, {
         position: "top-center",
       });
     },
