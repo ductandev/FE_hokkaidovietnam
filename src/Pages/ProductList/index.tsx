@@ -257,6 +257,7 @@ export default function Products() {
                         pageSize={8}
                         current={page}
                         onChangePage={(page: number) => {
+                            window.scroll(0, 0)
                             setPage(page)
                         }}
                     />
