@@ -149,7 +149,7 @@ function FormOrderDetail(props: any) {
             }
 
             {!isLoading && <div >
-                <h3 className='font-bold'>Tổng cộng: <span className='text-xl'>{calculateSummary}</span></h3>
+                <h3 className='font-bold'>Tổng cộng: <span className='text-xl'>{formatCurrency(order.tong_tien)}</span></h3>
             </div>}
         </div>
     )

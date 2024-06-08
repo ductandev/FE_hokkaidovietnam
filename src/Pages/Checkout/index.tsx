@@ -51,7 +51,8 @@ export interface UserPaymentFrm {
 
 export default function CheckoutPage() {
   const { getProvince, getDistrict, getWard }: any = useAddress();
-  const [priceDiscount, setPriceDiscount] = useState(0)
+  const [priceDiscount, setPriceDiscount] = useState(0);
+  const [voucher, setVoucher] = useState('')
   const cartState = useSelector(selectCart);
   const userState = useSelector(selectUser);
 
@@ -79,10 +80,9 @@ export default function CheckoutPage() {
 
   const watchDistrict = getDistrict(watch("tinh_thanh_id"));
   const watchWard = getWard(watch("quan_id"));
-  const watchDiscount = watch("ma_giam_gia")
 
   const { isLoading: isLoadingDiscount, data: dataDiscount, refetch }: any = useQuery({
-    queryKey: ['discount', watchDiscount],
+    queryKey: ['discount', voucher],
     queryFn: () => {
       const controller = new AbortController();
 
@@ -90,10 +90,13 @@ export default function CheckoutPage() {
         controller.abort()
       }, 5000);
 
-      return checkDiscount(watchDiscount, controller.signal);
+      return checkDiscount(voucher, controller.signal);
     },
-    onSuccess: () => {
+    onError: () => {
       setValue("ma_giam_gia", "")
+      setVoucher("")
+      setPriceDiscount(0)
+      toast.error("Mã giảm giá không tồn tại!")
     },
     keepPreviousData: true,
     retry: 0,
@@ -173,6 +176,8 @@ export default function CheckoutPage() {
       const priceCount = (totalProductPrice * percentage) / 100;
 
       setPriceDiscount(priceCount)
+      setValue("ma_giam_gia", voucher)
+      setVoucher('');
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dataDiscount])
@@ -222,7 +227,6 @@ export default function CheckoutPage() {
     const payload = {
       ...values,
       tong_tien: totalPrice,
-      ma_giam_gia: "",
       san_pham: cartState.map((product: any) => {
         return {
           san_pham_id: product.san_pham_id,
@@ -530,17 +534,13 @@ export default function CheckoutPage() {
                   border-[#777171]`
               }
             >
-              <Controller
-                name="ma_giam_gia"
-                control={control}
-                render={({ field }: any) => {
-                  return (
-                    <Input
-                      placeholder="Nhập mã giảm giá"
-                      value={field.value}
-                      {...field}
-                    />
-                  );
+              <Input
+                placeholder="Nhập mã giảm giá"
+                value={voucher}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setVoucher(value)
                 }}
               />
 

@@ -161,7 +161,7 @@ export default function Header() {
               <DropdownMenuSeparator />
 
               {isAdmin && <DropdownMenuItem onClick={() => {
-                navigate('/admin/customer')
+                navigate('/admin/order')
               }}>Vào admin</DropdownMenuItem>}
               <DropdownMenuItem onClick={() => {
                 navigate('/history')
