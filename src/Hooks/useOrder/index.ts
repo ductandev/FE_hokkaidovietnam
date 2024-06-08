@@ -24,7 +24,8 @@ export const useOrderList = ({ page, pageSize = DEFAULT_PAGE_SIZE, queryFilter =
             return getOrders(page, pageSize, queryFilter, controller.signal)
         },
         keepPreviousData: true,
-        retry: 0
+        retry: 0,
+        refetchOnWindowFocus: true
     });
 
     return { isLoading, data: data?.data }
