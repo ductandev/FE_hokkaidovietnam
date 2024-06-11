@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import useWindowDimensions from "@/Hooks/useWindowDimension";
 import { useSelector } from "react-redux";
-
+import { IoSearchOutline } from "react-icons/io5";
 import { selectCart } from "@/Redux/selectors/cart.selector";
 
 import { CircleUserRound, ShoppingCart, Search, Menu, X } from "lucide-react";
@@ -10,7 +10,6 @@ import logo from "assets/image/logo.png";
 
 import "./styles.scss";
 import { useAuth } from "@/Auth/AuthProvider";
-import { Button } from "../ui/button";
 
 import {
   DropdownMenu,
@@ -19,7 +18,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/Components/ui/dropdown-menu"
+} from "@/Components/ui/dropdown-menu";
 import { selectUser } from "@/Redux/selectors/user.selector";
 
 const MENU_REDIRECT = [
@@ -150,39 +149,60 @@ export default function Header() {
             <Search className="mr-10 cursor-pointer header-actions-search" />
           </Link>
 
-          {isLogin ? <DropdownMenu>
-            <DropdownMenuTrigger className="outline-none">
-              <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
-            </DropdownMenuTrigger>
+          {isLogin ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="outline-none">
+                <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
+              </DropdownMenuTrigger>
 
-            <DropdownMenuContent>
-              <DropdownMenuLabel>Xin chào, {userState.ho_ten}</DropdownMenuLabel>
+              <DropdownMenuContent>
+                <DropdownMenuLabel>
+                  Xin chào, {userState.ho_ten}
+                </DropdownMenuLabel>
 
-              <DropdownMenuSeparator />
+                <DropdownMenuSeparator />
 
-              {isAdmin && <DropdownMenuItem onClick={() => {
-                navigate('/admin/customer')
-              }}>Vào admin</DropdownMenuItem>}
-              <DropdownMenuItem onClick={() => {
-                navigate('/history')
-              }}>Lịch sử mua hàng</DropdownMenuItem>
-              <DropdownMenuItem onClick={() => {
-                navigate('/profile')
-              }}>Thông tin tài khoản</DropdownMenuItem>
+                {isAdmin && (
+                  <DropdownMenuItem
+                    onClick={() => {
+                      navigate("/admin/customer");
+                    }}
+                  >
+                    Vào admin
+                  </DropdownMenuItem>
+                )}
+                <DropdownMenuItem
+                  onClick={() => {
+                    navigate("/history");
+                  }}
+                >
+                  Lịch sử mua hàng
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  onClick={() => {
+                    navigate("/profile");
+                  }}
+                >
+                  Thông tin tài khoản
+                </DropdownMenuItem>
 
-              <DropdownMenuItem onClick={() => {
-                signOut()
-                navigate('/')
-              }}>Đăng xuất</DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
-
-            : <Link to="/login" >
+                <DropdownMenuItem
+                  onClick={() => {
+                    signOut();
+                    navigate("/");
+                  }}
+                >
+                  Đăng xuất
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Link to="/login">
               <CircleUserRound className="mr-10 cursor-pointer header-actions-userInfo" />
             </Link>
-          }
+          )}
 
-          <Link to="/cart" >
+          <Link to="/cart">
             <div className="relative">
               <ShoppingCart className="cursor-pointer" />
 
@@ -192,12 +212,10 @@ export default function Header() {
                   top: -10,
                   right: -10,
                   width: 15,
-                  height: 15
+                  height: 15,
                 }}
               >
-                <p className="text-xs mb-0 text-red-600">
-                  {cartState.length}
-                </p>
+                <p className="text-xs mb-0 text-red-600">{cartState.length}</p>
               </div>
             </div>
           </Link>
@@ -229,17 +247,92 @@ export default function Header() {
               })}
             </ul>
 
-            <div className="h-[100px] border-y-2 flex items-center justify-start pl-[15px] translate-y-[1px] overflow-hidden">
-              {!isLogin ? <Link to="/login" className="flex items-center space-x-2">
-                <CircleUserRound size={35} />
-                <h3 className="font-semibold text-lg">Đăng Nhập</h3>
-              </Link> : <Button onClick={() => {
-                signOut();
-              }}>
-                Đăng xuất
-              </Button>
-              }
-
+            <div>
+              {!isLogin ? (
+                <div className="h-[120px] border-y-2 flex flex-col items-start justify-center pl-[15px] translate-y-[1px] overflow-hidden">
+                  <Link
+                    to="/search"
+                    className="pl-[15px] translate-y-[1px] flex items-center mb-4"
+                    onClick={() => {
+                      setIsOpenMenu(false);
+                    }}
+                  >
+                    <IoSearchOutline size={30} />
+                    <p className="ml-2 text-lg hover:font-bold">
+                      Tìm kiếm sản phẩm
+                    </p>
+                  </Link>
+                  <Link
+                    to="/login"
+                    className="flex items-center pl-[15px] translate-y-[1px]"
+                  >
+                    <CircleUserRound size={30} />
+                    <h3 className="text-lg ml-2 hover:font-bold">Đăng Nhập</h3>
+                  </Link>
+                </div>
+              ) : (
+                <div className="h-[300px] border-y-2 flex flex-col items-start justify-center pl-[15px] translate-y-[1px] overflow-hidden">
+                  <Link
+                    to="/search"
+                    className=" translate-y-[1px] flex items-center mb-7"
+                    onClick={() => {
+                      setIsOpenMenu(false);
+                    }}
+                  >
+                    <IoSearchOutline size={30} />
+                    <p className="ml-2 text-lg hover:font-bold">
+                      Tìm kiếm sản phẩm
+                    </p>
+                  </Link>
+                  <div className="flex flex-col items-start space-y-4">
+                    <div className="font-semibold text-lg">
+                      Xin chào {userState.ho_ten}
+                    </div>
+                    {isAdmin && (
+                      <button
+                        className=" hover:font-bold"
+                        style={{ marginLeft: "30px" }}
+                        onClick={() => {
+                          navigate("/admin/customer");
+                        }}
+                      >
+                        {" "}
+                        Vào admin
+                      </button>
+                    )}
+                    <button
+                      className=" hover:font-bold"
+                      style={{ marginLeft: "30px" }}
+                      onClick={() => {
+                        navigate("/history");
+                        setIsOpenMenu(false);
+                      }}
+                    >
+                      Lịch sử mua hàng
+                    </button>
+                    <button
+                      className=" hover:font-bold"
+                      style={{ marginLeft: "30px" }}
+                      onClick={() => {
+                        navigate("/profile");
+                        setIsOpenMenu(false);
+                      }}
+                    >
+                      Thông tin tài khoản
+                    </button>
+                    <button
+                      className=" font-semibold text-lg"
+                      onClick={() => {
+                        signOut();
+                        navigate("/");
+                        setIsOpenMenu(false);
+                      }}
+                    >
+                      Đăng xuất
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
           </>
         )}
