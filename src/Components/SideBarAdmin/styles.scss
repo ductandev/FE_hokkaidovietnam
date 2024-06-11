@@ -1,0 +1,50 @@
+.sidebar-admin {
+    left: 0;
+    position: absolute;
+    min-height: calc(100vh - 120px);
+    height: 100%;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 1) 0%, rgba(210, 210, 210, 1) 100%);
+    width: 230px;
+    max-width: 230px;
+    padding: 40px 0;
+
+    &-menu {
+        padding: 10px;
+        position: relative;
+
+        &::after {
+            content: "";
+            height: 100%;
+            width: 1px;
+            background: #717171;
+            position: absolute;
+            top: 0;
+            left: 20px
+        }
+
+        &-item {
+            display: block;
+            padding: 10px 0 !important;
+            color: #777171;
+            font-size: 15px;
+            font-weight: 600;
+
+            &.active {
+                color: #1E537C;
+            }
+        }
+    }
+
+    @media screen and (max-width: 992px) {
+        & {
+            width: 50px;
+            max-width: 50px;
+
+            &-menu {
+                &::after {
+                    width: 0;
+                }
+            }
+        }
+    }
+}

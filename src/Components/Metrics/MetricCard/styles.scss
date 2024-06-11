@@ -1,0 +1,75 @@
+.metric-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 30%;
+    margin-top: 20px;
+    margin-bottom: 20px;
+
+    &-icon {
+        margin-right: 42px;
+        color: #1E537C;
+        font-size: 50px;
+    }
+
+    &-label {
+        color: #000000;
+        margin-bottom: 16px;
+        font-size: 14px;
+        font-weight: 600;
+    }
+
+    &-index {
+        color: #1E537C;
+        font-size: 24px;
+        font-weight: 600;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .metric-wrapper {
+        width: 50% !important;
+        justify-content: flex-start;
+        margin-top: 10px;
+        margin-bottom: 10px;
+
+        &-icon {
+            margin-right: 30px;
+            color: #1E537C;
+            font-size: 30px;
+        }
+
+        &-label {
+            font-size: 12px;
+            margin-bottom: 8px;
+        }
+
+        &-index {
+            font-size: 18px;
+        }
+    }
+}
+
+
+@media screen and (max-width: 552px) {
+    .metric-wrapper {
+        width: 100% !important;
+        justify-content: flex-start;
+
+        &-icon {
+            margin-right: 20px;
+            color: #1E537C;
+            font-size: 30px;
+        }
+
+        &-label {
+            font-size: 12px;
+            margin-bottom: 4px;
+
+        }
+
+        &-index {
+            font-size: 18px;
+        }
+    }
+}
