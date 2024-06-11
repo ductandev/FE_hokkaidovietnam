@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Fragment } from "react"
+import { Fragment } from "react";
 import { Link } from "react-router-dom";
 import { FaPlayCircle } from "react-icons/fa";
 
@@ -34,35 +34,34 @@ import { useQuery } from "react-query";
 import { getProducts } from "@/Apis/Product/Product.api";
 import { getNews } from "@/Apis/News/News.api";
 
-
 export default function Home() {
   const { isLoading: isLoadingProductList, data: productList }: any = useQuery({
-    queryKey: ['products'],
+    queryKey: ["products"],
     queryFn: () => {
       const controller = new AbortController();
 
       setTimeout(() => {
-        controller.abort()
-      }, 5000)
-      return getProducts(1, 4, 0, "", controller.signal)
+        controller.abort();
+      }, 5000);
+      return getProducts(1, 4, 0, "", controller.signal);
     },
     keepPreviousData: true,
-    retry: 0
+    retry: 0,
   });
 
   const { isLoading: isLoadingNews, data: NewsList }: any = useQuery({
-    queryKey: ['news'],
+    queryKey: ["news"],
     queryFn: () => {
       const controller = new AbortController();
 
       setTimeout(() => {
-        controller.abort()
+        controller.abort();
       }, 5000);
 
       return getNews(1, 3, "", controller.signal);
     },
     keepPreviousData: true,
-    retry: 0
+    retry: 0,
   });
 
   const slides: string[] = [
@@ -97,7 +96,6 @@ export default function Home() {
       }
     };
   }, []);
-
 
   const [showOurFarmModal, setShowOurFarmModal] = useState(false);
   const [showFieldLifeModal, setShowFieldLifeModal] = useState(false);
@@ -139,16 +137,15 @@ export default function Home() {
     window.location.href = "https://zalo.me/0904229229";
   };
 
-
   const RenderProductCards = (): JSX.Element[] => {
     return productList?.data?.content?.map((product: any, idx: any) => {
       return (
         <Fragment key={`${product.id}_${idx}`}>
           <ProductCard {...product} />
         </Fragment>
-      )
-    })
-  }
+      );
+    });
+  };
 
   const RenderNewsCards = (): JSX.Element[] => {
     return NewsList?.data?.content?.map((news: any, idx: any) => {
@@ -156,14 +153,20 @@ export default function Home() {
         <Link to={`/media/${news.tin_tuc_id}`}>
           <div className="flex flex-col items-center" key={idx}>
             <div className="w-full md:w-[350px] h-[250px]">
-              <img className="w-full h-full object-cover" src={news.hinh_anh} alt="..." />
+              <img
+                className="w-full h-full object-cover"
+                src={news.hinh_anh}
+                alt="..."
+              />
             </div>
             <div className="flex flex-col items-center w-[350px]">
               <h1 className="text-lg font-medium text-center mt-4">
                 {news.tieu_de}
               </h1>
               <span className="block text-center text-gray-500 mt-2 mb-2">
-                {news.mo_ta.length > 130 ? news.mo_ta.substr(0, 133) + '...' : news.mo_ta}
+                {news.mo_ta.length > 130
+                  ? news.mo_ta.substr(0, 133) + "..."
+                  : news.mo_ta}
               </span>
               <button className="border-b-2 border-black transition-transform transform hover:scale-105">
                 Xem thêm
@@ -171,11 +174,9 @@ export default function Home() {
             </div>
           </div>
         </Link>
-
-      )
-    })
-  }
-
+      );
+    });
+  };
 
   return (
     <div className="relative">
@@ -190,6 +191,7 @@ export default function Home() {
           />
         ))}
       </Carousel>
+      <h1>test</h1>
       {/* quảng cáo */}
       <div className="grid grid-cols-1 md:grid-cols-3 mt-5 md:mt-0 mb-10 gap-5 md:gap-0 mx-8 my-auto md:mx-0">
         {/* Cột 1 */}
@@ -463,7 +465,10 @@ export default function Home() {
         <div className="container grid grid-cols-2 lg:grid-cols-4 gap-5">
           {!isLoadingProductList && RenderProductCards()}
         </div>
-        <a href="/products" className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform">
+        <a
+          href="/products"
+          className="border-b-2 border-black text-sm md:text-xl text-black font-semibold transform hover:scale-105 transition-transform"
+        >
           Xem thêm
         </a>
       </div>
