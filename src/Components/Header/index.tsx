@@ -10,6 +10,7 @@ import logo from "assets/image/logo.png";
 
 import "./styles.scss";
 import { useAuth } from "@/Auth/AuthProvider";
+import { Button } from "../ui/button";
 
 import {
   DropdownMenu,

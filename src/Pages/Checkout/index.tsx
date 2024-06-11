@@ -4,8 +4,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { Controller, useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useMutation } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { useAuth } from "@/Auth/AuthProvider";
+import { useEffect, useMemo, useState } from "react";
 import { actions } from "@/Redux/actions/cart.action";
 
 // ! Components
@@ -20,7 +21,7 @@ import { toast } from "react-toastify";
 // ! Redux and Helpers
 import { selectCart } from "@/Redux/selectors/cart.selector";
 import { selectUser } from "@/Redux/selectors/user.selector";
-import { formatCurrency, isEmpty, summaryPriceInCart } from "@/Helper/helper";
+import { formatCurrency, isEmpty } from "@/Helper/helper";
 
 import { Product } from "@/Types/Product.type";
 import { OrderCreate } from "@/Types/Order.type";
@@ -35,9 +36,9 @@ import { BsCreditCard } from "react-icons/bs";
 import { checkoutValidationSchema } from "./checkout.validation";
 
 import { postOrder } from "@/Apis/Order/Order.api";
-import { useEffect } from "react";
 import { useLocalStorage } from "@/Hooks/useLocalStorage";
 import { PREFIX } from "@/Hooks/useCartStorage";
+import { checkDiscount } from "@/Apis/Discount/Discount.api";
 
 export interface UserPaymentFrm {
   email: string;
@@ -50,7 +51,8 @@ export interface UserPaymentFrm {
 
 export default function CheckoutPage() {
   const { getProvince, getDistrict, getWard }: any = useAddress();
-
+  const [priceDiscount, setPriceDiscount] = useState(0);
+  const [voucher, setVoucher] = useState('')
   const cartState = useSelector(selectCart);
   const userState = useSelector(selectUser);
 
@@ -78,6 +80,28 @@ export default function CheckoutPage() {
 
   const watchDistrict = getDistrict(watch("tinh_thanh_id"));
   const watchWard = getWard(watch("quan_id"));
+
+  const { isLoading: isLoadingDiscount, data: dataDiscount, refetch }: any = useQuery({
+    queryKey: ['discount', voucher],
+    queryFn: () => {
+      const controller = new AbortController();
+
+      setTimeout(() => {
+        controller.abort()
+      }, 5000);
+
+      return checkDiscount(voucher, controller.signal);
+    },
+    onError: () => {
+      setValue("ma_giam_gia", "")
+      setVoucher("")
+      setPriceDiscount(0)
+      toast.error("Mã giảm giá không tồn tại!")
+    },
+    keepPreviousData: true,
+    retry: 0,
+    enabled: false
+  });
 
   useEffect(() => {
     if (userState.ho_ten.length) {
@@ -108,7 +132,7 @@ export default function CheckoutPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userState])
 
-  const { mutateAsync }: any = useMutation({
+  const { isLoading, mutateAsync }: any = useMutation({
     mutationFn: (body: OrderCreate) => {
       return postOrder(body)
     },
@@ -134,9 +158,30 @@ export default function CheckoutPage() {
     },
   });
 
-  const totalPrice: any = cartState.reduce((accumulator: number, product: Product | any) => {
-    return accumulator + (product.so_luong * product.gia_ban);
-  }, 0);
+  const SHIPPING_PRICE = 30000;
+
+  const totalProductPrice: any = useMemo(() => {
+    return cartState.reduce((accumulator: number, product: Product | any) => {
+      return accumulator + (product.so_luong * product.gia_ban);
+    }, 0);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [cartState]);
+
+  const totalPrice: any = totalProductPrice + SHIPPING_PRICE - priceDiscount
+
+  useEffect(() => {
+    if (!isLoadingDiscount && dataDiscount) {
+      const percentage = dataDiscount?.data?.content.cu_the;
+      const priceCount = (totalProductPrice * percentage) / 100;
+
+      setPriceDiscount(priceCount)
+      setValue("ma_giam_gia", voucher)
+      setVoucher('');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataDiscount])
+
 
   const renderData = (): JSX.Element[] => {
     return cartState.map((item: Product | any, index) => {
@@ -182,7 +227,6 @@ export default function CheckoutPage() {
     const payload = {
       ...values,
       tong_tien: totalPrice,
-      ma_giam_gia: "",
       san_pham: cartState.map((product: any) => {
         return {
           san_pham_id: product.san_pham_id,
@@ -201,7 +245,7 @@ export default function CheckoutPage() {
     mutateAsync(payload);
   }
 
-  const SErrors: any = errors
+  const SErrors: any = errors;
 
   return (
     <div className={`container mx-aut`}>
@@ -336,7 +380,6 @@ export default function CheckoutPage() {
               name="quan_id"
               control={control}
               render={({ field }: any) => {
-
                 return (
                   <div className="mb-4">
                     <Selection
@@ -477,21 +520,37 @@ export default function CheckoutPage() {
 
             {renderData()}
 
-            <div className={`
-            flex 
-            md:flex-row 
-            flex-col
-            justify-between 
-            gap-5 
-            py-5 
-            lg:py-8 
-            border-y-[0.5px] 
-            border-[#777171]`}>
-              <Input name="discount_code" placeholder="Nhập mã giảm giá" />
+
+            <div
+              className={`
+                  flex 
+                  md:flex-row 
+                  flex-col
+                  justify-between 
+                  gap-5 
+                  py-5 
+                  lg:py-8 
+                  border-y-[0.5px] 
+                  border-[#777171]`
+              }
+            >
+              <Input
+                placeholder="Nhập mã giảm giá"
+                value={voucher}
+                onChange={(e) => {
+                  const value = e.target.value;
+
+                  setVoucher(value)
+                }}
+              />
 
               <Button
                 className="h-[40px] md:text-lg text-base px-6"
                 type="button"
+                onClick={() => {
+                  refetch();
+                }}
+                disabled={isLoadingDiscount}
               >
                 Áp dụng
               </Button>
@@ -511,12 +570,17 @@ export default function CheckoutPage() {
 
               <div className="flex justify-between mb-1 lg:mb-2">
                 <p className="text-base md:text-lg text-[#777171]">Tạm tính</p>
-                <p className="text-base md:text-lg text-primary font-medium">{summaryPriceInCart(cartState)}</p>
+                <p className="text-base md:text-lg text-primary font-medium">{formatCurrency(totalProductPrice)}</p>
+              </div>
+
+              <div className="flex justify-between mb-1 lg:mb-2">
+                <p className="text-base md:text-lg text-[#777171]">Phí vận chuyển</p>
+                <p className="text-base md:text-lg text-primary font-medium">{formatCurrency(SHIPPING_PRICE)}</p>
               </div>
 
               <div className="flex justify-between">
-                <p className="text-base md:text-lg text-[#777171]">Phí vận chuyển</p>
-                <p className="text-base md:text-lg text-primary font-medium">{formatCurrency(30000)}</p>
+                <p className="text-base md:text-lg text-[#777171]">Giảm giá</p>
+                <p className="text-base md:text-lg text-primary font-medium">{formatCurrency(priceDiscount)}</p>
               </div>
             </div>
 
@@ -534,7 +598,7 @@ export default function CheckoutPage() {
                   font-medium
                   `}>
                 <p>Tổng cộng</p>
-                <p className="font-medium">{formatCurrency(totalPrice + 30000)}</p>
+                <p className="font-medium">{formatCurrency(totalPrice)}</p>
               </div>
 
               <div className="hidden lg:flex justify-between ">
@@ -546,7 +610,7 @@ export default function CheckoutPage() {
 
                 <Button
                   className="h-[48px] px-8 text-lg"
-                  disabled={!isEmpty(errors)}
+                  disabled={!isEmpty(errors) || isLoading}
                   type="submit"
                 >Đặt hàng
                 </Button>

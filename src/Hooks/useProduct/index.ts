@@ -47,8 +47,9 @@ export const useProductSummary = () => {
 
             return getProductSummary(controller.signal)
         },
-        keepPreviousData: true,
-        retry: 0
+        keepPreviousData: false,
+        retry: 0,
+        refetchOnWindowFocus: true
     });
 
     return { isLoading, data: data?.data }
